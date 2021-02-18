@@ -30,6 +30,7 @@ void Motor::update(double duty_rate) {
     if (duty_rate < 0) {
         HAL_GPIO_TogglePin(_phase_x, _phase_pin);
         //enumでの指定なので "! _phasepin"といった反転ができない。なのでTogglePin
+        //_castすればいけるのでは？(未着手 2021/2/19)
         duty_rate *= -1;
     }
 

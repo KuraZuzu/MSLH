@@ -12,6 +12,7 @@ class DigitalOut {
 private:
     GPIO_TypeDef* _gpio_x;
     uint16_t _gpio_pin;
+    int16_t _pinstate;
 
 
 public:
@@ -19,9 +20,16 @@ public:
 
     void write(int16_t value);
 
-    DigitalOut& operator= (int16_t value);
+    DigitalOut& operator= (int16_t value){
+        _pinstate = value;
+        write(_pinstate);
+        return *this;
+    }
 
-    DigitalOut& operator! ();
+    // バグの温床となる可能性もある
+    operator int16_t (){
+        return _pinstate;
+    }
 
 };
 

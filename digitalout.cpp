@@ -5,22 +5,12 @@
 #include "digitalout.h"
 
 DigitalOut::DigitalOut(GPIO_TypeDef *gpio_x, uint16_t gpio_pin)
-        :_gpio_x(gpio_x), _gpio_pin(gpio_pin){
+        :_gpio_x(gpio_x), _gpio_pin(gpio_pin), _pinstate(0){
 
-    HAL_GPIO_WritePin(_gpio_x, _gpio_pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(_gpio_x, _gpio_pin, static_cast<GPIO_PinState >(_pinstate));
 }
 
 void DigitalOut::write(int16_t value) {
-    if(!value) HAL_GPIO_WritePin(_gpio_x, _gpio_pin, GPIO_PIN_RESET);
-    else HAL_GPIO_WritePin(_gpio_x, _gpio_pin, GPIO_PIN_SET);
-}
-
-DigitalOut &DigitalOut::operator=(int16_t value) {
-    write(value);
-    return *this;
-}
-
-DigitalOut &DigitalOut::operator!() {
-    HAL_GPIO_TogglePin(_gpio_x, _gpio_pin);
-    return *this;
+    _pinstate = value;
+    HAL_GPIO_WritePin(_gpio_x, _gpio_pin, static_cast<GPIO_PinState>(_pinstate));
 }

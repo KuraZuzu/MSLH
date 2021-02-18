@@ -25,7 +25,6 @@ public:
 
     void stop();
 
-
     void move_debug();
 
     void buzzer_debug();

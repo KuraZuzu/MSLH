@@ -38,7 +38,7 @@ void Machine::led_debug() {
         _led1 = !_led1;
         _led2 = !_led2;
         _led3 = !_led3;
-        HAL_Delay(500);
+        HAL_Delay(200);
     }
 //    _led1.write(1);
 //    _led2.write(1);

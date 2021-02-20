@@ -31,8 +31,6 @@ Machine::Machine()
 
     _l_motor = new Motor(GPIOA, GPIO_PIN_6, &htim1, TIM_CHANNEL_1, static_cast<GPIO_PinState >(true));
     _r_motor = new Motor(GPIOA, GPIO_PIN_7, &htim1, TIM_CHANNEL_2, static_cast<GPIO_PinState >(false));
-//    _l_motor = new Motor(GPIOA, GPIO_PIN_6, &htim1, TIM_CHANNEL_1, GPIO_PIN_SET);
-//    _r_motor = new Motor(GPIOA, GPIO_PIN_7, &htim1, TIM_CHANNEL_2, GPIO_PIN_RESET);
     _l_encoder = new Encoder(&htim4, true);
     _r_encoder = new Encoder(&htim3, false);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
@@ -41,8 +39,16 @@ Machine::Machine()
 }
 
 void Machine::move_debug() {
-    _l_motor->update(0.5);
+    _l_motor->update(0.4);
+    _r_motor->update(0.2);
+    HAL_Delay(1000);
+    _l_motor->update(-0.8);
     _r_motor->update(0.5);
+    HAL_Delay(1000);
+    _l_motor->update(1.0);
+    _r_motor->update(-3.0);
+    HAL_Delay(1000);
+    stop();
 }
 
 void Machine::stop() {

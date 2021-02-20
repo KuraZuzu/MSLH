@@ -8,6 +8,7 @@
 
 extern "C" {
 #include "tim.h"
+#include "digitalout.h"
 }
 
 class Motor {
@@ -19,12 +20,11 @@ public:
     void update(double duty_rate);
 
 private:
-    GPIO_PinState _current_wise;
-    GPIO_PinState _forward_wise;
-    TIM_HandleTypeDef* _htim_x;
-    uint16_t _phase_pin;
     GPIO_TypeDef* _phase_x;
+    uint16_t _phase_pin;
+    TIM_HandleTypeDef* _htim_x;
     uint64_t _channel;
+    GPIO_PinState _forward_wise;
 };
 
 

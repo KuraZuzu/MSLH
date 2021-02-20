@@ -6,15 +6,13 @@
 #include "application.h"
 
 void test_move() {
-    aaa.move_debug();
-//    HAL_Delay(3000);
-//    aaa.stop();
+    test.move_debug();
 }
 
 void test_buzzer() {
-    aaa.buzzer_debug();
+    test.buzzer_debug();
 }
 
 void test_led() {
-    aaa.led_debug();
+    test.led_debug();
 }

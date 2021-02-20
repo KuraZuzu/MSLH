@@ -1,6 +1,7 @@
-//
-// Created by 倉澤　一詩 on 2021/02/13.
-//
+/**
+ * 2021/02/13
+ * @author KuraZuzu
+ * */
 
 #ifndef ZUZUHALFTPPMOD1_BUZZER_H
 #define ZUZUHALFTPPMOD1_BUZZER_H

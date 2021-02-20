@@ -1,6 +1,7 @@
-//
-// Created by 倉澤　一詩 on 2019/10/26.
-//
+/**
+ * 2019/10/26
+ * @author KuraZuzu
+ * */
 
 #ifndef ZUZUHALFTPPMOD1_USART_EXPAND_H
 #define ZUZUHALFTPPMOD1_USART_EXPAND_H

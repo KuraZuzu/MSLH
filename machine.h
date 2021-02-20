@@ -1,6 +1,7 @@
-//
-// Created by 倉澤　一詩 on 2021/02/13.
-//
+/**
+ * 2021/02/13
+ * @author KuraZuzu
+ * */
 
 #ifndef ZUZUHALFTPPMOD1_MACHINE_H
 #define ZUZUHALFTPPMOD1_MACHINE_H
@@ -9,7 +10,10 @@
 #include "encoder.h"
 #include "buzzer.h"
 #include "digitalout.h"
-
+#include "usart.h"
+#include "adc.h"
+#include "spi.h"
+#include "dma.h"
 class Machine {
 
 public:
@@ -19,7 +23,9 @@ public:
     Encoder* _l_encoder;
     Encoder* _r_encoder;
     Buzzer* _buzzer;
-    DigitalOut _led1, _led2, _led3;
+    DigitalOut _led1;
+    DigitalOut _led2;
+    DigitalOut _led3;
 
     Machine();
 

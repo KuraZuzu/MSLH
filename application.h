@@ -1,6 +1,8 @@
-//
-// Created by 倉澤　一詩 on 2019/10/22.
-//
+/**
+ * 2021/02/13
+ * @author KuraZuzu
+ * */
+
 #ifndef ZUZUHALFTPPMOD1_APPLICATION_H
 #define ZUZUHALFTPPMOD1_APPLICATION_H
 
@@ -16,7 +18,7 @@ extern "C" {
 Machine aaa;
 
 void test_move();
-void test_buzzer();
+//void test_buzzer();
 void test_led();
 
 #endif

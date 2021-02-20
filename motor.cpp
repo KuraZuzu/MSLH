@@ -1,6 +1,7 @@
-//
-// Created by 倉澤　一詩 on 2019/10/23.
-//
+/**
+ * 2019/10/23
+ * @author KuraZuzu
+ * */
 
 #include "motor.h"
 
@@ -14,7 +15,7 @@ Motor::Motor(GPIO_TypeDef* phase_x, uint16_t phase_pin, TIM_HandleTypeDef* htim_
 
     HAL_GPIO_WritePin(_phase_x, _phase_pin, _forward_wise);
     HAL_TIM_PWM_Start(_htim_x, _channel);
-    update(0.0);
+//    update(0.0);
 }
 
 

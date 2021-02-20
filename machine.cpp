@@ -41,17 +41,13 @@ Machine::Machine()
 }
 
 void Machine::move_debug() {
-    _l_motor->update(0.8);
-    _r_motor->update(0.8);
-//    _l_motor.update(0.8);
-//    _r_motor.update(0.8);
+    _l_motor->update(0.5);
+    _r_motor->update(0.5);
 }
 
 void Machine::stop() {
     _l_motor->update(0);
     _r_motor->update(0);
-//    _l_motor.update(0.0);
-//    _r_motor.update(0.0);
 }
 
 void Machine::buzzer_debug() {

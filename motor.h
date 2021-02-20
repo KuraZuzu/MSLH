@@ -13,19 +13,18 @@ extern "C" {
 class Motor {
 
 public:
-    Motor(GPIO_TypeDef* phase_x, uint16_t phase_pin, TIM_HandleTypeDef* htim_x, uint32_t channel, GPIO_PinState cw_wise);
+    /** bool cw is forward wise of your machine */
+    Motor(GPIO_TypeDef* phase_x, uint16_t phase_pin, TIM_HandleTypeDef* htim_x, uint32_t channel, bool cw);
 
-
-    // 0.0 <= duty_rate <= 1.0
     void update(double duty_rate);
 
 private:
+    GPIO_PinState _current_wise;
     GPIO_PinState _forward_wise;
     TIM_HandleTypeDef* _htim_x;
     uint16_t _phase_pin;
     GPIO_TypeDef* _phase_x;
     uint64_t _channel;
-
 };
 
 

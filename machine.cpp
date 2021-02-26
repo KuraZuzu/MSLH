@@ -34,7 +34,7 @@ Machine::Machine()
     _l_encoder = new Encoder(&htim4, true);
     _r_encoder = new Encoder(&htim3, false);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
-    _usart = new UsartExpand(&huart2);
+    _usart = new SerialUtility(&huart2);
     stop();
 }
 

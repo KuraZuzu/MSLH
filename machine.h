@@ -14,7 +14,7 @@
 #include "adc.h"
 #include "spi.h"
 #include "dma.h"
-#include "usart_expand.h"
+#include "serial_utility.h"
 
 class Machine {
 
@@ -27,7 +27,7 @@ public:
     Encoder* _l_encoder;
     Encoder* _r_encoder;
     Buzzer* _buzzer;
-    UsartExpand* _usart;
+    SerialUtility* _usart;
 
     Machine();
 

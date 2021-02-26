@@ -3,7 +3,7 @@
  * @author KuraZuzu
  * */
 
-#ifndef ZUZUHALFTPPMOD1_USART_EXPAND_H
+#ifndef ZUZUHALFTPPMOD1_SERIAL_UTILITY_H
 #define ZUZUHALFTPPMOD1_USART_EXPAND_H
 
 // Math parameters

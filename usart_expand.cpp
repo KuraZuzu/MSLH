@@ -1,5 +1,6 @@
-//
-// Created by 倉澤　一詩 on 2021/02/12.
-//
+/**
+ * 2021/02/20
+ * @author KuraZuzu
+ * */
 
 #include "usart_expand.h"

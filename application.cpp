@@ -16,3 +16,7 @@ void test_buzzer() {
 void test_led() {
     test.led_debug();
 }
+
+void test_usart() {
+    test.print_debug();
+}

@@ -34,19 +34,19 @@ Machine::Machine()
     _l_encoder = new Encoder(&htim4, true);
     _r_encoder = new Encoder(&htim3, false);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
-
+    _usart = new UsartExpand(&huart2);
     stop();
 }
 
 void Machine::move_debug() {
-    _l_motor->update(0.4);
-    _r_motor->update(0.2);
+    _l_motor->update(0.05);
+    _r_motor->update(0.05);
     HAL_Delay(1000);
-    _l_motor->update(-0.8);
-    _r_motor->update(0.5);
+    _l_motor->update(-0.05);
+    _r_motor->update(0.05);
     HAL_Delay(1000);
-    _l_motor->update(1.0);
-    _r_motor->update(-3.0);
+    _l_motor->update(0.05);
+    _r_motor->update(-0.05);
     HAL_Delay(1000);
     stop();
 }
@@ -57,18 +57,25 @@ void Machine::stop() {
 }
 
 void Machine::buzzer_debug() {
-    _buzzer->pi();
-    HAL_Delay(1000);
     _buzzer->pipi();
-    HAL_Delay(1000);
-    _buzzer->pipipi();
 }
 
 void Machine::led_debug() {
-    while (1) {
-        _led1 = !_led1;
-        _led2 = !_led2;
-        _led3 = !_led3;
-        HAL_Delay(200);
+    _led1 = 1;
+    _led2 = 0;
+    _led3 = 0;
+    HAL_Delay(50);
+    _led1 = 0;
+    _led2 = 1;
+    _led3 = 0;
+    HAL_Delay(50);
+    _led1 = 0;
+    _led2 = 0;
+    _led3 = 1;
+}
+
+void Machine::print_debug() {
+    while(1) {
+        _usart->get_print();
     }
 }

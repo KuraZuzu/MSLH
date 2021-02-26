@@ -14,18 +14,20 @@
 #include "adc.h"
 #include "spi.h"
 #include "dma.h"
+#include "usart_expand.h"
+
 class Machine {
 
 public:
-
+    DigitalOut _led1;
+    DigitalOut _led2;
+    DigitalOut _led3;
     Motor* _l_motor;
     Motor* _r_motor;
     Encoder* _l_encoder;
     Encoder* _r_encoder;
     Buzzer* _buzzer;
-    DigitalOut _led1;
-    DigitalOut _led2;
-    DigitalOut _led3;
+    UsartExpand* _usart;
 
     Machine();
 
@@ -37,6 +39,7 @@ public:
 
     void led_debug();
 
+    void print_debug();
 };
 
 

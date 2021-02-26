@@ -20,6 +20,7 @@ Machine test;
 void test_move();
 void test_buzzer();
 void test_led();
+void test_usart();
 
 #endif
 

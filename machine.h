@@ -40,6 +40,10 @@ public:
     void led_debug();
 
     void serial_debug();
+
+    void encoder_debug() {
+//        printf("L:%d, R:%d\r\n", );
+    }
 };
 
 

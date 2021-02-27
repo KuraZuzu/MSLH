@@ -19,16 +19,26 @@ public:
 
     void stop();
 
-    int64_t get_delta_pulse();
+    int32_t get_delta_pulse();
 
-    int16_t get_integral_pulse();
+    int64_t get_total_pulse();
+
+    /** 現在の integral_pulse を代入します．
+     *  delta_pules では無い点に注意してください ．
+     *  基本的には get_delta_pulse() の最後に呼び出します．*/
+    void update_rotation_count(int integral_pulse){
+        _rotation_count = integral_pulse / _one_rotation_pulse;
+        _integral_count = integral_pulse % _one_rotation_pulse;
+    }
 
 private:
     TIM_HandleTypeDef* _htim_x;
     const uint16_t _offset_pulse_count = 0x0FFF;
-    uint16_t _pulse_count = _offset_pulse_count;
-    int16_t _integral_count;
+    uint16_t _pulse_count;
+    int64_t _integral_count;
     bool _forward_wise;
+    uint16_t _one_rotation_pulse;
+    int64_t _rotation_count;
 };
 
 

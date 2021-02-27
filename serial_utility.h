@@ -6,26 +6,34 @@
 #ifndef ZUZUHALFTPPMOD1_SERIAL_UTILITY_H
 #define ZUZUHALFTPPMOD1_SERIAL_UTILITY_H
 
-extern "C" {
 #include "usart.h"
-}
-#include <cstdio>
+#include "stdio.h"
+//#include <cstdio>
+//#include <cstdarg>
 
-/** 9600 Port-Rate is recommended */
+
+/** Portraits below 9600 are recommended
+ *  huart_X.Init.BaudRate = 9600; */
 class SerialUtility {
 
 public:
-    SerialUtility(UART_HandleTypeDef* uart_handle):_uart_handle(uart_handle){
+    SerialUtility(UART_HandleTypeDef* huart):_huart(huart){
+//        setbuf(stdout, NULL);
     }
 
-    void get_print(){
-        std::printf("test test\n");
-    }
-
-
+//    int
+//    __printf (const char *format, ...){
+//        va_list arg;
+//        int done;
+//        va_start (arg, format);
+//        done = vfprintf (stdout, format, arg);
+//        va_end (arg);
+//
+//        return done;
+//    }
 
 private:
-    UART_HandleTypeDef* _uart_handle;
+    UART_HandleTypeDef* _huart;
 
 };
 

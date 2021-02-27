@@ -6,10 +6,9 @@
 #ifndef ZUZUHALFTPPMOD1_MOTOR_H
 #define ZUZUHALFTPPMOD1_MOTOR_H
 
-extern "C" {
 #include "tim.h"
 #include "digitalout.h"
-}
+
 
 class Motor {
 

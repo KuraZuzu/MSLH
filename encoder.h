@@ -6,9 +6,7 @@
 #ifndef ZUZUHALFTPPMOD1_ENCODER_H
 #define ZUZUHALFTPPMOD1_ENCODER_H
 
-extern "C" {
 #include "tim.h"
-}
 
 class Encoder {
 

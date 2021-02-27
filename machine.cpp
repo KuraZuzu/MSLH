@@ -34,7 +34,7 @@ Machine::Machine()
     _l_encoder = new Encoder(&htim4, true);
     _r_encoder = new Encoder(&htim3, false);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
-    _usart = new SerialUtility(&huart2);
+    _serial = new SerialUtility(&huart2);
     stop();
 }
 
@@ -75,7 +75,10 @@ void Machine::led_debug() {
 }
 
 void Machine::print_debug() {
+    int i = 0;
     while(1) {
-        _usart->get_print();
+        printf("%d", i);
+        printf(": sucess");
+        i++;
     }
 }

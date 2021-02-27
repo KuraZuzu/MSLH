@@ -27,7 +27,7 @@ public:
     Encoder* _l_encoder;
     Encoder* _r_encoder;
     Buzzer* _buzzer;
-    SerialUtility* _usart;
+    SerialUtility* _serial;
 
     Machine();
 

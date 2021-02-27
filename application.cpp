@@ -17,6 +17,6 @@ void test_led() {
     test.led_debug();
 }
 
-void test_usart() {
+void print_debug() {
     test.print_debug();
 }

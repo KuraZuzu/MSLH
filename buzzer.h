@@ -6,9 +6,7 @@
 #ifndef ZUZUHALFTPPMOD1_BUZZER_H
 #define ZUZUHALFTPPMOD1_BUZZER_H
 
-extern "C"{
 #include "tim.h"
-}
 
 class Buzzer {
 

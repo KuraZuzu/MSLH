@@ -41,9 +41,7 @@ public:
 
     void serial_debug();
 
-    void encoder_debug() {
-//        printf("L:%d, R:%d\r\n", );
-    }
+    void encoder_debug();
 };
 
 

@@ -82,3 +82,7 @@ void Machine::serial_debug() {
         i++;
     }
 }
+
+void Machine::encoder_debug() {
+    printf("L:%d, R:%d\r\n", _l_encoder->get_total_pulse(), _r_encoder->get_total_pulse());
+}

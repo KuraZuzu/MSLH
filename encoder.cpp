@@ -14,7 +14,6 @@ Encoder::Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw
   _delta_pulse(0),
   _forward_wise(cw_wise) {
     stop();
-    reset_integral();
 }
 
 void Encoder::start() {
@@ -26,8 +25,11 @@ void Encoder::stop() {
     HAL_TIM_Encoder_Stop(_htim_x, TIM_CHANNEL_ALL);
 }
 
-void Encoder::reset_integral() {
+void Encoder::reset() {
+    _pulse_count = _offset_pulse;
     _integral_pulse = 0;
+    _rotation_count = 0;
+    _delta_pulse = 0;
 }
 
 
@@ -57,9 +59,11 @@ void Encoder::update_delta_pulse() {
 
     _delta_pulse = _pulse_count - _offset_pulse;
 
-    /** _forward_wise が true の時にカウントアップとする． */
+    /**_delta_pulse を更新
+     * _forward_wise が true の時にカウントアップとする． */
     if (!_forward_wise) _delta_pulse *= -1;
 
+    /** _itegral_pulse を更新 */
     _integral_pulse += _delta_pulse;
 }
 

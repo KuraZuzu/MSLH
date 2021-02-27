@@ -17,7 +17,7 @@ public:
 
     void stop();
 
-    void reset_integral();
+    void reset();
 
     int64_t get_delta_pulse();
 

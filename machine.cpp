@@ -31,8 +31,8 @@ Machine::Machine()
 
     _l_motor = new Motor(GPIOA, GPIO_PIN_6, &htim1, TIM_CHANNEL_1, static_cast<GPIO_PinState >(true));
     _r_motor = new Motor(GPIOA, GPIO_PIN_7, &htim1, TIM_CHANNEL_2, static_cast<GPIO_PinState >(false));
-    _l_encoder = new Encoder(&htim4, true);
-    _r_encoder = new Encoder(&htim3, false);
+//    _l_encoder = new Encoder(&htim4, true);
+//    _r_encoder = new Encoder(&htim3, false);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
     _serial = new SerialUtility(&huart2);
     stop();

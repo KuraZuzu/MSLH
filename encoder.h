@@ -11,7 +11,7 @@
 class Encoder {
 
 public:
-    Encoder(TIM_HandleTypeDef* htim_x, bool cw_wise);
+    Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw_wise);
 
     void reset_integral();
 

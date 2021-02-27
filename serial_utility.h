@@ -1,5 +1,8 @@
 /**
  * 2021/02/20
+ *
+ * This class is no implemented.
+ *
  * @author KuraZuzu
  * */
 
@@ -17,23 +20,11 @@
 class SerialUtility {
 
 public:
-    SerialUtility(UART_HandleTypeDef* huart):_huart(huart){
-//        setbuf(stdout, NULL);
-    }
-
-//    int
-//    __printf (const char *format, ...){
-//        va_list arg;
-//        int done;
-//        va_start (arg, format);
-//        done = vfprintf (stdout, format, arg);
-//        va_end (arg);
-//
-//        return done;
-//    }
-
-private:
     UART_HandleTypeDef* _huart;
+
+    SerialUtility(UART_HandleTypeDef* huart):_huart(huart){
+        setbuf(stdout, NULL);
+    }
 
 };
 

@@ -74,11 +74,11 @@ void Machine::led_debug() {
     _led3 = 1;
 }
 
-void Machine::print_debug() {
+void Machine::serial_debug() {
     int i = 0;
     while(1) {
         printf("%d", i);
-        printf(": sucess");
+        printf(": sucess\r\n");
         i++;
     }
 }

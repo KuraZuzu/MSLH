@@ -39,7 +39,7 @@ public:
 
     void led_debug();
 
-    void print_debug();
+    void serial_debug();
 };
 
 

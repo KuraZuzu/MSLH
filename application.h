@@ -12,17 +12,15 @@
 
 #include "machine.h"
 
-
 extern "C" {
+#endif
 
 Machine test;
 
 void test_move();
 void test_buzzer();
 void test_led();
-void test_usart();
-
-#endif
+void test_serial();
 
 #ifdef __cplusplus
 

@@ -19,7 +19,7 @@ public:
 
     void reset();
 
-    int64_t get_delta_pulse();
+    int32_t get_delta_pulse();
 
     int64_t get_rotation_count();
 
@@ -34,14 +34,20 @@ private:
 
     void update_rotation_count();
 
+
     TIM_HandleTypeDef* _htim_x;
-    const uint16_t _offset_pulse = 0x0FFF;
-    uint16_t _pulse_count;
-    int64_t _integral_pulse;
-    bool _forward_wise;
     uint16_t _one_rotation_pulse;
+    bool _forward_wise;
+
+    /** エンコーダ内部のカウントは uint16_t の容量でカウントされる．
+     *  　　0 ≦ _htim_x->Instance->CNT ≦ 65500
+     *  (.iocの設定で 65500 を適当な上限とした．後で65535に変えよう．)
+     *
+     *  なので，パルス差分カウントのためのオフセットは中間の 0x0FFF */
+    const uint16_t _offset_pulse ; // 0x0FFF
+    int32_t _delta_pulse;
+    int64_t _integral_pulse;
     int64_t _rotation_count;
-    int64_t _delta_pulse;
 };
 
 

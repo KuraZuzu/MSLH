@@ -72,6 +72,10 @@ void Machine::led_debug() {
     _led1 = 0;
     _led2 = 0;
     _led3 = 1;
+    HAL_Delay(50);
+    _led1 = 0;
+    _led2 = 0;
+    _led3 = 0;
 }
 
 void Machine::serial_debug() {
@@ -86,6 +90,7 @@ void Machine::serial_debug() {
 void Machine::encoder_debug() {
     _l_encoder->start();
     _r_encoder->start();
+    int i = 0;
     while(1) {
         printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
                 , static_cast<int>(_l_encoder->get_rotation_surplus_pulse())
@@ -93,5 +98,6 @@ void Machine::encoder_debug() {
                 , static_cast<int>(_r_encoder->get_rotation_surplus_pulse())
                 , static_cast<int>(_r_encoder->get_rotation_count()));
         HAL_Delay(10);
+        i++;
     }
 }

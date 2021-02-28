@@ -13,13 +13,6 @@ _htim_x(htim_x),
 _channel(channel),
 _forward_wise(static_cast<GPIO_PinState>(cw))
 {
-//    MX_TIM1_Init();
-//    MX_GPIO_Init();
-//    _phase_x = phase_x;
-//    _phase_pin = phase_pin;
-//    _htim_x = htim_x;
-//    _channel = channel;
-//    _forward_wise = static_cast<GPIO_PinState>(cw);
     HAL_GPIO_WritePin(_phase_x, _phase_pin, _forward_wise);
     HAL_TIM_PWM_Start(_htim_x, _channel);
     update(0.0);

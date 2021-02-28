@@ -38,6 +38,11 @@ Machine::Machine()
     stop();
 }
 
+void Machine::stop() {
+    _l_motor->update(0);
+    _r_motor->update(0);
+}
+
 void Machine::move_debug() {
     _l_motor->update(0.05);
     _r_motor->update(0.05);
@@ -49,11 +54,6 @@ void Machine::move_debug() {
     _r_motor->update(-0.05);
     HAL_Delay(1000);
     stop();
-}
-
-void Machine::stop() {
-    _l_motor->update(0);
-    _r_motor->update(0);
 }
 
 void Machine::buzzer_debug() {

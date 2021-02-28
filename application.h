@@ -21,6 +21,7 @@ void test_move();
 void test_buzzer();
 void test_led();
 void test_serial();
+void test_encoder();
 
 #ifdef __cplusplus
 

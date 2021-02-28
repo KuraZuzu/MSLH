@@ -20,3 +20,7 @@ void test_led() {
 void test_serial() {
     test.serial_debug();
 }
+
+void test_encoder() {
+    test.encoder_debug();
+}

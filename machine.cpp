@@ -93,9 +93,9 @@ void Machine::encoder_debug() {
     int i = 0;
     while(1) {
         printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
-                , static_cast<int>(_l_encoder->get_rotation_surplus_pulse())
+                , static_cast<int>(_l_encoder->get_surplus_pulse())
                 , static_cast<int>(_l_encoder->get_rotation_count())
-                , static_cast<int>(_r_encoder->get_rotation_surplus_pulse())
+                , static_cast<int>(_r_encoder->get_surplus_pulse())
                 , static_cast<int>(_r_encoder->get_rotation_count()));
         HAL_Delay(10);
         i++;

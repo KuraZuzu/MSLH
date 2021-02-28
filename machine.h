@@ -43,7 +43,6 @@ public:
 
     void encoder_debug();
 
-
 };
 
 

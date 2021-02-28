@@ -34,7 +34,7 @@ void Encoder::reset() {
     _htim_x->Instance->CNT = _offset_pulse;
 }
 
-int64_t Encoder::get_rotation_surplus_pulse() {
+int64_t Encoder::get_surplus_pulse() {
     update_encoder();
     return _integral_pulse;
 }

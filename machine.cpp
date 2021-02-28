@@ -31,8 +31,8 @@ Machine::Machine()
 
     _l_motor = new Motor(GPIOA, GPIO_PIN_6, &htim1, TIM_CHANNEL_1, static_cast<GPIO_PinState >(true));
     _r_motor = new Motor(GPIOA, GPIO_PIN_7, &htim1, TIM_CHANNEL_2, static_cast<GPIO_PinState >(false));
-    _l_encoder = new Encoder(&htim3, 500*4, true);
-    _r_encoder = new Encoder(&htim4, 500*4, false);
+    _l_encoder = new Encoder(&htim4, 500*4, false);
+    _r_encoder = new Encoder(&htim3, 500*4, true);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
     _serial = new SerialUtility(&huart2);
     stop();
@@ -88,9 +88,11 @@ void Machine::encoder_debug() {
     _r_encoder->start();
     while(1) {
         printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
-                ,_l_encoder->get_rotation_surplus_pulse(), _l_encoder->get_rotation_count()
-                ,_r_encoder->get_rotation_surplus_pulse(), _r_encoder->get_rotation_count());
-//        printf("L_pulse:%d, R_pulse:%d\r\n", _l_encoder->get_total_pulse(), _r_encoder->get_total_pulse());
+                , static_cast<int>(_l_encoder->get_rotation_surplus_pulse())
+                , static_cast<int>(_l_encoder->get_rotation_count())
+                , static_cast<int>(_r_encoder->get_rotation_surplus_pulse())
+                , static_cast<int>(_r_encoder->get_rotation_count()));
         HAL_Delay(10);
     }
+
 }

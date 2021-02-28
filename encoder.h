@@ -35,7 +35,7 @@ private:
 
     void update_encoder();
 
-    void update_delta_pulse();
+    void update_pulse();
 
     void update_rotation_count();
 

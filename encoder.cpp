@@ -40,7 +40,7 @@ int64_t Encoder::get_rotation_surplus_pulse() {
 }
 
 int32_t Encoder::get_delta_pulse() {
-//    update_delta_pulse(); 処理としてはこちらの方が高速
+//    update_pulse(); 処理としてはこちらの方が高速
     update_encoder();
     return _delta_pulse;
 }
@@ -56,15 +56,15 @@ int64_t Encoder::get_total_pulse() {
 }
 
 void Encoder::update_encoder() {
-    update_delta_pulse();
+    update_pulse();
     update_rotation_count();
 }
 
-void Encoder::update_delta_pulse() {
+void Encoder::update_pulse() {
     int32_t pulse_count = (_htim_x->Instance->CNT);
     _htim_x->Instance->CNT = _offset_pulse;
 
-    _delta_pulse = pulse_count - _offset_pulse;
+    _delta_pulse = pulse_count - static_cast<int32_t>(_offset_pulse);
 
     /**_delta_pulse を更新
      * _forward_wise が true の時にカウントアップとする． */

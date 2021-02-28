@@ -19,7 +19,6 @@ Encoder::Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw
 }
 
 void Encoder::start() {
-    update_encoder();
     HAL_TIM_Encoder_Start(_htim_x, TIM_CHANNEL_ALL);
 }
 
@@ -35,9 +34,14 @@ void Encoder::reset() {
     _htim_x->Instance->CNT = _offset_pulse;
 }
 
+int64_t Encoder::get_rotation_surplus_pulse() {
+    update_encoder();
+    return _integral_pulse;
+}
 
 int32_t Encoder::get_delta_pulse() {
-    update_delta_pulse();
+//    update_delta_pulse(); 処理としてはこちらの方が高速
+    update_encoder();
     return _delta_pulse;
 }
 
@@ -71,6 +75,6 @@ void Encoder::update_delta_pulse() {
 }
 
 void Encoder::update_rotation_count() {
-    _rotation_count = _integral_pulse / _one_rotation_pulse;
+    _rotation_count += _integral_pulse / _one_rotation_pulse;
     _integral_pulse %= _one_rotation_pulse;
 }

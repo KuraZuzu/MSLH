@@ -19,11 +19,16 @@ public:
 
     void reset();
 
-    int32_t get_delta_pulse();
+    /** 主にこの２つの getter を用いる．
+     *  get_delta_pulse(), get_rotation_count() */
+    int32_t get_delta_pulse();    // 前回とのパルス差分を取得
+    int64_t get_rotation_count(); //現在の回転数を取得
 
-    int64_t get_rotation_count();
 
-    int64_t get_total_pulse();
+    /** 以下の関数は主にデバッグ用．
+     *  get_integral_pulse(), get_total_pulse() */
+    int64_t get_rotation_surplus_pulse(); // １回転分に満たない蓄積パルスを取得(オーバーフローしづらい)
+    int64_t get_total_pulse();            // 蓄積パルスが多すぎるとオーバーフローする恐れあり
 
 
 private:

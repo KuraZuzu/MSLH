@@ -40,7 +40,8 @@ int64_t Encoder::get_rotation_surplus_pulse() {
 }
 
 int32_t Encoder::get_delta_pulse() {
-//    update_pulse(); 処理としてはこちらの方が高速
+    /** 処理としてはこちらの方が高速だが，回転数は更新されない．オーバーフローの可能性は残る． */
+    /**   update_pulse(); */
     update_encoder();
     return _delta_pulse;
 }
@@ -61,7 +62,7 @@ void Encoder::update_encoder() {
 }
 
 void Encoder::update_pulse() {
-    int32_t pulse_count = (_htim_x->Instance->CNT);
+    int32_t pulse_count = static_cast<int32_t>(_htim_x->Instance->CNT);
     _htim_x->Instance->CNT = _offset_pulse;
 
     _delta_pulse = pulse_count - static_cast<int32_t>(_offset_pulse);
@@ -71,10 +72,10 @@ void Encoder::update_pulse() {
     if (!_forward_wise) _delta_pulse *= -1;
 
     /** _itegral_pulse を更新 */
-    _integral_pulse += _delta_pulse;
+    _integral_pulse += static_cast<int64_t>(_delta_pulse);
 }
 
 void Encoder::update_rotation_count() {
-    _rotation_count += _integral_pulse / _one_rotation_pulse;
-    _integral_pulse %= _one_rotation_pulse;
+    _rotation_count += _integral_pulse / static_cast<int64_t>(_one_rotation_pulse);
+    _integral_pulse %= static_cast<int64_t>(_one_rotation_pulse);
 }

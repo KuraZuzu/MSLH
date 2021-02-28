@@ -5,14 +5,14 @@
 
 #include "encoder.h"
 
-Encoder::Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw_wise)
+Encoder::Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw)
 :_offset_pulse(0x0FFF),
  _integral_pulse(0),
  _htim_x(htim_x),
  _one_rotation_pulse(one_rotation_pulse),
  _rotation_count(0),
  _delta_pulse(0),
- _forward_wise(cw_wise)
+ _forward_wise(cw)
 {
     stop();
     reset();

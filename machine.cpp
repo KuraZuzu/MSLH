@@ -94,5 +94,4 @@ void Machine::encoder_debug() {
                 , static_cast<int>(_r_encoder->get_rotation_count()));
         HAL_Delay(10);
     }
-
 }

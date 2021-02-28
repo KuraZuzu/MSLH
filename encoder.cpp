@@ -57,7 +57,7 @@ void Encoder::update_encoder() {
 }
 
 void Encoder::update_delta_pulse() {
-    uint16_t pulse_count = (_htim_x->Instance->CNT);
+    int32_t pulse_count = (_htim_x->Instance->CNT);
     _htim_x->Instance->CNT = _offset_pulse;
 
     _delta_pulse = pulse_count - _offset_pulse;

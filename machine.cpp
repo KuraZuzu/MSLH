@@ -87,7 +87,10 @@ void Machine::encoder_debug() {
     _l_encoder->start();
     _r_encoder->start();
     while(1) {
-        printf("L_pulse:%d, R_pulse:%d\r\n", _l_encoder->get_total_pulse(), _r_encoder->get_total_pulse());
+        printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
+                ,_l_encoder->get_delta_pulse(), _l_encoder->get_rotation_count()
+                ,_r_encoder->get_delta_pulse(), _r_encoder->get_rotation_count());
+//        printf("L_pulse:%d, R_pulse:%d\r\n", _l_encoder->get_total_pulse(), _r_encoder->get_total_pulse());
         HAL_Delay(10);
     }
 }

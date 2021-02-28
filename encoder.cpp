@@ -23,7 +23,7 @@ void Encoder::start() {
 }
 
 void Encoder::stop() {
-    update_encoder();
+    update();
     HAL_TIM_Encoder_Stop(_htim_x, TIM_CHANNEL_ALL);
 }
 
@@ -34,32 +34,20 @@ void Encoder::reset() {
     _htim_x->Instance->CNT = _offset_pulse;
 }
 
-int64_t Encoder::get_surplus_pulse() {
-    update_encoder();
-    return _integral_pulse;
-}
-
-int32_t Encoder::get_delta_pulse() {
-    /** 処理としてはこちらの方が高速だが，回転数は更新されない．オーバーフローの可能性は残る． */
-    /**   update_pulse(); */
-    update_encoder();
-    return _delta_pulse;
-}
-
-int64_t Encoder::get_rotation_count() {
-    update_encoder();
-    return _rotation_count;
-}
-
-int64_t Encoder::get_total_pulse() {
-    update_encoder();
-    return _one_rotation_pulse*_rotation_count + _integral_pulse;
-}
-
-void Encoder::update_encoder() {
+void Encoder::update() {
     update_pulse();
     update_rotation_count();
 }
+
+int32_t Encoder::get_delta_pulse() { return _delta_pulse; }
+
+int64_t Encoder::get_rotation_count() { return _rotation_count; }
+
+int64_t Encoder::get_surplus_pulse() { return _integral_pulse; }
+
+int64_t Encoder::get_total_pulse() { return _one_rotation_pulse*_rotation_count + _integral_pulse; }
+
+
 
 void Encoder::update_pulse() {
     auto pulse_count = static_cast<int32_t>(_htim_x->Instance->CNT);

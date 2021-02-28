@@ -40,8 +40,8 @@ private:
     bool _forward_wise;
 
     /** エンコーダ内部のカウントは uint16_t の容量でカウントされる．
-     *  　　0 ≦ _htim_x->Instance->CNT ≦ 65500
-     *  (.iocの設定で 65500 を適当な上限とした．後で65535に変えよう．)
+     *  　　0 ≦ _htim_x->Instance->CNT ≦ 65535
+     *  (uint16_t なので 65535 が最大の設定値，.ioc から設定可能)
      *
      *  なので，パルス差分カウントのためのオフセットは中間の 0x0FFF */
     const uint16_t _offset_pulse ; // 0x0FFF

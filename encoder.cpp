@@ -56,7 +56,7 @@ int64_t Encoder::get_total_pulse() {
 }
 
 void Encoder::update_encoder() {
-    update_encoder();
+    update_delta_pulse();
     update_rotation_count();
 }
 

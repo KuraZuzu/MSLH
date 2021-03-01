@@ -15,5 +15,6 @@ void Buzzer::beep_x(uint16_t times) {
         HAL_TIM_PWM_Start(_htim_x, _channel);
         HAL_Delay(50);
         HAL_TIM_PWM_Stop(_htim_x, _channel);
+        HAL_Delay(50);
     }
 }

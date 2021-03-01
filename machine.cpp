@@ -4,7 +4,7 @@
  */
 
 #include "machine.h"
-
+#include "stdio.h"
 
 Machine::Machine()
 :_led1(GPIOC, GPIO_PIN_3), _led2(GPIOC, GPIO_PIN_4), _led3(GPIOC, GPIO_PIN_5)
@@ -30,7 +30,6 @@ Machine::Machine()
     _l_encoder = new Encoder(&htim4, 500*4, false);
     _r_encoder = new Encoder(&htim3, 500*4, true);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
-    _serial = new SerialUtility(&huart2);
     stop();
 }
 
@@ -99,5 +98,4 @@ void Machine::encoder_debug() {
         HAL_Delay(2000);
         i++;
     }
-
 }

@@ -14,7 +14,7 @@
 #include "adc.h"
 #include "spi.h"
 #include "dma.h"
-#include "serial_utility.h"
+#include "analogin_dma_stream.h"
 
 class Machine {
 
@@ -27,7 +27,6 @@ public:
     Encoder* _l_encoder;
     Encoder* _r_encoder;
     Buzzer* _buzzer;
-    SerialUtility* _serial;
 
     Machine();
 

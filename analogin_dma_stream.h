@@ -2,27 +2,16 @@
 // Created by 倉澤　一詩 on 2021/03/02.
 //
 
-#ifndef ZUZUHALFTPPMOD1_ADC_INPUT_DMA_H
-#define ZUZUHALFTPPMOD1_ADC_INPUT_DMA_H
+#ifndef ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H
+#define ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H
 
-//#include "stm32f4xx_hal_adc.h"
-//#include "stm32f4xx_hal.h"
 #include "adc.h"
 
-enum ADC_RANK{
-    ADC_RANK_1,
-    ADC_RANK_2,
-    ADC_RANK_3,
-    ADC_RANK_4,
-    ADC_RANK_5,
-};
 
-
-
-class ADCInputDMA {
+class AnalogInDMAStream {
 
 public:
-    ADCInputDMA(ADC_HandleTypeDef* hadc)
+    AnalogInDMAStream(ADC_HandleTypeDef* hadc)
     :_hadc(hadc) ,_adc_amount(_hadc->Init.NbrOfConversion){
         _value = new uint16_t[_adc_amount];
         HAL_ADC_Start_DMA(_hadc, (uint32_t*)_value, _adc_amount);
@@ -50,4 +39,4 @@ private:
 };
 
 
-#endif //ZUZUHALFTPPMOD1_ADC_INPUT_DMA_H
+#endif //ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H

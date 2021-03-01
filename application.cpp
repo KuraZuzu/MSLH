@@ -1,7 +1,7 @@
 /**
  * 2021/02/13
  * @author KuraZuzu
- * */
+ */
 
 #include "application.h"
 

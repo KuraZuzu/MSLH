@@ -1,7 +1,7 @@
 /**
  * 2019/10/23
  * @author KuraZuzu
- * */
+ */
 
 #include "encoder.h"
 
@@ -55,11 +55,11 @@ void Encoder::update_pulse() {
 
     _delta_pulse = pulse_count - static_cast<int32_t>(_offset_pulse);
 
-    /**_delta_pulse を更新
-     * _forward_wise が true の時にカウントアップとする． */
+    // _delta_pulse を更新
+    // _forward_wise が true の時にカウントアップとする
     if (!_forward_wise) _delta_pulse *= -1;
 
-    /** _integral_pulse を更新 */
+    // _integral_pulse を更新
     _integral_pulse += static_cast<int64_t>(_delta_pulse);
 }
 

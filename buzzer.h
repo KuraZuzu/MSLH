@@ -1,7 +1,7 @@
 /**
  * 2021/02/13
  * @author KuraZuzu
- * */
+ */
 
 #ifndef ZUZUHALFTPPMOD1_BUZZER_H
 #define ZUZUHALFTPPMOD1_BUZZER_H

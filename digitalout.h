@@ -1,7 +1,7 @@
 /**
  * 2021/02/14
  * @author KuraZuzu
- * */
+ */
 
 
 #ifndef ZUZUHALFTPPMOD1_DIGITALOUT_H

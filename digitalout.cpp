@@ -1,7 +1,7 @@
 /**
  * 2021/02/14
  * @author KuraZuzu
- * */
+ */
 
 #include "digitalout.h"
 

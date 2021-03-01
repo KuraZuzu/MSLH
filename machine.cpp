@@ -1,7 +1,7 @@
 /**
  * 2021/02/13
  * @author KuraZuzu
- * */
+ */
 
 #include "machine.h"
 
@@ -10,7 +10,7 @@ Machine::Machine()
 :_led1(GPIOC, GPIO_PIN_3), _led2(GPIOC, GPIO_PIN_4), _led3(GPIOC, GPIO_PIN_5)
 {
 
-    /** Init functions. */
+    // Init functions.
     MX_GPIO_Init();
     MX_DMA_Init();
     MX_ADC1_Init();
@@ -90,42 +90,16 @@ void Machine::encoder_debug() {
     while (1) {
         _l_encoder->update();
         _r_encoder->update();
-        printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n", static_cast<int>(_l_encoder->get_surplus_pulse()),
-               static_cast<int>(_l_encoder->get_rotation_count()), static_cast<int>(_r_encoder->get_surplus_pulse()),
-               static_cast<int>(_r_encoder->get_rotation_count()));
-        HAL_Delay(10);
+        printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
+                , static_cast<int>(_l_encoder->get_delta_pulse())
+                , static_cast<int>(_l_encoder->get_rotation_count())
+                , static_cast<int>(_r_encoder->get_delta_pulse())
+                , static_cast<int>(_r_encoder->get_rotation_count()));
+//        printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n", static_cast<int>(_l_encoder->get_surplus_pulse()),
+//               static_cast<int>(_l_encoder->get_rotation_count()), static_cast<int>(_r_encoder->get_surplus_pulse()),
+//               static_cast<int>(_r_encoder->get_rotation_count()));
+        HAL_Delay(2000);
         i++;
     }
 
 }
-
-
-
-/**
-*int main() {
-*
-*    // *** Need setup HAL encoder timer parameters. ***
-*    MX_TIM3_Init();
- *
-*    // [ STEP 0 ]
-*    int64_t delta_pulse;
-*    int64_t rotation_count;
-*    encoder.start(); // Init encoder setup.*
-*
-*
-*    // [ STEP 1 ]
-*    encoder.update();
-*    delta_pulse = encoder.get_delta_pulse();       // delta_pulse between step 0 and 1
-*    rotation_count = encoder.get_rotation_count(); // rotation count when step 1*
-*
-*    // *** Need encoder.update(); , if you get current data. ***
-*    delta_pulse = encoder.get_delta_pulse();       // delta_pulse between step 0 and 1
-*    rotation_count = encoder.get_rotation_count(); // rotation count when step 1
-*
-*
-*    // [ STEP 2 ]
-*    encoder.update();
-*    delta_pulse = encoder.get_delta_pulse();       // delta_pulse between step 1 and 2
-*    rotation_count = encoder.get_rotation_count(); // rotation count when step 2
-*}
-*/

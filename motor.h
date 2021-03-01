@@ -33,7 +33,7 @@
  *     motor.update(-0.5); // Roted backward with PWM of 50% output.
  *     HAL_Delay(3000);
  *
- *     motor.update(0);  // Stop motor.
+ *     motor.update(0.0);  // Stop motor.
  * }
  * @endcode
  */

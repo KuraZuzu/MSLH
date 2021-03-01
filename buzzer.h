@@ -15,13 +15,13 @@ private:
     uint32_t _channel;
 
 public:
+
+    /**
+     * @param An argument (uint16_t times) is times of beep sound.
+     */
     Buzzer(TIM_HandleTypeDef* htim_x, uint32_t channel);
 
-    void pi();
-
-    void pipi();
-
-    void pipipi();
+    void beep_x(uint16_t times);
 };
 
 

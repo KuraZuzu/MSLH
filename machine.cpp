@@ -53,7 +53,7 @@ void Machine::move_debug() {
 }
 
 void Machine::buzzer_debug() {
-    _buzzer->pipi();
+    _buzzer->beep_x(5);
 }
 
 void Machine::led_debug() {

@@ -9,7 +9,34 @@
 #include "tim.h"
 #include "digitalout.h"
 
-
+/**
+ * Turns the motor at the specified PWM rate.
+ *
+ * Example:
+ * @code
+ *
+ * // The motor is rotated forward and backward at a PWM value of 0.5 (50% output) for
+ * // 3 seconds each, and then stopped.
+ *
+ * #include "motor.h"
+ *
+ * Motor motor(GPIOA, GPIO_PIN_6, &htim1, TIM_CHANNEL_1, true);
+ *
+ * int main() {
+ *
+ *     MX_TIM1_Init();  // Need setup HAL encoder timer parameters.
+ *     MX_GPIO_Init();  // Need setup HAL_GPIO.
+ *
+ *     motor.update(0.5);  // Roted forward with PWM of 50% output.
+ *     HAL_Delay(3000);
+ *
+ *     motor.update(-0.5); // Roted backward with PWM of 50% output.
+ *     HAL_Delay(3000);
+ *
+ *     motor.update(0);  // Stop motor.
+ * }
+ * @endcode
+ */
 class Motor {
 
 public:
@@ -35,7 +62,7 @@ private:
     uint16_t _phase_pin;
     TIM_HandleTypeDef* _htim_x;
     uint64_t _channel;
-    GPIO_PinState _forward_wise;
+    const GPIO_PinState _forward_wise;
 };
 
 

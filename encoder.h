@@ -25,7 +25,8 @@
  *
  * int main() {
  *
- *     MX_TIM3_Init(); // Need setup HAL encoder timer parameters.
+ *     MX_TIM3_Init();  // Need setup HAL encoder timer parameters.
+ *     MX_GPIO_Init();  // Need setup HAL_GPIO.
  *
  *     // [ STEP 0 ]
  *     int64_t delta_pulse;

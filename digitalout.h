@@ -9,6 +9,27 @@
 
 #include "gpio.h"
 
+/**
+ * A digital output, used for setting the state of a GPIO
+ *
+ * Example:
+ * @code
+ * // Toggle a LED
+ * #include "digitalout.h"
+ *
+ * DigitalOut led(GPIOC, GPIO_PIN_3);
+ *
+ * int main() {
+ *
+ *     MX_GPIO_Init();  // Need setup HAL_GPIO.
+ *
+ *     while(1) {
+ *         led = !led;
+ *         HAL_Delay(100);
+ *     }
+ * }
+ * @endcode
+ */
 class DigitalOut {
 
 private:

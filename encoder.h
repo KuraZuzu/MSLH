@@ -25,29 +25,30 @@
  *
  * int main() {
  *
- *    // *** Need setup HAL encoder timer parameters. ***
- *    MX_TIM3_Init();
+ *     MX_TIM3_Init(); // Need setup HAL encoder timer parameters.
  *
- *    // [ STEP 0 ]
- *    int64_t delta_pulse;
- *    int64_t rotation_count;
- *    encoder.start(); // Init encoder setup.*
+ *     // [ STEP 0 ]
+ *     int64_t delta_pulse;
+ *     int64_t rotation_count;
  *
- *
- *    // [ STEP 1 ]
- *    encoder.update();
- *    delta_pulse = encoder.get_delta_pulse();       // delta_pulse between step 0 and 1
- *    rotation_count = encoder.get_rotation_count(); // rotation count when step 1*
- *
- *    // *** Need encoder.update(); , if you get current data. ***
- *    delta_pulse = encoder.get_delta_pulse();       // delta_pulse between step 0 and 1
- *    rotation_count = encoder.get_rotation_count(); // rotation count when step 1
+ *     // Start encoder measurement
+ *     encoder.start();
  *
  *
- *    // [ STEP 2 ]
- *    encoder.update();
- *    delta_pulse = encoder.get_delta_pulse();       // delta_pulse between step 1 and 2
- *    rotation_count = encoder.get_rotation_count(); // rotation count when step 2
+ *     // [ STEP 1 ]
+ *     encoder.update();
+ *     delta_pulse = encoder.get_delta_pulse();        // delta_pulse between step 0 and 1
+ *     rotation_count = encoder.get_rotation_count();  // rotation_count at step 1
+ *
+ *     // *** Need encoder.update(); , if you get current data. ***
+ *     delta_pulse = encoder.get_delta_pulse();        // delta_pulse between step 0 and 1
+ *     rotation_count = encoder.get_rotation_count();  // rotation_count at step 1
+ *
+ *
+ *     // [ STEP 2 ]
+ *     encoder.update();
+ *     delta_pulse = encoder.get_delta_pulse();        // delta_pulse between step 1 and 2
+ *     rotation_count = encoder.get_rotation_count();  // rotation_count at step 2
  * }
  * @endcode
  */

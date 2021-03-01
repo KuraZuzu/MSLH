@@ -8,6 +8,29 @@
 
 #include "tim.h"
 
+
+/**
+ * Sounds the buzzer.
+ *
+ * Example:
+ * @code
+ * // Sound the buzzer three times.
+ *
+ * #include "buzzer.h"
+ *
+ * Buzzer buzzer(&htim8, TIM_CHANNEL_1);
+ *
+ * int main() {
+ *
+ *     MX_TIM8_Init();  // Need setup HAL_Timer of PWM
+ *
+ *     int i = 0;
+ *     for(int i = 0; i < 3; i++) {
+ *         buzzer.beep(i);
+ *     }
+ * }
+ * @endcode
+ */
 class Buzzer {
 
 private:

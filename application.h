@@ -22,6 +22,8 @@ void test_buzzer();
 void test_led();
 void test_serial();
 void test_encoder();
+void test_battery_console();
+void test_battery_warning();
 
 #ifdef __cplusplus
 

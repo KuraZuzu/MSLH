@@ -30,6 +30,7 @@ Machine::Machine()
     _l_encoder = new Encoder(&htim4, 500*4, false);
     _r_encoder = new Encoder(&htim3, 500*4, true);
     _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
+    _analog = new AnalogInDMAStream(&hadc1);
     stop();
 }
 
@@ -97,5 +98,21 @@ void Machine::encoder_debug() {
 
         HAL_Delay(2000);
         i++;
+    }
+}
+
+double Machine::battery_voltage() {
+    uint16_t battery = _analog->read(BATTERY_VOLTAGE);
+    return 3.3 * battery / 0x0FFF * (1000 + 1000)/1000;;
+}
+
+void Machine::battery_console_debug() {
+    printf("%lf\r\n", battery_voltage());
+}
+
+void Machine::battery_warning_debug() {
+    if(battery_voltage() < 3.8) {
+        _buzzer->beep_x(4);
+        HAL_Delay(1000);
     }
 }

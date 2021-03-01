@@ -15,6 +15,15 @@
 #include "spi.h"
 #include "dma.h"
 #include "analogin_dma_stream.h"
+#include <cstdio>
+
+enum Analog{
+    LEFT_FRONT,
+    LEFT_SIDE,
+    RIGHT_SIDE,
+    RIGHT_FRONT,
+    BATTERY_VOLTAGE
+};
 
 class Machine {
 
@@ -27,6 +36,7 @@ public:
     Encoder* _l_encoder;
     Encoder* _r_encoder;
     Buzzer* _buzzer;
+    AnalogInDMAStream* _analog;
 
     Machine();
 
@@ -42,7 +52,11 @@ public:
 
     void encoder_debug();
 
-};
+    double battery_voltage();
 
+    void battery_console_debug();
+
+    void battery_warning_debug();
+};
 
 #endif //ZUZUHALFTPPMOD1_MACHINE_H

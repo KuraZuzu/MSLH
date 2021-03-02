@@ -8,30 +8,48 @@
 #include "adc.h"
 
 /**
- * Turns the motor at the specified PWM rate.
+ * Reads a analog value with an ADC using DMA.
+ * The bit length specified by STM32CubeMX(.ico) for 3.3 volt peripherals.
  *
  * Example:
  * @code
  *
- * // The motor is rotated forward and backward at a PWM value of 0.5 (50% output) for
- * // 3 seconds each, and then stopped.
+ * // It displays the battery voltage value when it is set
+ * // at 12bit length and divided to 50% with 2×100[Ω] resistors by the electronic circuit.
+ * // The rank of the pin for this battery check is set to "5",
+ * // which corresponds to argument "4" [read(4)].
  *
- * #include "motor.h"
+ * #include "analogin_dma_stream"
  *
- * Motor motor(GPIOA, GPIO_PIN_6, htim1, TIM_CHANNEL_1, true);
+ * // define DMA-rank with enum.
+ * enum Analog{
+ *   LEFT_FRONT,
+ *   LEFT_SIDE,
+ *   RIGHT_SIDE,
+ *   RIGHT_FRONT,
+ *   BATTERY_VOLTAGE  // Target.
+ * };
+ *
+ * AnalogInDMAStream analog(hadc1);
  *
  * int main() {
  *
- *     MX_TIM1_Init();  // Need setup HAL encoder timer parameters.
- *     MX_GPIO_Init();  // Need setup HAL_GPIO.
+ *     MX_ADC1_Init();  // Need setup ADC.
+ *     MX_DMA_Init();   // Need setup DMA.
  *
- *     motor.update(0.5);  // Roted forward with PWM of 50% output.
- *     HAL_Delay(3000);
+ *     uint16_t bat = analog.read(Analog::BATTERY_VOLTAGE);
  *
- *     motor.update(-0.5); // Roted backward with PWM of 50% output.
- *     HAL_Delay(3000);
+ *     while(1) {
  *
- *     motor.update(0.0);  // Stop motor.
+ *         // The memory value is automatically updated by the ADC+DMA,
+ *         // so the bat will always contain the latest value.
+ *         // In addition, 0x0FFF is Max of 12bit.
+ *
+ *         uint16_t voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;
+ *
+ *
+ *         printf("%lf \r\n", voltage);
+ *     }
  * }
  * @endcode
  */
@@ -53,6 +71,11 @@ public:
      * Note that the ranks defined in "adc.c" start from 1,
      * but in the arguments of this function, they start from 0.
      * This argument-rank is recommended to define it with enum.
+     *
+     * In the sample code, the rank in adc.c is 5,
+     * but in enum it is 4
+     * (because rank starts from 1, but enum starts from 0).
+     *
      *
      * @argument Enter the rank (starting from 0) defined in "adc.c".
      *           It recommended to define it with enum.

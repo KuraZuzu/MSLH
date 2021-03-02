@@ -101,25 +101,11 @@ void Machine::encoder_debug() {
 
         HAL_Delay(50);
         i++;
-//    _l_encoder->start();
-//    _r_encoder->start();
-//    int i = 0;
-//    while (1) {
-//        _l_encoder->update();
-//        _r_encoder->update();
-//        printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
-//                , static_cast<int>(_l_encoder->get_delta_pulse())
-//                , static_cast<int>(_l_encoder->get_rotation_count())
-//                , static_cast<int>(_r_encoder->get_delta_pulse())
-//                , static_cast<int>(_r_encoder->get_rotation_count()));
-//
-//        HAL_Delay(2000);
-//        i++;
     }
 }
 
 double Machine::battery_voltage() {
-    uint16_t battery = _analog->read(BATTERY_VOLTAGE);
+    uint16_t battery = _analog->read(Analog::BATTERY_VOLTAGE);
     return 3.3 * battery / 0x0FFF * (1000 + 1000)/1000;;
 }
 

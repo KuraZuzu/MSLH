@@ -29,7 +29,7 @@ Machine::Machine()
     _r_motor = new Motor(GPIOA, GPIO_PIN_7, &htim1, TIM_CHANNEL_2, false);
     _l_encoder = new Encoder(&htim4, 500*4, false);
     _r_encoder = new Encoder(&htim3, 500*4, true);
-    _buzzer = new Buzzer(&htim8, TIM_CHANNEL_1);
+    _buzzer = new Buzzer(htim8, TIM_CHANNEL_1);
     _analog = new AnalogInDMAStream(hadc1);
     _analog->init();
 

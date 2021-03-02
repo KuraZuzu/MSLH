@@ -34,15 +34,15 @@
 class Buzzer {
 
 private:
-    TIM_HandleTypeDef* _htim_x;
-    uint32_t _channel;
+    TIM_HandleTypeDef& _htim_x;
+    const uint32_t _channel;
 
 public:
 
     /**
      * @param An argument (uint16_t times) is times of beep sound.
      */
-    Buzzer(TIM_HandleTypeDef* htim_x, uint32_t channel);
+    Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel);
 
     void beep_x(uint16_t times);
 };

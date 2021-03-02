@@ -11,7 +11,7 @@
 class AnalogInDMAStream {
 
 public:
-    AnalogInDMAStream(ADC_HandleTypeDef* hadc);
+    AnalogInDMAStream(ADC_HandleTypeDef& hadc);
 
 
     /**
@@ -36,9 +36,9 @@ public:
     uint16_t read(uint16_t rank_starting_from_0);
 
 private:
-    ADC_HandleTypeDef* _hadc;
+    ADC_HandleTypeDef& _hadc;
     uint32_t* _adc_amount;
-    uint16_t* _value;  // 6~12[bit]の範囲でデータが入力される．CubeMX(.ioc)のADCで設定．
+    uint16_t _value;  // 6~12[bit]の範囲でデータが入力される．CubeMX(.ioc)のADCで設定．
     bool _init_flag;
 };
 

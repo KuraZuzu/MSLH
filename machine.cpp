@@ -8,6 +8,7 @@
 
 Machine::Machine()
 :_led1(GPIOC, GPIO_PIN_3), _led2(GPIOC, GPIO_PIN_4), _led3(GPIOC, GPIO_PIN_5)
+,_l_encoder(htim4, 500*4, false), _r_encoder(htim3, 500*4, true)
 {
 
     // Init functions.
@@ -27,8 +28,8 @@ Machine::Machine()
 
     _l_motor = new Motor(GPIOA, GPIO_PIN_6, htim1, TIM_CHANNEL_1, true);
     _r_motor = new Motor(GPIOA, GPIO_PIN_7, htim1, TIM_CHANNEL_2, false);
-    _l_encoder = new Encoder(htim4, 500*4, false);
-    _r_encoder = new Encoder(htim3, 500*4, true);
+//    _l_encoder = new Encoder(htim4, 500*4, false);
+//    _r_encoder = new Encoder(htim3, 500*4, true);
     _buzzer = new Buzzer(htim8, TIM_CHANNEL_1);
     _analog = new AnalogInDMAStream(hadc1);
     _analog->init();
@@ -86,20 +87,34 @@ void Machine::serial_debug() {
 }
 
 void Machine::encoder_debug() {
-    _l_encoder->start();
-    _r_encoder->start();
+    _l_encoder.start();
+    _r_encoder.start();
     int i = 0;
     while (1) {
-        _l_encoder->update();
-        _r_encoder->update();
+        _l_encoder.update();
+        _r_encoder.update();
         printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
-                , static_cast<int>(_l_encoder->get_delta_pulse())
-                , static_cast<int>(_l_encoder->get_rotation_count())
-                , static_cast<int>(_r_encoder->get_delta_pulse())
-                , static_cast<int>(_r_encoder->get_rotation_count()));
+                , static_cast<int>(_l_encoder.get_delta_pulse())
+                , static_cast<int>(_l_encoder.get_rotation_count())
+                , static_cast<int>(_r_encoder.get_delta_pulse())
+                , static_cast<int>(_r_encoder.get_rotation_count()));
 
-        HAL_Delay(2000);
+        HAL_Delay(50);
         i++;
+//    _l_encoder->start();
+//    _r_encoder->start();
+//    int i = 0;
+//    while (1) {
+//        _l_encoder->update();
+//        _r_encoder->update();
+//        printf("LP:%d, LC:%d,  RP:%d, RC:%d\r\n"
+//                , static_cast<int>(_l_encoder->get_delta_pulse())
+//                , static_cast<int>(_l_encoder->get_rotation_count())
+//                , static_cast<int>(_r_encoder->get_delta_pulse())
+//                , static_cast<int>(_r_encoder->get_rotation_count()));
+//
+//        HAL_Delay(2000);
+//        i++;
     }
 }
 

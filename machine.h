@@ -33,8 +33,8 @@ public:
     DigitalOut _led3;
     Motor* _l_motor;
     Motor* _r_motor;
-    Encoder* _l_encoder;
-    Encoder* _r_encoder;
+    Encoder _l_encoder;
+    Encoder _r_encoder;
     Buzzer* _buzzer;
     AnalogInDMAStream* _analog;
 

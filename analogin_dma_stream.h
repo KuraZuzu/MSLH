@@ -37,6 +37,8 @@
  *     MX_ADC1_Init();  // Need setup ADC.
  *     MX_DMA_Init();   // Need setup DMA.
  *
+ *     analog.init ();  // This needs to be called after MX_ADC1_Init() and MX_DMA_Init().
+ *
  *     uint16_t bat = analog.read(Analog::BATTERY_VOLTAGE);
  *
  *     while(1) {

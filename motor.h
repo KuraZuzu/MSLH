@@ -46,7 +46,7 @@ public:
      *
      * @param The cw direction corresponds to the forward rotation of your machine.
      */
-    Motor(GPIO_TypeDef* phase_x, uint16_t phase_pin, TIM_HandleTypeDef* htim_x, uint32_t channel, bool cw);
+    Motor(GPIO_TypeDef* phase_x, uint16_t phase_pin, TIM_HandleTypeDef& htim_x, uint32_t channel, bool cw);
 
 
     /**
@@ -59,9 +59,9 @@ public:
 
 private:
     GPIO_TypeDef* _phase_x;
-    uint16_t _phase_pin;
-    TIM_HandleTypeDef* _htim_x;
-    uint64_t _channel;
+    const uint16_t _phase_pin;
+    TIM_HandleTypeDef& _htim_x;
+    const uint64_t _channel;
     const GPIO_PinState _forward_wise;
 };
 

@@ -10,6 +10,7 @@
 #include "gpio.h"
 
 /**
+ * I used "mbed" as a reference.
  * A digital output, used for setting the state of a GPIO
  *
  * Example:
@@ -34,7 +35,7 @@ class DigitalOut {
 
 private:
     GPIO_TypeDef* _gpio_x;
-    uint16_t _gpio_pin;
+    const uint16_t _gpio_pin;
     int16_t _pinstate;
 
 

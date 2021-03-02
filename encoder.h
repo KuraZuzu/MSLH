@@ -8,7 +8,6 @@
 
 #include "tim.h"
 
-
 /**
  * Incremental-rotary-Encoder using the HAL driver's encoder function.
  *

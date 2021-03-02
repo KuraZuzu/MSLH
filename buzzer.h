@@ -45,6 +45,10 @@ public:
     Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel);
 
     void beep_x(uint16_t times);
+
+    void long_beep(){
+        HAL_TIM_PWM_Start(&_htim_x, _channel);
+    }
 };
 
 

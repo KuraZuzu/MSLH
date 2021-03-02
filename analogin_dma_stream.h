@@ -14,7 +14,7 @@
  * Example:
  * @code
  *
- * // It displays the battery voltage value when it is set
+ * // It computes the battery voltage value when it is set
  * // at 12bit length and divided to 50% with 2×100[Ω] resistors by the electronic circuit.
  * // The rank of the pin for this battery check is set to "5",
  * // which corresponds to argument "4" [read(4)].
@@ -34,24 +34,28 @@
  *
  * int main() {
  *
+ *     HAL_Init(); // Setup HAL.
+ *     SystemClock_Config();  // Micro-controller startup functions
+ *
  *     MX_ADC1_Init();  // Need setup ADC.
  *     MX_DMA_Init();   // Need setup DMA.
  *
- *     analog.init ();  // This needs to be called after MX_ADC1_Init() and MX_DMA_Init().
  *
- *     uint16_t bat = analog.read(Analog::BATTERY_VOLTAGE);
+ *     analog.init ();  // It needs to be called after MX_ADC1_Init() and MX_DMA_Init().
  *
- *     while(1) {
+ *     uint16_t bat = analog.read(Analog::BATTERY_VOLTAGE);  // get_analog_value.
  *
- *         // The memory value is automatically updated by the ADC+DMA,
- *         // so the bat will always contain the latest value.
- *         // In addition, 0x0FFF is Max of 12bit.
+ *     // The memory value is automatically updated by the ADC+DMA,
+ *     // so the "bat" will always contain the latest value.
+ *     // In addition, 0x0FFF is Max of 12bit.
+ *     uint16_t voltage;
  *
- *         uint16_t voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;
+ *     // [ setp 1 ]
+ *     voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;
  *
+ *     // [ step 2 ]
+ *     voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;  // "bat" and "voltage" has different value at [ step 1 ].
  *
- *         printf("%lf \r\n", voltage);
- *     }
  * }
  * @endcode
  */
@@ -64,7 +68,7 @@ public:
     /**
      * 本当はコンストラクタ内で ADC を開始したい。
      * ペリフェラルの初期化を先に行うことが必須となってしまうために
-     * ADC の開始を init() に切り分ける。s
+     * ADC の開始を init() に切り分けた。
      */
     void init();
 

@@ -5,7 +5,7 @@
 
 #include "encoder.h"
 
-Encoder::Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw)
+Encoder::Encoder(TIM_HandleTypeDef& htim_x, uint16_t one_rotation_pulse, bool cw)
 :_offset_pulse(0x0FFF),
  _integral_pulse(0),
  _htim_x(htim_x),
@@ -19,19 +19,19 @@ Encoder::Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw
 }
 
 void Encoder::start() {
-    HAL_TIM_Encoder_Start(_htim_x, TIM_CHANNEL_ALL);
+    HAL_TIM_Encoder_Start(&_htim_x, TIM_CHANNEL_ALL);
 }
 
 void Encoder::stop() {
     update();
-    HAL_TIM_Encoder_Stop(_htim_x, TIM_CHANNEL_ALL);
+    HAL_TIM_Encoder_Stop(&_htim_x, TIM_CHANNEL_ALL);
 }
 
 void Encoder::reset() {
     _integral_pulse = 0;
     _rotation_count = 0;
     _delta_pulse = 0;
-    _htim_x->Instance->CNT = _offset_pulse;
+    _htim_x.Instance->CNT = _offset_pulse;
 }
 
 void Encoder::update() {
@@ -50,8 +50,8 @@ int64_t Encoder::get_total_pulse() { return _one_rotation_pulse*_rotation_count 
 
 
 void Encoder::update_pulse() {
-    auto pulse_count = static_cast<int32_t>(_htim_x->Instance->CNT);
-    _htim_x->Instance->CNT = _offset_pulse;
+    auto pulse_count = static_cast<int32_t>(_htim_x.Instance->CNT);
+    _htim_x.Instance->CNT = _offset_pulse;
 
     _delta_pulse = pulse_count - static_cast<int32_t>(_offset_pulse);
 

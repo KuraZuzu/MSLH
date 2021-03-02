@@ -62,7 +62,7 @@ public:
      *
      * @param The cw direction corresponds to the forward rotation of your machine.
      */
-    Encoder(TIM_HandleTypeDef* htim_x, uint16_t one_rotation_pulse, bool cw);
+    Encoder(TIM_HandleTypeDef& htim_x, uint16_t one_rotation_pulse, bool cw);
 
     void start();
 
@@ -112,7 +112,7 @@ public:
 
 private:
 
-    TIM_HandleTypeDef* _htim_x;
+    TIM_HandleTypeDef& _htim_x;
     const uint16_t _one_rotation_pulse;
     const bool _forward_wise;
 

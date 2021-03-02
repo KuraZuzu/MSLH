@@ -1,6 +1,7 @@
-//
-// Created by 倉澤　一詩 on 2021/03/02.
-//
+/**
+ * 2021/03/02
+ * @author KuraZuzu
+ */
 
 #include "analogin_dma_stream.h"
 

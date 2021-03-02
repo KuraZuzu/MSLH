@@ -1,6 +1,7 @@
-//
-// Created by 倉澤　一詩 on 2021/03/02.
-//
+/**
+ * 2021/03/02
+ * @author KuraZuzu
+ */
 
 #ifndef ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H
 #define ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H

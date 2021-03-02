@@ -38,7 +38,7 @@ public:
 private:
     ADC_HandleTypeDef& _hadc;
     uint32_t* _adc_amount;
-    uint16_t _value;  // 6~12[bit]の範囲でデータが入力される．CubeMX(.ioc)のADCで設定．
+    uint16_t* _value;  // 6~12[bit]の範囲でデータが入力される．CubeMX(.ioc)のADCで設定．
     bool _init_flag;
 };
 

@@ -20,7 +20,7 @@
  *
  * #include "motor.h"
  *
- * Motor motor(GPIOA, GPIO_PIN_6, &htim1, TIM_CHANNEL_1, true);
+ * Motor motor(GPIOA, GPIO_PIN_6, htim1, TIM_CHANNEL_1, true);
  *
  * int main() {
  *

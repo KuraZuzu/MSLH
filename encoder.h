@@ -18,10 +18,11 @@
  * Example:
  * @code
  * // Get the number of encoder rotations and delta pulses.
+ * // If Encoder one-rotation pulse of A or B is 500.
  *
  * #include "encoder.h"
  *
- * Encoder encoder(&htim3, 500*4, false);
+ * Encoder encoder(htim3, 500, false);
  *
  * int main() {
  *

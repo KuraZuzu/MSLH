@@ -18,7 +18,7 @@
  *
  * #include "buzzer.h"
  *
- * Buzzer buzzer(&htim8, TIM_CHANNEL_1);
+ * Buzzer buzzer(htim8, TIM_CHANNEL_1);
  *
  * int main() {
  *

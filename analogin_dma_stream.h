@@ -42,7 +42,7 @@
  *     MX_DMA_Init();   // Need setup DMA.
  *
  *
- *     analog.init ();  // It needs to be called after MX_ADC1_Init() and MX_DMA_Init().
+ *     analog.start();  // It needs to be called after MX_ADC1_Init() and MX_DMA_Init().
  *
  *     uint16_t bat = analog.read(Analog::BATTERY_VOLTAGE);  // get_analog_value.
  *
@@ -57,6 +57,8 @@
  *     // [ step 2 ]
  *     voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;  // "bat" and "voltage" has different value at [ step 1 ].
  *
+ *     analog.sto();  // You can stop ADC+DMA.
+ *
  * }
  * @endcode
  */
@@ -67,12 +69,22 @@ public:
 
 
     /**
-     * 本当はコンストラクタ内で ADC を開始したい。
-     * ペリフェラルの初期化を先に行うことが必須となってしまうために
-     * ADC の開始を init() に切り分けた。
+     * Start ADC with DMA.
+     *
+     * 本当はコンストラクタ内で ADC を開始したい．
+     * だが，ペリフェラルの初期化を先に行うことが必須となってしまうために
+     * ADC の開始を start() に切り分けた．
+     * stop() を実装する上では良い選択だったかもしれない．
      */
-    void init();
+    void start();
 
+    /**
+     * Stop ADC with DMA.
+     */
+    void stop() {
+        HAL_ADC_Stop_DMA(&_hadc);
+        _executing_flag = false;
+    }
 
     /**
      * Note that the ranks defined in "adc.c" start from 1,
@@ -96,7 +108,7 @@ private:
     ADC_HandleTypeDef& _hadc;
     uint32_t& _adc_amount;
     uint16_t* _value;  // 6~12[bit]の範囲でデータが入力される．CubeMX(.ioc)のADCで設定．
-    bool _init_flag;
+    bool _executing_flag;
 };
 
 

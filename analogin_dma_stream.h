@@ -96,11 +96,11 @@ public:
      * (because rank starts from 1, but enum starts from 0).
      *
      *
-     * @argument Enter the rank (starting from 0) defined in "adc.c".
-     *           It recommended to define it with enum.
+     * @param Enter the rank (starting from 0) defined in "adc.c".
+     *        It recommended to define it with enum.
      *
-     * @param Returns the analog value with the resolution defined
-     *        in "adc.c".(6~12[bit])
+     * @return Analog value with the resolution defined
+     *         in "adc.c".(6~12[bit])
      */
     uint16_t read(uint16_t rank_starting_from_0);
 

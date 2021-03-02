@@ -80,20 +80,21 @@ public:
 
 
     /**
-     *  主に以下の getter を用いる．
+     *  Mainly use the following getters.
+     *  (主に以下の getter を用いる)．
      *  { get_delta_pulse(), get_rotation_count(), get_surplus_pulse }
      *
      *
      *  int32_t get_delta_pulse()
-     *  @param Pulse difference between the latest call to update_encoder() and the last call to update()
+     *  @return Pulse difference between the latest call to update_encoder() and the last call to update()
      *
      *
      *  int64_t get_rotation_count()
-     *  @param Total number of rotations at the time of the latest update() call.
+     *  @return Total number of rotations at the time of the latest update() call.
      *
      *
      *  int64_t get_surplus_pulse()
-     *  @param Excess pulses of less than one revolution at the time of the latest call to update().
+     *  @return Excess pulses of less than one revolution at the time of the latest call to update().
      */
     int32_t get_delta_pulse();    // 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
     int64_t get_rotation_count(); // 最新で呼んだ update() 時点での合計回転数を取得
@@ -133,7 +134,6 @@ private:
     void update_pulse();
 
     void update_rotation_count();
-
 };
 
 

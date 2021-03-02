@@ -40,6 +40,9 @@ private:
 
 
 public:
+    /**
+     * @param GPIO pin in the case of PC_5, they are GPIOC and GPIO_PIN_6 .
+     * */
     DigitalOut(GPIO_TypeDef* gpio_x, uint16_t gpio_pin);
 
     void write(int16_t value);

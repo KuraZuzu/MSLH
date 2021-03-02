@@ -10,6 +10,7 @@
 #include "digitalout.h"
 
 /**
+ * This Class, the target of the control is Motor-Driver "DRV8836".
  * Turns the motor at the specified PWM rate.
  *
  * Example:

@@ -39,7 +39,7 @@ private:
 public:
 
     /**
-     * @param An argument (uint16_t times) is times of beep sound.
+     * @param Times of beep sound.
      */
     Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel);
 

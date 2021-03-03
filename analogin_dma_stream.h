@@ -1,5 +1,9 @@
 /**
  * 2021/03/02
+ * 改善したい点
+ * ・コンストラクタの第2引数に代入する値は，DMAで設定した全ての値を入力する必要があるが
+ * 　それがわかり辛い．１つの値だけを読みたかった時に"5"必要でも，"1"と入力してしまうかもしれない。
+ * ・void read() で範囲外のメモリにアクセスできでしまう
  * @author KuraZuzu
  */
 
@@ -31,7 +35,7 @@
  *   BATTERY_VOLTAGE  // Target.
  * };
  *
- * AnalogInDMAStream analog(hadc1);
+ * AnalogInDMAStream analog(hadc1, 5);
  *
  * int main() {
  *
@@ -65,26 +69,21 @@
 class AnalogInDMAStream {
 
 public:
-    AnalogInDMAStream(ADC_HandleTypeDef& hadc);
+    /**
+     * @param adc_buffer is adc size (hadc1.Init.NbrOfConversion).
+     * */
+    AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint16_t adc_buffer);
 
 
     /**
      * Start ADC with DMA.
-     *
-     * 本当はコンストラクタ内で ADC を開始したい．
-     * だが，ペリフェラルの初期化を先に行うことが必須となってしまうために
-     * ADC の開始を start() に切り分けた．
-     * stop() を実装する上では良い選択だったかもしれない．
      */
     void start();
 
     /**
      * Stop ADC with DMA.
      */
-    void stop() {
-        HAL_ADC_Stop_DMA(&_hadc);
-        _executing_flag = false;
-    }
+    void stop();
 
     /**
      * Note that the ranks defined in "adc.c" start from 1,
@@ -106,7 +105,7 @@ public:
 
 private:
     ADC_HandleTypeDef& _hadc;
-    uint32_t& _adc_amount;
+    const uint16_t _adc_buffer;
     uint16_t* _value;  // 6~12[bit]の範囲でデータが入力される．CubeMX(.ioc)のADCで設定．
     bool _executing_flag;
 };

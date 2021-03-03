@@ -5,24 +5,27 @@
 
 #include "analogin_dma_stream.h"
 
-AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef& hadc)
+AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint16_t adc_buffer)
 : _hadc(hadc)
 , _executing_flag(false)
-, _adc_amount(_hadc.Init.NbrOfConversion)
+, _adc_buffer(adc_buffer)
 {
+    _value = new uint16_t[_adc_buffer];
 }
+
 
 void AnalogInDMAStream::start() {
 
     if(!_executing_flag) {
-
-        _value = new uint16_t[_adc_amount];
-        for (uint32_t i = 0; i < _adc_amount; i++) {
-            _value[i] = 0;
-        }
-
-        HAL_ADC_Start_DMA(&_hadc, (uint32_t *) _value, _adc_amount);
+        HAL_ADC_Start_DMA(&_hadc, (uint32_t *) _value, _adc_buffer);
         _executing_flag = true;
+    }
+}
+
+void AnalogInDMAStream::stop() {
+    if(_executing_flag) {
+        HAL_ADC_Stop_DMA(&_hadc);
+        _executing_flag = false;
     }
 }
 

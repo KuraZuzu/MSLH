@@ -71,7 +71,7 @@ class AnalogInDMAStream {
 public:
     /**
      * @param adc_buffer is adc size (hadc1.Init.NbrOfConversion).
-     * */
+     */
     AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint16_t adc_buffer);
 
 

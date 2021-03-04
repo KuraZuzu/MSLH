@@ -1,9 +1,7 @@
 /**
  * 2021/03/02
  * 改善したい点
- * ・コンストラクタの第2引数に代入する値は，DMAで設定した全ての値を入力する必要があるが
- * 　それがわかり辛い．１つの値だけを読みたかった時に"5"必要でも，"1"と入力してしまうかもしれない。
- * ・void read() で範囲外のメモリにアクセスできでしまう
+ * これからインターフェース部分と裏でADC+DMAを回す切り分けを行う。
  * @author KuraZuzu
  */
 
@@ -12,102 +10,36 @@
 
 #include "adc.h"
 
-/**
- * Reads a analog value with an ADC using DMA.
- * The bit length specified by STM32CubeMX(.ico) for 3.3 volt peripherals.
- *
- * Example:
- * @code
- *
- * // It computes the battery voltage value when it is set
- * // at 12bit length and divided to 50% with 2×100[Ω] resistors by the electronic circuit.
- * // The rank of the pin for this battery check is set to "5",
- * // which corresponds to argument "4" [read(4)].
- *
- * #include "analogin_dma_stream"
- *
- * // define DMA-rank with enum.
- * enum Analog{
- *   LEFT_FRONT,
- *   LEFT_SIDE,
- *   RIGHT_SIDE,
- *   RIGHT_FRONT,
- *   BATTERY_VOLTAGE  // Target.
- * };
- *
- * AnalogInDMAStream analog(hadc1, 5);
- *
- * int main() {
- *
- *     HAL_Init(); // Setup HAL.
- *     SystemClock_Config();  // Micro-controller startup functions
- *
- *     MX_ADC1_Init();  // Need setup ADC.
- *     MX_DMA_Init();   // Need setup DMA.
- *
- *
- *     analog.start();  // It needs to be called after MX_ADC1_Init() and MX_DMA_Init().
- *
- *     uint16_t bat = analog.read(Analog::BATTERY_VOLTAGE);  // get_analog_value.
- *
- *     // The memory value is automatically updated by the ADC+DMA,
- *     // so the "bat" will always contain the latest value.
- *     // In addition, 0x0FFF is Max of 12bit.
- *     uint16_t voltage;
- *
- *     // [ setp 1 ]
- *     voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;
- *
- *     // [ step 2 ]
- *     voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;  // "bat" and "voltage" has different value at [ step 1 ].
- *
- *     analog.sto();  // You can stop ADC+DMA.
- *
- * }
- * @endcode
- */
 class AnalogInDMAStream {
 
 public:
-    /**
-     * @param adc_buffer is adc size (hadc1.Init.NbrOfConversion).
-     */
-    AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint16_t adc_buffer);
+    AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint32_t rank):_rank(rank)
+    {
+        if( (hadc.Instance==ADC1 && !_active_ADC1_flag)
+            || (hadc.Instance==ADC2 && !_active_ADC2_flag)
+            || (hadc.Instance==ADC3 && !_active_ADC3_flag) ) {
 
+            _value = new uint16_t[hadc.Init.NbrOfConversion];
+            for (uint32_t i = 0; i < hadc.Init.NbrOfConversion; ++i) _value[i] = 0;
 
-    /**
-     * Start ADC with DMA.
-     */
-    void start();
+            HAL_ADC_Start_DMA(&hadc, (uint32_t *) _value, hadc.Init.NbrOfConversion);
+        }
 
-    /**
-     * Stop ADC with DMA.
-     */
-    void stop();
+    }
 
-    /**
-     * Note that the ranks defined in "adc.c" start from 1,
-     * but in the arguments of this function, they start from 0.
-     * This argument-rank is recommended to define it with enum.
-     *
-     * In the sample code, the rank in adc.c is 5,
-     * but in enum it is 4
-     * (because rank starts from 1, but enum starts from 0).
-     *
-     *
-     * @param Enter the rank (starting from 0) defined in "adc.c".
-     *        It recommended to define it with enum.
-     *
-     * @return Analog value with the resolution defined
-     *         in "adc.c".(6~12[bit])
-     */
-    uint16_t read(uint16_t rank_starting_from_0);
+    void start() {}
+
+    uint16_t read() {
+        return _value[_rank - 1];
+    }
 
 private:
-    ADC_HandleTypeDef& _hadc;
-    const uint16_t _adc_buffer;
-    uint16_t* _value;  // 6~12[bit]の範囲でデータが入力される．CubeMX(.ioc)のADCで設定．
-    bool _executing_flag;
+    static bool _active_ADC1_flag;
+    static bool _active_ADC2_flag;
+    static bool _active_ADC3_flag;
+    uint32_t _rank;
+    uint16_t *_value;
+
 };
 
 

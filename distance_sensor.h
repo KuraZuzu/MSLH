@@ -18,7 +18,7 @@ public:
     /**
      * @param phtr is Photo-Transistor.
      */
-//    DistanceSensor(AnalogInDMAStream phtr) {
+//    DistanceSensor(AnalogInDMAStream phtr):_phtr(phtr) {
 //
 //    }
 

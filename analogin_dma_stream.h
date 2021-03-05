@@ -88,9 +88,7 @@ public:
     void start();
 
     /**
-     * @note
-     *   Get analog value.
-     *
+     * @note Get analog value.
      * @return value size is unsigned_int 0~12[bit] (0x0FFF).
      */
     uint16_t read() const;

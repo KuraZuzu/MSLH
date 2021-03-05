@@ -9,25 +9,26 @@
 #include "tim.h"
 
 /**
- * Sounds the buzzer.
+ * @brief
+ *   Sounds the buzzer.
  *
  * Example:
  * @code
- * // Sound the buzzer three times.
+ *   // Sound the buzzer three times.
  *
- * #include "buzzer.h"
+ *   #include "buzzer.h"
  *
- * Buzzer buzzer(htim8, TIM_CHANNEL_1);
+ *   Buzzer buzzer(htim8, TIM_CHANNEL_1);
  *
- * int main() {
+ *   int main() {
  *
- *     MX_TIM8_Init();  // Need setup HAL_Timer of PWM
+ *       MX_TIM8_Init();  // Need setup HAL_Timer of PWM
  *
- *     int i = 0;
- *     for(int i = 0; i < 3; i++) {
- *         buzzer.beep(i);
- *     }
- * }
+ *       int i = 0;
+ *       for(int i = 0; i < 3; i++) {
+ *           buzzer.beep(i);
+ *       }
+ *   }
  * @endcode
  */
 class Buzzer {
@@ -38,11 +39,12 @@ private:
 
 public:
 
+    Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel);
+
+
     /**
      * @param Times of beep sound.
      */
-    Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel);
-
     void beep_x(uint16_t times);
 };
 

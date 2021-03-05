@@ -10,32 +10,32 @@
 #include "digitalout.h"
 
 /**
- * This Class, the target of the control is Motor-Driver "DRV8836".
- * Turns the motor at the specified PWM rate.
+ * @brief
+ *   This Class, the target of the control is Motor-Driver "DRV8836".  <br>
+ *   Turns the motor at the specified PWM rate.
  *
  * Example:
  * @code
+ *   // The motor is rotated forward and backward at a PWM value of 0.5 (50% output) for
+ *   // 3 seconds each, and then stopped.
  *
- * // The motor is rotated forward and backward at a PWM value of 0.5 (50% output) for
- * // 3 seconds each, and then stopped.
+ *   #include "motor.h"
  *
- * #include "motor.h"
+ *   Motor motor(GPIOA, GPIO_PIN_6, htim1, TIM_CHANNEL_1, true);
  *
- * Motor motor(GPIOA, GPIO_PIN_6, htim1, TIM_CHANNEL_1, true);
+ *   int main() {
  *
- * int main() {
+ *       MX_TIM1_Init();  // Need setup HAL encoder timer parameters.
+ *       MX_GPIO_Init();  // Need setup HAL_GPIO.
  *
- *     MX_TIM1_Init();  // Need setup HAL encoder timer parameters.
- *     MX_GPIO_Init();  // Need setup HAL_GPIO.
+ *       motor.update(0.5);  // Roted forward with PWM of 50% output.
+ *       HAL_Delay(3000);
  *
- *     motor.update(0.5);  // Roted forward with PWM of 50% output.
- *     HAL_Delay(3000);
+ *       motor.update(-0.5); // Roted backward with PWM of 50% output.
+ *       HAL_Delay(3000);
  *
- *     motor.update(-0.5); // Roted backward with PWM of 50% output.
- *     HAL_Delay(3000);
- *
- *     motor.update(0.0);  // Stop motor.
- * }
+ *       motor.update(0.0);  // Stop motor.
+ *   }
  * @endcode
  */
 class Motor {
@@ -43,16 +43,20 @@ class Motor {
 public:
 
     /**
-     * Motor(___ , ___ , ___ , ___ , bool cw);
+     * @note
+     *   Motor(___ , ___ , ___ , ___ , bool cw);
      *
-     * @param The cw direction corresponds to the forward rotation of your machine.
+     * @param
+     *   The (bool cw) direction corresponds
+     *   to the forward rotation of your machine.
      */
     Motor(GPIO_TypeDef* phase_x, uint16_t phase_pin, TIM_HandleTypeDef& htim_x, uint32_t channel, bool cw);
 
 
     /**
-     * {0.0 < duty_rate} is PWM of clock wise
-     * {duty_rate < 0.0} is PWM of counter clock wise
+     * @note
+     *   {0.0 < duty_rate} is PWM of clock wise  <br>
+     *   {duty_rate < 0.0} is PWM of counter clock wise
      *
      * @param duty_rate {-1.0 ≦ duty_rate ≦ 1.0}
      */

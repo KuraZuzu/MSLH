@@ -1,7 +1,7 @@
 /**
  * 2021/03/02
- * 改善したい点
- * これからインターフェース部分と裏でADC+DMAを回す切り分けを行う。
+ * This class deals with ADCs using DMA.
+ *
  * @author KuraZuzu
  */
 
@@ -10,40 +10,74 @@
 
 #include "adc.h"
 
+/**
+ * @brief
+ *   Reads a analog value with an ADC using DMA.
+ *
+ * @note
+ *   The bit length specified by STM32CubeMX(.ico) for 3.3 volt peripherals.
+ *
+ * Example:
+ * @code
+ *   // It computes the battery voltage value when it is set
+ *   // at 12bit length and divided to 50% with 2×100[Ω] resistors by the electronic circuit.
+ *   // in this case, the rank of the pin for this battery check is set to "5",
+ *
+ *   #include "analogin_dma_stream"
+ *
+ *   AnalogInDMAStream analog(hadc1, 5);
+ *
+ *   int main() {
+ *
+ *       HAL_Init(); // Setup HAL.
+ *       SystemClock_Config();  // Micro-controller startup functions
+ *
+ *       MX_ADC1_Init();  // Need setup ADC.
+ *       MX_DMA_Init();   // Need setup DMA.
+ *
+ *       analog.start();  // It needs to be called after MX_ADC1_Init() and MX_DMA_Init().
+ *
+ *       uint16_t bat = analog.read();  // get_analog_value.
+ *
+ *       // The memory value is automatically updated by the ADC+DMA,
+ *       // so the "bat" will always contain the latest value.
+ *       // In addition, 0x0FFF is Max of 12bit.
+ *       uint16_t voltage;
+ *
+ *       // [ setp 1 ]
+ *       voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;
+ *
+ *       // [ step 2 ]
+ *       voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;  // "bat" and "voltage" has different value at [ step 1 ].
+ * }
+ * @endcode
+ */
+
 class AnalogInDMAStream {
 
 public:
-    AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint32_t rank)
-    : _hadc(hadc), _rank(rank) {
-    }
+    /**
+     * @param (uint32_t rank) is the ACD priority, it is set by STM32CubeMX(.ioc)
+     */
+    AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint32_t rank);
 
-    void start(){
-        if(_hadc.Instance == ADC1 && !_active_ADC1_flag) {
-            _adc1_value = new uint16_t[_hadc.Init.NbrOfConversion];
-            for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc1_value[i] = 0;
-            HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc1_value, _hadc.Init.NbrOfConversion);
-            _active_ADC1_flag = true;
+    /**
+     * @note
+     *   Start ADC measurement.  <br>
+     *   This function needs to be called after ADC and DMA init_functions are called.  <br>
+     *   Example: MX_DMA_Init(), MX_ADC1_Init().  <br>
+     *     <br>
+     *   ADC と DMA の Init関数 を呼び出した後に実行してください。
+     */
+    void start();
 
-        }else if (_hadc.Instance == ADC2 && !_active_ADC2_flag) {
-            _adc2_value = new uint16_t[_hadc.Init.NbrOfConversion];
-            for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc2_value[i] = 0;
-            HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc2_value, _hadc.Init.NbrOfConversion);
-            _active_ADC2_flag = true;
-
-        }else if (_hadc.Instance == ADC3 && !_active_ADC3_flag) {
-            _adc3_value = new uint16_t[_hadc.Init.NbrOfConversion];
-            for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc3_value[i] = 0;
-            HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc3_value, _hadc.Init.NbrOfConversion);
-            _active_ADC3_flag = true;
-        }
-    }
-
-    uint16_t read() const {
-        if(_hadc.Instance == ADC1) return _adc1_value[_rank - 1];
-        else if(_hadc.Instance == ADC2) return _adc2_value[_rank - 1];
-        else if(_hadc.Instance == ADC3) return _adc3_value[_rank - 1];
-        else return 0;
-    }
+    /**
+     * @note
+     *   Get analog value.
+     *
+     * @return value size is unsigned_int 0~12[bit] (0x0FFF).
+     */
+    uint16_t read() const;
 
 private:
     ADC_HandleTypeDef& _hadc;
@@ -54,7 +88,6 @@ private:
     static bool _active_ADC1_flag;
     static bool _active_ADC2_flag;
     static bool _active_ADC3_flag;
-
 };
 
 

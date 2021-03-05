@@ -3,7 +3,3 @@
 //
 
 #include "analogin_dma_stream.h"
-
-bool AnalogInDMAStream::_active_ADC1_flag = false;
-bool AnalogInDMAStream::_active_ADC2_flag = false;
-bool AnalogInDMAStream::_active_ADC3_flag = false;

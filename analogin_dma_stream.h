@@ -39,9 +39,9 @@ public:
     }
 
     uint16_t read() {
-        if(_hadc.Instance == ADC1) return _adc1_value[_rank];
-        else if(_hadc.Instance == ADC2) return _adc2_value[_rank];
-        else if(_hadc.Instance == ADC3) return _adc3_value[_rank];
+        if(_hadc.Instance == ADC1) return _adc1_value[_rank - 1];
+        else if(_hadc.Instance == ADC2) return _adc2_value[_rank - 1];
+        else if(_hadc.Instance == ADC3) return _adc3_value[_rank - 1];
         else return 0;
     }
 

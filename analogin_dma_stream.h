@@ -14,8 +14,8 @@ class AnalogInDMAStream {
 
 public:
     AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint32_t rank)
-    : _hadc(hadc), _rank(rank)
-    {}
+    : _hadc(hadc), _rank(rank) {
+    }
 
     void start(){
         if(_hadc.Instance == ADC1 && !_active_ADC1_flag) {
@@ -38,7 +38,7 @@ public:
         }
     }
 
-    uint16_t read() {
+    uint16_t read() const {
         if(_hadc.Instance == ADC1) return _adc1_value[_rank - 1];
         else if(_hadc.Instance == ADC2) return _adc2_value[_rank - 1];
         else if(_hadc.Instance == ADC3) return _adc3_value[_rank - 1];

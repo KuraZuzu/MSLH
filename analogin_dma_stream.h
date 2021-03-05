@@ -2,6 +2,23 @@
  * 2021/03/02
  * This class deals with ADCs using DMA.
  *
+ * 問題点
+ * ・ADC+DMA でアナログ値が入力されるメモリの配列は複数確保できないため，共有される必要がある．
+ * 　start() を呼び出した際に，同じハンドラのADCも自動的に開始されてしまう．
+ * 　つまり，start() を呼んでいないインスタンスでも計測が開始されてしまう．(実行上での不具合は無い)
+ * 　オブジェクト指向の基本である内部を秘匿とする行為に置いて，これは完全なバグと同様である．．
+ * 　しかし，そういう機能である以上仕方ないとも言える．
+ *
+ * ・start() があるのに stop() が無いのは直感的な分かり易さに反する。
+ * 　しかし，init() にすると ADCとDMA のInit() よりも早く宣言しても違和感が無くなってしまう．
+ * 　こちらも直感的な分かり易さに反する．
+ *
+ * ・以前に同様のADCハンドラから start() が呼び出された場合，既にADC+DMAの転送先である配列確保
+ * 　と計測開始の関数をスキップするようにできている．
+ * 　これは，入力されたハンドラが過去に呼び出されたものと同様かチェックして，既に起動しているかフラグで管理している．
+ * 　ただし，ADC1~ADC3 までしか対応しておらず，これ以上の範囲が追加された際に手動での追加が必要となる．
+ * 　これは，明確な欠点であり美しくない．
+ *
  * @author KuraZuzu
  */
 
@@ -19,8 +36,8 @@
  *
  * Example:
  * @code
- *   // It computes the battery voltage value when it is set
- *   // at 12bit length and divided to 50% with 2×100[Ω] resistors by the electronic circuit.
+ *   // It computes the battery voltage value when it is set at 12bit length and divided
+ *   // to 50% with 2×100[Ω] resistors by the electronic circuit.
  *   // in this case, the rank of the pin for this battery check is set to "5",
  *
  *   #include "analogin_dma_stream"
@@ -49,10 +66,9 @@
  *
  *       // [ step 2 ]
  *       voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;  // "bat" and "voltage" has different value at [ step 1 ].
- * }
+ *   }
  * @endcode
  */
-
 class AnalogInDMAStream {
 
 public:

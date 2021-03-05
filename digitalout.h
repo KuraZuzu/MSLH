@@ -54,8 +54,9 @@ public:
     }
 
     // ピン出力のON/OFFを変数のように扱えるようになるが，
-    // バグの温床となる可能性もある
-    operator int16_t (){ return _pinstate; }
+    // バグの温床となる可能性もある．
+    explicit operator int16_t () const{ return _pinstate; }
+//    operator int16_t (){ return _pinstate; }
 
 };
 

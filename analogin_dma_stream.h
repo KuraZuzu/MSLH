@@ -47,7 +47,7 @@ public:
 
 private:
     ADC_HandleTypeDef& _hadc;
-    uint32_t _rank;
+    const uint32_t _rank;
     static uint16_t* _adc1_value;
     static uint16_t* _adc2_value;
     static uint16_t* _adc3_value;

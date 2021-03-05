@@ -51,8 +51,10 @@ public:
 
 
     /**
+     * @fn
+     *   Rewrites GPIO_Pinstate(pin output).
+     *
      * @note
-     *   Rewrites GPIO_Pinstate(pin output).  <br>
      *   This class's operator supports the same functionality
      *   by treating GPIO_Pinstate(pin output) like a variable.
      *
@@ -64,7 +66,7 @@ public:
     DigitalOut& operator= (int32_t value);
 
     /**
-     * @note
+     * @fn
      *   GPIO_Pinstate (pin output) can be treated like a variable.  <br>
      *   ピン出力を変数のように扱えるようになるが，バグの温床となる可能性もある．
      */

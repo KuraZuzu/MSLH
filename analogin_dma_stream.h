@@ -78,8 +78,10 @@ public:
     AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint32_t rank);
 
     /**
-     * @note
+     * @fn
      *   Start ADC measurement.  <br>
+     *
+     * @details
      *   This function needs to be called after ADC and DMA init_functions are called.  <br>
      *   Example: MX_DMA_Init(), MX_ADC1_Init().  <br>
      *     <br>
@@ -88,7 +90,7 @@ public:
     void start();
 
     /**
-     * @note Get analog value.
+     * @fn Get analog value.
      * @return value size is unsigned_int 0~12[bit] (0x0FFF).
      */
     uint16_t read() const;

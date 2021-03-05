@@ -44,7 +44,7 @@ public:
 
     /**
      * @note
-     *   Motor(___ , ___ , ___ , ___ , bool cw);
+     *   Motor(___ , ___ , ___ , ___ , bool cw);  <br>
      *
      * @param
      *   The (bool cw) direction corresponds
@@ -54,7 +54,9 @@ public:
 
 
     /**
-     * @note
+     * @fn Specifies the PWM of the motor.
+     *
+     * @details
      *   {0.0 < duty_rate} is PWM of clock wise  <br>
      *   {duty_rate < 0.0} is PWM of counter clock wise
      *

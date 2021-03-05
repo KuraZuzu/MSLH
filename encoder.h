@@ -59,23 +59,34 @@ class Encoder {
 public:
 
     /**
-     * Encoder(___ , ___ , ___ , bool cw);
+     * @note Encoder(___ , ___ , ___ , bool cw);
      *
      * @param The cw direction corresponds to the forward rotation of your machine.
      */
     Encoder(TIM_HandleTypeDef& htim_x, uint16_t one_rotation_pulse, bool cw);
 
+    /**
+     * @fn Start encoder measurement.
+     */
     void start();
 
+    /**
+     * @fn Stop encoder measurement.
+     */
     void stop();
 
+    /**
+     * @fn Reset all measured data.
+     */
     void reset();
 
     /**
-     *  @note
-     *    Update the number of pulses and rotation speed of the encoder.
-     *    Must be called just before using getter of this class. </>
+     *  @fn
+     *    Update the number of pulses and rotation speed of the encoder.  <br>
      *    エンコーダのパルス数と回転数を更新します．
+     *
+     *  @details
+     *    Must be called just before using getter of this class. <br>
      *    このクラスの getter を呼び出す直前に呼び出す必要があります．
      *
      *  @param Updates pulses and rotations.
@@ -107,7 +118,7 @@ public:
 
 
     /**
-     * @note
+     * @fn
      *   It is function for debug. Do not use it.  <br>
      *   この関数は主にデバッグ用です．使わないでください．
      *
@@ -125,11 +136,12 @@ private:
 
 
     /**
-     *  エンコーダ内部のカウントは uint16_t の範囲内でカウントされる．  <br>
-     *  　　0 ≦ _htim_x->Instance->CNT ≦ 65535      <br>
-     *  (最大値は 0~65535 の範囲で，.ioc から設定可能)  <br>
+     * @note
+     *   エンコーダ内部のカウントは uint16_t の範囲内でカウントされる．  <br>
+     *  　　  0 ≦ _htim_x->Instance->CNT ≦ 65535      <br>
+     *    (最大値は 0~65535 の範囲で，.ioc から設定可能)  <br>
      *
-     *  パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化される．
+     *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化される．
      */
     const uint16_t _offset_pulse ; // 0x0FFF
 

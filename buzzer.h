@@ -43,6 +43,7 @@ public:
 
 
     /**
+     * @fn Beeps a specified number of times.
      * @param Times of beep sound.
      */
     void beep_x(uint16_t times);

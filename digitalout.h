@@ -36,7 +36,7 @@ class DigitalOut {
 private:
     GPIO_TypeDef* _gpio_x;
     const uint16_t _gpio_pin;
-    int16_t _pinstate;
+    int32_t _pinstate;
 
 
 public:
@@ -45,18 +45,26 @@ public:
      * */
     DigitalOut(GPIO_TypeDef* gpio_x, uint16_t gpio_pin);
 
-    void write(int16_t value);
 
-    DigitalOut& operator= (int16_t value){
-        _pinstate = value;
-        write(_pinstate);
-        return *this;
-    }
+    /**
+     * Rewrites GPIO_Pinstate(pin output).
+     * This class's operator supports the same functionality
+     * by treating GPIO_Pinstate(pin output) like a variable.
+     *
+     * @param GPIO_Pinstate. 0 is false, else true.
+     */
+    void write(int32_t value);
 
-    // ピン出力のON/OFFを変数のように扱えるようになるが，
-    // バグの温床となる可能性もある．
-    explicit operator int16_t () const{ return _pinstate; }
-//    operator int16_t (){ return _pinstate; }
+
+    DigitalOut& operator= (int32_t value);
+
+    /**
+     * GPIO_Pinstate (pin output) can be treated like a variable.
+     * ピン出力のON/OFFを変数のように扱えるようになるが，バグの温床となる可能性もある．
+     *
+     */
+    explicit operator int32_t () const;
+//    operator int32_t (){ return _pinstate; }
 
 };
 

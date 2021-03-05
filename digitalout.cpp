@@ -11,7 +11,15 @@ DigitalOut::DigitalOut(GPIO_TypeDef *gpio_x, uint16_t gpio_pin)
     HAL_GPIO_WritePin(_gpio_x, _gpio_pin, static_cast<GPIO_PinState >(_pinstate));
 }
 
-void DigitalOut::write(int16_t value) {
+void DigitalOut::write(int32_t value) {
     _pinstate = value;
     HAL_GPIO_WritePin(_gpio_x, _gpio_pin, static_cast<GPIO_PinState>(_pinstate));
 }
+
+DigitalOut &DigitalOut::operator=(int32_t value) {
+    _pinstate = value;
+    write(_pinstate);
+    return *this;
+}
+
+DigitalOut::operator int32_t() const { return _pinstate; }

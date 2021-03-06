@@ -8,8 +8,8 @@
 
 /**
  * @brief
- * PWM output with specified duty ratio.
- * 指定したDuty比率でPWM出力を行います。
+ *   PWM output with specified duty ratio.
+ *   指定したDuty比率でPWM出力を行います。
  *
  * @copyright
  *   "mbed" is used as a reference. <br>

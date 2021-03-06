@@ -6,7 +6,7 @@
 #ifndef ZUZUHALFTPPMOD1_BUZZER_H
 #define ZUZUHALFTPPMOD1_BUZZER_H
 
-#include "tim.h"
+#include "pwm_out.h"
 
 /**
  * @brief
@@ -21,6 +21,7 @@
  *   Buzzer buzzer(htim8, TIM_CHANNEL_1);
  *
  *   int main() {
+ *      // Abbreviation Microcomputer startup settings
  *
  *       MX_TIM8_Init();  // Need setup HAL_Timer of PWM
  *
@@ -31,22 +32,24 @@
  *   }
  * @endcode
  */
-class Buzzer {
-
-private:
-    TIM_HandleTypeDef& _htim_x;
-    const uint32_t _channel;
+class Buzzer{
 
 public:
 
-    Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel);
-
+    Buzzer(PWMOut buzzer_pwm)
+    : _buzzer_pwm(buzzer_pwm){
+        _buzzer_pwm = 0.5;
+    }
 
     /**
      * @fn Beeps a specified number of times.
      * @param Times of beep sound.
      */
     void beep_x(uint16_t times);
+
+
+private:
+    PWMOut _buzzer_pwm;
 };
 
 

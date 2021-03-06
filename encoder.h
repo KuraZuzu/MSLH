@@ -26,6 +26,8 @@
  *   Encoder encoder(htim3, 500, false);
  *
  *   int main() {
+ *      // Abbreviation Microcomputer startup settings
+ *
  *       MX_TIM3_Init();  //< Need setup HAL encoder timer parameters.
  *       MX_GPIO_Init();  //< Need setup HAL_GPIO.
  *

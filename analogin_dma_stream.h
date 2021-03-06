@@ -45,9 +45,7 @@
  *   AnalogInDMAStream analog(hadc1, 5);
  *
  *   int main() {
- *
- *       HAL_Init();  //< Setup HAL.
- *       SystemClock_Config();  //< Micro-controller startup functions
+ *      // Abbreviation Microcomputer startup settings
  *
  *       MX_ADC1_Init();  //< Need setup ADC.
  *       MX_DMA_Init();   //< Need setup DMA.

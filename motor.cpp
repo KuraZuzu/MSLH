@@ -19,19 +19,19 @@ void Motor::stop() {
     _motor_pwm.stop();
 }
 
-void Motor::update(double duty_rate) {
+void Motor::update(double duty_ratio) {
 
-    if(duty_rate < -1.0) duty_rate = -1.0;
-    else if (duty_rate > 1.0) duty_rate = 1.0;
+    if(duty_ratio < -1.0) duty_ratio = -1.0;
+    else if (duty_ratio > 1.0) duty_ratio = 1.0;
 
     _motor_phase = _forward_wise;  //< Set default forward wise.
 
-    // Toggle rotation wise, If duty_rate less than 0.0.
-    if (duty_rate < 0) {
+    // Toggle rotation wise, If duty_ratio less than 0.0.
+    if (duty_ratio < 0) {
         _motor_phase = !_motor_phase;   //< Toggle rotation.
-        duty_rate *= -1;  //< Normalize duty_rate.
+        duty_ratio *= -1;  //< Normalize duty_ratio.
     }
 
-    _motor_pwm = duty_rate;
+    _motor_pwm = duty_ratio;
 }
 

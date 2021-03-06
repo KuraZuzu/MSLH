@@ -13,7 +13,7 @@
 /**
  * @brief
  *   This Class, the target of the control is Motor-Driver "DRV8836".  <br>
- *   Turns the motor at the specified PWM rate.
+ *   Turns the motor at the specified PWM ratio.
  *
  * Example:
  * @code
@@ -25,6 +25,7 @@
  *   Motor motor(PWMOut(htim1, TIM_CHANNEL_1), DigitalOut(GPIOA, GPIO_PIN_6), true);
  *
  *   int main() {
+ *      // Abbreviation Microcomputer startup settings
  *
  *       MX_TIM1_Init();  //< Need setup HAL encoder timer parameters.
  *       MX_GPIO_Init();  //< Need setup HAL_GPIO.
@@ -73,12 +74,12 @@ public:
      * @fn Specifies the PWM of the motor.
      *
      * @details
-     *   {0.0 < duty_rate} is PWM of clock wise  <br>
-     *   {duty_rate < 0.0} is PWM of counter clock wise
+     *   {0.0 < duty_ratio} is PWM of clock wise  <br>
+     *   {duty_ratio < 0.0} is PWM of counter clock wise
      *
-     * @param duty_rate {-1.0 ≦ duty_rate ≦ 1.0}
+     * @param duty_ratio {-1.0 ≦ duty_ratio ≦ 1.0}
      */
-    void update(double duty_rate);
+    void update(double duty_ratio);
 
 private:
     PWMOut _motor_pwm;

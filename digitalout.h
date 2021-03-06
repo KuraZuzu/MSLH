@@ -25,6 +25,7 @@
  *   DigitalOut led(GPIOC, GPIO_PIN_3);
  *
  *   int main() {
+ *      // Abbreviation Microcomputer startup settings
  *
  *       MX_GPIO_Init();  // Need setup HAL_GPIO.
  *

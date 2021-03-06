@@ -1,6 +1,7 @@
-//
-// Created by 倉澤　一詩 on 2021/03/04.
-//
+/**
+ * @date 2021/03/02
+ * This class deals with ADCs using DMA.
+ */
 
 #include "analogin_dma_stream.h"
 

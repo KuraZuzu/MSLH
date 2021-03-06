@@ -1,5 +1,5 @@
 /**
- * 2021/03/02
+ * @date 2021/03/02
  * This class deals with ADCs using DMA.
  *
  * 問題点

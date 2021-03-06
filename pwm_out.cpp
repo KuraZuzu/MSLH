@@ -5,11 +5,10 @@
 
 #include "pwm_out.h"
 
-PWMOut::PWMOut(TIM_HandleTypeDef &htim_x, uint32_t channel)
+PWMOut::PWMOut(TIM_HandleTypeDef& htim_x, uint32_t channel)
         :_htim_x(htim_x)
         , _channel(channel)
         , _period(_htim_x.Init.Period)
-        , _pulse_width(0)
 {
 }
 
@@ -33,4 +32,9 @@ void PWMOut::period(uint32_t period) {
 void PWMOut::pulse_width(uint32_t pulse_width) {
     _pulse_width = pulse_width;
     __HAL_TIM_SET_COMPARE(&_htim_x, _channel, _pulse_width / _period);
+}
+
+PWMOut &PWMOut::operator=(double duty_rate) {
+    write(duty_rate);
+    return *this;
 }

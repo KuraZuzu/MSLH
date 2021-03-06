@@ -1,5 +1,5 @@
 /**
- * 2019/10/23
+ * @date 2019/10/23
  * @author KuraZuzu
  */
 
@@ -22,20 +22,25 @@
  *
  *   #include "motor.h"
  *
- *   Motor motor(GPIOA, GPIO_PIN_6, htim1, TIM_CHANNEL_1, true);
+ *   Motor motor(PWMOut(htim1, TIM_CHANNEL_1), DigitalOut(GPIOA, GPIO_PIN_6), true);
  *
  *   int main() {
  *
  *       MX_TIM1_Init();  //< Need setup HAL encoder timer parameters.
  *       MX_GPIO_Init();  //< Need setup HAL_GPIO.
  *
+ *       motor.start();   //< Start drive motor
+ *
  *       motor.update(0.5);  //< Roted forward with PWM of 50% output.
+ *       HAL_Delay(3000);
+ *
+ *       motor.update(0.0);  //< "0.0" can be entered. In that case, the motor will stop.
  *       HAL_Delay(3000);
  *
  *       motor.update(-0.5); //< Roted backward with PWM of 50% output.
  *       HAL_Delay(3000);
  *
- *       motor.update(0.0);  //< Stop motor.
+ *       motor.stop()  //< Stop drive motor.
  *   }
  * @endcode
  */
@@ -48,22 +53,21 @@ public:
      *   Motor(___ , ___ , bool cw);  <br>
      *
      * @param
-     *   The (bool cw) direction corresponds
+     *   bool cw: The direction corresponds
      *   to the forward rotation of your machine.
      */
-    Motor(PWMOut motor_pwm, DigitalOut motor_phase, bool cw)
-    :_motor_pwm(motor_pwm)
-    , _motor_phase(motor_phase)
-    , _forward_wise(static_cast<GPIO_PinState>(cw)) {
-    }
+    Motor(PWMOut motor_pwm, DigitalOut motor_phase, bool cw);
 
-    void start() {
-        _motor_pwm.start();
-    }
 
-    void stop() {
-        _motor_pwm.stop();
-    }
+    /**
+     * @fn Start motor.
+     */
+    void start();
+
+    /**
+     * @fn Stop motor.
+     */
+    void stop();
 
     /**
      * @fn Specifies the PWM of the motor.

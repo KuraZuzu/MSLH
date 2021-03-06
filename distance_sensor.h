@@ -34,7 +34,7 @@ public:
 
     }
 
-    uint16_t get_distance_mm() {
+    uint16_t getDistance_mm() {
         return convert_12bit_to_mm(_phtr.read());
     }
 

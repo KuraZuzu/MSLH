@@ -45,18 +45,18 @@
  *
  *       // [ STEP 1 ]
  *       encoder.update();
- *       delta_pulse = encoder.get_delta_pulse();        //< delta_pulse between step 0 and 1
- *       rotation_count = encoder.get_rotation_count();  //< rotation_count at step 1
+ *       delta_pulse = encoder.getDeltaPulse();        //< delta_pulse between step 0 and 1
+ *       rotation_count = encoder.getRotationCount();  //< rotation_count at step 1
  *
  *       // *** Need encoder.update(); , if you get current data. ***
- *       delta_pulse = encoder.get_delta_pulse();        //< delta_pulse between step 0 and 1
- *       rotation_count = encoder.get_rotation_count();  //< rotation_count at step 1
+ *       delta_pulse = encoder.getDeltaPulse();        //< delta_pulse between step 0 and 1
+ *       rotation_count = encoder.getRotationCount();  //< rotation_count at step 1
  *
  *
  *       // [ STEP 2 ]
  *       encoder.update();
- *       delta_pulse = encoder.get_delta_pulse();        //< delta_pulse between step 1 and 2
- *       rotation_count = encoder.get_rotation_count();  //< rotation_count at step 2
+ *       delta_pulse = encoder.getDeltaPulse();        //< delta_pulse between step 1 and 2
+ *       rotation_count = encoder.getRotationCount();  //< rotation_count at step 2
  *   }
  * @endcode
  */
@@ -105,14 +105,14 @@ public:
       *    Pulse difference between the latest call to update_encoder()
       *    and the last call to update()
       */
-     int32_t get_delta_pulse();    // 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
+     int32_t getDeltaPulse();    // 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
 
 
     /**
      *  @return
      *    Total number of rotations at the time of the latest update() call.
      */
-    int64_t get_rotation_count(); //< 最新で呼んだ update() 時点での合計回転数を取得
+    int64_t getRotationCount(); //< 最新で呼んだ update() 時点での合計回転数を取得
 
 
     /**
@@ -120,7 +120,7 @@ public:
      *   Excess pulses of less than one revolution
      *   at the time of the latest call to update().
      */
-    int64_t get_surplus_pulse();  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
+    int64_t getSurplusPulse();  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 
 
     /**
@@ -130,7 +130,7 @@ public:
      *
      * @return Total number of pulses counted so far.
      */
-    int64_t get_total_pulse(); //< 蓄積パルスが多すぎるとオーバーフローする恐れあり
+    int64_t getTotalPulse(); //< 蓄積パルスが多すぎるとオーバーフローする恐れあり
 
 
 

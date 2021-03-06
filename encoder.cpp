@@ -43,13 +43,13 @@ void Encoder::update() {
     update_rotation_count();
 }
 
-int32_t Encoder::get_delta_pulse() { return _delta_pulse; }
+int32_t Encoder::getDeltaPulse() { return _delta_pulse; }
 
-int64_t Encoder::get_rotation_count() { return _rotation_count; }
+int64_t Encoder::getRotationCount() { return _rotation_count; }
 
-int64_t Encoder::get_surplus_pulse() { return _integral_pulse; }
+int64_t Encoder::getSurplusPulse() { return _integral_pulse; }
 
-int64_t Encoder::get_total_pulse() { return _one_rotation_pulse*_rotation_count + _integral_pulse; }
+int64_t Encoder::getTotalPulse() { return _one_rotation_pulse * _rotation_count + _integral_pulse; }
 
 
 

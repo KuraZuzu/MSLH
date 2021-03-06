@@ -22,7 +22,7 @@
  *
  *   #include "buzzer.h"
  *
- *   Buzzer buzzer(htim8, TIM_CHANNEL_1);
+ *   Buzzer buzzer(PWMOut(htim8, TIM_CHANNEL_1));
  *
  *   int main() {
  *      // Abbreviation Microcomputer startup settings
@@ -36,19 +36,14 @@
  *   }
  * @endcode
  */
-class Buzzer : PWMOut{
+class Buzzer{
 
 public:
 
-    Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel)
-    : PWMOut(htim_x, channel) {
-        write(0.5);
+    explicit Buzzer(PWMOut buzzer_pwm)
+    : _buzzer_pwm(buzzer_pwm){
+        _buzzer_pwm = 0.5;
     }
-
-//    Buzzer(PWMOut buzzer_pwm)
-//    : _buzzer_pwm(buzzer_pwm){
-//        _buzzer_pwm = 0.5;
-//    }
 
     /**
      * @fn Beeps a specified number of times.
@@ -58,7 +53,7 @@ public:
 
 
 private:
-//    PWMOut _buzzer_pwm;
+    PWMOut _buzzer_pwm;
 };
 
 

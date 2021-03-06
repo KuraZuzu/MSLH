@@ -12,9 +12,9 @@
 void Buzzer::beep_x(uint16_t times) {
 
     for(uint16_t i = 0; i < times; i++) {
-        start();
+        _buzzer_pwm.start();
         HAL_Delay(50);
-        stop();
+        _buzzer_pwm.stop();
         HAL_Delay(50);
     }
 }

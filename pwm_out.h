@@ -48,6 +48,7 @@
 
 class PWMOut {
 public:
+
     /**
      * @param Timer-handler and Timer-channel.
      */
@@ -64,6 +65,9 @@ public:
      */
     void stop();
 
+    /**
+     * @fn Write Duty ratio (0.0 ~ 1.0).
+     */
     void write(double duty_ratio);
 
     void period(uint32_t period);

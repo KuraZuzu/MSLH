@@ -1,7 +1,11 @@
-/**
- * @date 2021.02.13
- * @author Kazushi Kurasawa
- */
+/*!
+* @file distance_sensor.h v1.0
+* @Copyright © 2021 Kazushi Kurasawa
+* @date 2021.02.13
+*
+* Released under the MIT license.
+* see https://opensource.org/licenses/MIT
+*/
 
 #ifndef ZUZUHALFTPPMOD1_BUZZER_H
 #define ZUZUHALFTPPMOD1_BUZZER_H

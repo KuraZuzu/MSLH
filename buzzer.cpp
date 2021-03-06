@@ -1,7 +1,12 @@
-/**
- * @date 2021.02.13
- * @author Kazushi Kurasawa
+/*!
+ * @file distance_sensor.cpp v1.0
+ * @Copyright © 2021 Kazushi Kurasawa
+ * @date 2021.03.03
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
+
 #include "buzzer.h"
 
 void Buzzer::beep_x(uint16_t times) {

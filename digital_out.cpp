@@ -1,9 +1,13 @@
-/**
+/*!
+ * @file digital_out.cpp v1.0
+ * @Copyright © 2021 Kazushi Kurasawa
  * @date 2021.02.14
- * @author Kazushi Kurasawa
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
 
-#include "digitalout.h"
+#include "digital_out.h"
 
 DigitalOut::DigitalOut(GPIO_TypeDef *gpio_x, uint16_t gpio_pin)
         :_gpio_x(gpio_x), _gpio_pin(gpio_pin), _pinstate(0){

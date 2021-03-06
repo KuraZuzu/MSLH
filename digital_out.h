@@ -1,21 +1,22 @@
-/**
+/*!
+ * @file digital_out.h v1.0
+ * @Copyright © 2021 Kazushi Kurasawa
+ *
  * @date 2021.02.14
- * @author Kazushi Kurasawa
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
 
 
-#ifndef ZUZUHALFTPPMOD1_DIGITALOUT_H
-#define ZUZUHALFTPPMOD1_DIGITALOUT_H
+#ifndef ZUZUHALFTPPMOD1_DIGITAL_OUT_H
+#define ZUZUHALFTPPMOD1_DIGITAL_OUT_H
 
 #include "gpio.h"
 
 /**
  * @brief
- *   A digital output, used for setting the state of a GPIO
- *
- * @copyright
- *   "mbed" is used as a reference. <br>
- *   (https://os.mbed.com/)
+ *   A digital output, used for setting the state of a GPIO.
  *
  * Example:
  * @code
@@ -77,4 +78,4 @@ public:
 };
 
 
-#endif //ZUZUHALFTPPMOD1_DIGITALOUT_H
+#endif //ZUZUHALFTPPMOD1_DIGITAL_OUT_H

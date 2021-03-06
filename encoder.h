@@ -1,6 +1,10 @@
-/**
+/*!
+ * @file encoder.h v1.0
+ * @Copyright © 2019 Kazushi Kurasawa
  * @date 2019.10.23
- * @author Kazushi Kuraswa
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
 
 #ifndef ZUZUHALFTPPMOD1_ENCODER_H

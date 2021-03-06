@@ -1,6 +1,10 @@
-/**
+/*!
+ * @file encoder.cpp v1.0
+ * @Copyright © 2019 Kazushi Kurasawa
  * @date 2019.10.23
- * @author Kazushi Kurasawa
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
 
 #include "encoder.h"

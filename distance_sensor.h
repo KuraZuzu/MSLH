@@ -1,13 +1,17 @@
-/**
+/*!
+ * @file distance_sensor.h v1.0
+ * @Copyright © 2021 Kazushi Kurasawa
  * @date 2021.03.03
- * @author Kazushi Kurasawa
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
 
 #ifndef ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
 #define ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
 
-#include "analogin_dma_stream.h"
-#include "digitalout.h"
+#include "analog_in_dma_stream.h"
+#include "digital_out.h"
 
 /**
  * @brief

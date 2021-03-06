@@ -1,4 +1,15 @@
+/*!
+ * @file analogin_dma_stream.h v1.0
+ * @Copyright © 2021 Kazushi Kurasawa
+ * @date 2021.03.02
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
+ */
+
+
 /**
+ *
  * This class deals with ADCs using DMA.
  *
  * 問題点
@@ -22,8 +33,8 @@
  * @author Kazushi Kurasawa
  */
 
-#ifndef ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H
-#define ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H
+#ifndef ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
+#define ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
 
 #include "adc.h"
 
@@ -105,4 +116,4 @@ private:
 };
 
 
-#endif //ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H
+#endif //ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H

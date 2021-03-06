@@ -1,11 +1,17 @@
-/**
- * This class deals with ADCs using DMA.
- *
+/*!
+ * @file analogin_dma_stream.cpp v1.0
+ * @Copyright © 2021 Kazushi Kurasawa
  * @date 2021.03.02
- * @author Kazushi Kurasawa
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
 
-#include "analogin_dma_stream.h"
+
+/**
+ * This class deals with ADCs using DMA.
+ */
+#include "analog_in_dma_stream.h"
 
 AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t rank)
         : _hadc(hadc), _rank(rank) {

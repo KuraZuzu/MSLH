@@ -1,6 +1,10 @@
-/**
+/*!
+ * @file pwm_out.h v1.0
+ * @Copyright © 2021 Kazushi Kurasawa
  * @date 2021.03.06
- * @author Kazushi Kurasawa
+ *
+ * Released under the MIT license.
+ * see https://opensource.org/licenses/MIT
  */
 
 #ifndef ZUZUHALFTPPMOD1_PWM_OUT_H

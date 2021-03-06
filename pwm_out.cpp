@@ -1,6 +1,6 @@
 /**
- * @date 2021/03/06
- * @author KuraZuzu
+ * @date 2021.03.06
+ * @author Kazushi Kurasawa
  */
 
 #include "pwm_out.h"

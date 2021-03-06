@@ -1,6 +1,6 @@
 /**
- * @date 2021/02/13
- * @author KuraZuzu
+ * @date 2021.02.13
+ * @author Kazushi Kurasawa
  */
 
 #ifndef ZUZUHALFTPPMOD1_BUZZER_H
@@ -32,14 +32,19 @@
  *   }
  * @endcode
  */
-class Buzzer{
+class Buzzer : PWMOut{
 
 public:
 
-    Buzzer(PWMOut buzzer_pwm)
-    : _buzzer_pwm(buzzer_pwm){
-        _buzzer_pwm = 0.5;
+    Buzzer(TIM_HandleTypeDef& htim_x, uint32_t channel)
+    : PWMOut(htim_x, channel) {
+        write(0.5);
     }
+
+//    Buzzer(PWMOut buzzer_pwm)
+//    : _buzzer_pwm(buzzer_pwm){
+//        _buzzer_pwm = 0.5;
+//    }
 
     /**
      * @fn Beeps a specified number of times.
@@ -49,7 +54,7 @@ public:
 
 
 private:
-    PWMOut _buzzer_pwm;
+//    PWMOut _buzzer_pwm;
 };
 
 

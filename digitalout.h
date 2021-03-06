@@ -1,6 +1,6 @@
 /**
- * @date 2021/02/14
- * @author KuraZuzu
+ * @date 2021.02.14
+ * @author Kazushi Kurasawa
  */
 
 

@@ -1,6 +1,6 @@
 /**
- * @date 2019/10/23
- * @author KuraZuzu
+ * @date 2019.10.23
+ * @author Kazushi Kuraswa
  */
 
 #ifndef ZUZUHALFTPPMOD1_ENCODER_H

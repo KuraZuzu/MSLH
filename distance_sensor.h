@@ -1,6 +1,6 @@
 /**
- * @date 2021/03/03
- * @author KuraZuzu
+ * @date 2021.03.03
+ * @author Kazushi Kurasawa
  */
 
 #ifndef ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H

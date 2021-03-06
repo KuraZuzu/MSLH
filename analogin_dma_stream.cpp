@@ -1,6 +1,8 @@
 /**
- * @date 2021/03/02
  * This class deals with ADCs using DMA.
+ *
+ * @date 2021.03.02
+ * @author Kazushi Kurasawa
  */
 
 #include "analogin_dma_stream.h"

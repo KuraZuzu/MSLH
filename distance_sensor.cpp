@@ -1,6 +1,6 @@
 /**
- * 2021/03/03
- * @author KuraZuzu
+ * 2021.03.03
+ * @author Kazushi Kurasaw
  */
 
 #include "distance_sensor.h"

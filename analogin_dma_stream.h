@@ -1,5 +1,4 @@
 /**
- * @date 2021/03/02
  * This class deals with ADCs using DMA.
  *
  * 問題点
@@ -19,7 +18,8 @@
  * 　ただし，ADC1~ADC3 までしか対応しておらず，これ以上の範囲が追加された際に手動での追加が必要となる．
  * 　これは，明確な欠点であり美しくない．
  *
- * @author KuraZuzu
+ * @date 2021.03.02
+ * @author Kazushi Kurasawa
  */
 
 #ifndef ZUZUHALFTPPMOD1_ANALOGIN_DMA_STREAM_H

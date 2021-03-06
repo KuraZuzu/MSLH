@@ -21,7 +21,7 @@ public:
     /**
      * @param phtr is Photo-Transistor adc handler.
      */
-    DistanceSensor(AnalogInDMAStream phtr, DigitalOut led)
+    DistanceSensor(TIM_HandleTypeDef& led_htim_x, uint32_t led_channel, AnalogInDMAStream phtr, DigitalOut led)
     :_phtr(phtr), _led(led) {
         _phtr.start();
     }

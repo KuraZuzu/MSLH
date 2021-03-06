@@ -70,7 +70,7 @@ public:
      *   GPIO_Pinstate (pin output) can be treated like a variable.  <br>
      *   ピン出力を変数のように扱えるようになるが，バグの温床となる可能性もある．
      */
-    explicit operator int32_t () const;
+    operator int32_t () const;
 //    operator int32_t (){ return _pinstate; }
 
 };

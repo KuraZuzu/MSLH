@@ -6,6 +6,7 @@
 #ifndef ZUZUHALFTPPMOD1_MOTOR_H
 #define ZUZUHALFTPPMOD1_MOTOR_H
 
+#include "pwm_out.h"
 #include "tim.h"
 #include "digitalout.h"
 
@@ -44,14 +45,25 @@ public:
 
     /**
      * @note
-     *   Motor(___ , ___ , ___ , ___ , bool cw);  <br>
+     *   Motor(___ , ___ , bool cw);  <br>
      *
      * @param
      *   The (bool cw) direction corresponds
      *   to the forward rotation of your machine.
      */
-    Motor(GPIO_TypeDef* phase_x, uint16_t phase_pin, TIM_HandleTypeDef& htim_x, uint32_t channel, bool cw);
+    Motor(PWMOut motor_pwm, DigitalOut motor_phase, bool cw)
+    :_motor_pwm(motor_pwm)
+    , _motor_phase(motor_phase)
+    , _forward_wise(static_cast<GPIO_PinState>(cw)) {
+    }
 
+    void start() {
+        _motor_pwm.start();
+    }
+
+    void stop() {
+        _motor_pwm.stop();
+    }
 
     /**
      * @fn Specifies the PWM of the motor.
@@ -65,10 +77,8 @@ public:
     void update(double duty_rate);
 
 private:
-    GPIO_TypeDef* _phase_x;
-    const uint16_t _phase_pin;
-    TIM_HandleTypeDef& _htim_x;
-    const uint64_t _channel;
+    PWMOut _motor_pwm;
+    DigitalOut _motor_phase;
     const GPIO_PinState _forward_wise;
 };
 

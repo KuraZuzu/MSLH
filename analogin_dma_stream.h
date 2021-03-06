@@ -46,15 +46,15 @@
  *
  *   int main() {
  *
- *       HAL_Init(); // Setup HAL.
- *       SystemClock_Config();  // Micro-controller startup functions
+ *       HAL_Init();  //< Setup HAL.
+ *       SystemClock_Config();  //< Micro-controller startup functions
  *
- *       MX_ADC1_Init();  // Need setup ADC.
- *       MX_DMA_Init();   // Need setup DMA.
+ *       MX_ADC1_Init();  //< Need setup ADC.
+ *       MX_DMA_Init();   //< Need setup DMA.
  *
- *       analog.start();  // It needs to be called after MX_ADC1_Init() and MX_DMA_Init().
+ *       analog.start();  //< It needs to be called after MX_ADC1_Init() and MX_DMA_Init().
  *
- *       uint16_t bat = analog.read();  // get_analog_value.
+ *       uint16_t bat = analog.read();  //< get_analog_value.
  *
  *       // The memory value is automatically updated by the ADC+DMA,
  *       // so the "bat" will always contain the latest value.
@@ -65,7 +65,7 @@
  *       voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;
  *
  *       // [ step 2 ]
- *       voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;  // "bat" and "voltage" has different value at [ step 1 ].
+ *       voltage = 3.3 * bat / 0x0FFF * (100 + 100)/100;  //< "bat" and "voltage" has different value at [ step 1 ].
  *   }
  * @endcode
  */

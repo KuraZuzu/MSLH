@@ -26,8 +26,8 @@
  *   Encoder encoder(htim3, 500, false);
  *
  *   int main() {
- *       MX_TIM3_Init();  // Need setup HAL encoder timer parameters.
- *       MX_GPIO_Init();  // Need setup HAL_GPIO.
+ *       MX_TIM3_Init();  //< Need setup HAL encoder timer parameters.
+ *       MX_GPIO_Init();  //< Need setup HAL_GPIO.
  *
  *       // [ STEP 0 ]
  *       int64_t delta_pulse;
@@ -39,18 +39,18 @@
  *
  *       // [ STEP 1 ]
  *       encoder.update();
- *       delta_pulse = encoder.get_delta_pulse();        // delta_pulse between step 0 and 1
- *       rotation_count = encoder.get_rotation_count();  // rotation_count at step 1
+ *       delta_pulse = encoder.get_delta_pulse();        //< delta_pulse between step 0 and 1
+ *       rotation_count = encoder.get_rotation_count();  //< rotation_count at step 1
  *
  *       // *** Need encoder.update(); , if you get current data. ***
- *       delta_pulse = encoder.get_delta_pulse();        // delta_pulse between step 0 and 1
- *       rotation_count = encoder.get_rotation_count();  // rotation_count at step 1
+ *       delta_pulse = encoder.get_delta_pulse();        //< delta_pulse between step 0 and 1
+ *       rotation_count = encoder.get_rotation_count();  //< rotation_count at step 1
  *
  *
  *       // [ STEP 2 ]
  *       encoder.update();
- *       delta_pulse = encoder.get_delta_pulse();        // delta_pulse between step 1 and 2
- *       rotation_count = encoder.get_rotation_count();  // rotation_count at step 2
+ *       delta_pulse = encoder.get_delta_pulse();        //< delta_pulse between step 1 and 2
+ *       rotation_count = encoder.get_rotation_count();  //< rotation_count at step 2
  *   }
  * @endcode
  */
@@ -106,7 +106,7 @@ public:
      *  @return
      *    Total number of rotations at the time of the latest update() call.
      */
-    int64_t get_rotation_count(); // 最新で呼んだ update() 時点での合計回転数を取得
+    int64_t get_rotation_count(); //< 最新で呼んだ update() 時点での合計回転数を取得
 
 
     /**
@@ -114,7 +114,7 @@ public:
      *   Excess pulses of less than one revolution
      *   at the time of the latest call to update().
      */
-    int64_t get_surplus_pulse();  // 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
+    int64_t get_surplus_pulse();  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 
 
     /**
@@ -124,7 +124,7 @@ public:
      *
      * @return Total number of pulses counted so far.
      */
-    int64_t get_total_pulse(); // 蓄積パルスが多すぎるとオーバーフローする恐れあり
+    int64_t get_total_pulse(); //< 蓄積パルスが多すぎるとオーバーフローする恐れあり
 
 
 
@@ -143,7 +143,7 @@ private:
      *
      *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化される．
      */
-    const uint16_t _offset_pulse ; // 0x0FFF
+    const uint16_t _offset_pulse ; //< 0x0FFF
 
     int32_t _delta_pulse;
     int64_t _integral_pulse;

@@ -25,16 +25,16 @@
  *
  *   int main() {
  *
- *       MX_TIM1_Init();  // Need setup HAL encoder timer parameters.
- *       MX_GPIO_Init();  // Need setup HAL_GPIO.
+ *       MX_TIM1_Init();  //< Need setup HAL encoder timer parameters.
+ *       MX_GPIO_Init();  //< Need setup HAL_GPIO.
  *
- *       motor.update(0.5);  // Roted forward with PWM of 50% output.
+ *       motor.update(0.5);  //< Roted forward with PWM of 50% output.
  *       HAL_Delay(3000);
  *
- *       motor.update(-0.5); // Roted backward with PWM of 50% output.
+ *       motor.update(-0.5); //< Roted backward with PWM of 50% output.
  *       HAL_Delay(3000);
  *
- *       motor.update(0.0);  // Stop motor.
+ *       motor.update(0.0);  //< Stop motor.
  *   }
  * @endcode
  */

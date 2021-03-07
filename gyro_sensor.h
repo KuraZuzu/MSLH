@@ -8,6 +8,7 @@
  */
 
 #include "spi.h"
+#include "dma.h"
 #include "digital_out.h"
 
 #ifndef ZUZUHALFTPPMOD1_GYRO_SENSOR_H

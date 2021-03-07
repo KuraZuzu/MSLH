@@ -39,8 +39,8 @@
  *       int64_t delta_pulse;
  *       int64_t rotation_count;
  *
- *       // Start encoder measurement
- *       encoder.start();
+ *       encoder.start();  //< Start encoder measurement
+ *
  *
  *
  *       // [ STEP 1 ]
@@ -105,7 +105,7 @@ public:
       *    Pulse difference between the latest call to update_encoder()
       *    and the last call to update()
       */
-     int32_t getDeltaPulse();    // 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
+     int32_t getDeltaPulse();  //< 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
 
 
     /**

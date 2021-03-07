@@ -88,5 +88,4 @@ private:
     uint32_t _pulse_width;
 };
 
-
 #endif //ZUZUHALFTPPMOD1_PWM_OUT_H

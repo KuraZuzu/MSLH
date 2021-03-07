@@ -13,7 +13,6 @@
 #include "pwm_out.h"
 #include "tim.h"
 #include "digital_out.h"
-
 /**
  * @brief
  *   This Class, the target of the control is Motor-Driver "DRV8836".  <br>

@@ -26,7 +26,7 @@ public:
     /**
      * @param phtr is Photo-Transistor adc handler.
      */
-    DistanceSensor(PWMOut led, AnalogInDMAStream phtr, DigitalOut led)
+    DistanceSensor(PWMOut led, AnalogInDMAStream phtr)
     : _led(led)
     , _phtr(phtr)
     , _max_value(0)
@@ -96,7 +96,6 @@ private:
 
     PWMOut _led;
     AnalogInDMAStream _phtr;
-    DigitalOut _led;
     uint16_t _max_value;
     uint16_t _current_value;
     uint16_t _previous_value;

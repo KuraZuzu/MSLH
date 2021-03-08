@@ -20,6 +20,7 @@ void DistanceSensor::measureOffset() {
     }
     average_value /= 10;
     _offset_value = static_cast<uint16_t>(average_value);
+    _led = 1;
 }
 
 uint16_t DistanceSensor::getDistance_mm() {

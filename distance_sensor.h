@@ -33,7 +33,6 @@ public:
     , _max_value(0)
     , _offset_value(0) {
 
-        _led = 0;  //< 明示的にLEDストップ
         measureOffset();
     }
 

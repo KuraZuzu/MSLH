@@ -7,8 +7,6 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef ZUZUHALFTPPMOD1_PWM_OUT_H
-#define ZUZUHALFTPPMOD1_PWM_OUT_H
 
 /**
  * @brief
@@ -44,50 +42,6 @@
  * @endcode
  */
 
-#include "tim.h"
-
-class PWMOut {
-public:
-    /**
-     * @param Timer-handler and Timer-channel.
-     */
-    PWMOut(TIM_HandleTypeDef& htim_x, uint32_t channel);
-
-    /**
-     * @fn Start output PWM.
-     */
-    void start();
-
-
-    /**
-     * @fn Stop output PWM.
-     */
-    void stop();
-
-    void write(double duty_ratio);
-
-    void period(uint32_t period);
-
-    void pulse_width(uint32_t pulse_width);
-
-    /**
-     * @fn
-     *   Duty Ratio (duty_ratio) can be treated like a variable.  <br>
-     *   Duty比(duty_ratio) を変数のように扱えるようになるが，バグの温床となる可能性もある．
-     */
-    PWMOut& operator = (double duty_ratio);
-
-private:
-    TIM_HandleTypeDef& _htim_x;
-    const uint32_t _channel;
-    uint32_t& _period;
-    uint32_t _pulse_width;
-};
-
-
-#endif //ZUZUHALFTPPMOD1_PWM_OUT_H
-
-
 #include "pwm_out.h"
 
 PWMOut::PWMOut(TIM_HandleTypeDef& htim_x, uint32_t channel)
@@ -111,6 +65,7 @@ void PWMOut::write(double duty_ratio) {
     // Aが存在する理由は、Duty比が0から開始されるためです。(0でも出力は等価)
     // The reason it's not "(_period + 1)" is to avoid overflow.
     // (_period + 1) でない理由は、オーバーフローを避けるためです。
+    // でも結局65535が入ってきたらオーバーフローする．
     __HAL_TIM_SET_COMPARE(&_htim_x, _channel, duty_ratio * _period + 1);
 }
 

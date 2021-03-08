@@ -27,7 +27,15 @@ public:
     /**
      * @param phtr is Photo-Transistor adc handler.
      */
-    DistanceSensor(PWMOut led, AnalogInDMAStream phtr);
+    DistanceSensor(DigitalOut led, AnalogInDMAStream phtr)
+    : _led(led)
+    , _phtr(phtr)
+    , _max_value(0)
+    , _offset_value(0) {
+
+        _led = 0;  //< 明示的にLEDストップ
+        measureOffset();
+    }
 
     void measureOffset();
 
@@ -36,34 +44,19 @@ public:
      */
     void reset();
 
-    void starFlash();
+    uint16_t read(const uint16_t charge_time_ms = 1) {
+        _led = 0;  //< コンデンサ充電開始
+        HAL_Delay(charge_time_ms);
+        _led = 1;
+        HAL_Delay(1);  //< 1mm秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電
 
-    void stopFlash();
+        return _phtr.read() - _offset_value;
+    }
 
     void write(uint32_t led_hz);
 
     uint16_t read();
 
-    /**
-     * @fn
-     *   この関数を適宜自分のマシンで用いる ADC+DMA のコールバック関数に組み込んでください．
-     *   (コールバック関数をメンバにできない上に，使うDMAによって引数ではなく，コールバック関数名が変わってしまうため。)
-     *      (↑ 実は引数で呼び出せるかも．)
-     *
-     *   void DMA2_Stream0_IRQHandler(void){
-     *
-     * @example
-     *   void DMA2_Stream0_IRQHandler(void){
-     *
-     *       WMOut lf_led(htim2, TIM_CHANNEL_2);
-     *       AnalogInDMAStream lf_phtr(hadc1, 1);
-     *
-     *       DistanceSensor lf_sensor(lf_led, lf_phtr);
-     *       lf_sensor.updateValue();
-     *   }
-     *
-     */
-    void updateValue();
 
 
 private:
@@ -72,13 +65,10 @@ private:
 
     uint16_t convert_12bit_to_mm(uint16_t value);
 
-    PWMOut _led;
+    DigitalOut _led;
     AnalogInDMAStream _phtr;
     uint16_t _max_value;
-    uint16_t _current_value;
-    uint16_t _previous_value;
     uint16_t _offset_value;  //< 外乱光のオフセット
-    uint16_t _not_higher_count;  //< _max_value が更新されない回数。
 
 };
 

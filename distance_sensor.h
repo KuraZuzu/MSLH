@@ -39,11 +39,10 @@ public:
 
     void measureOffset();
 
-    /**
-     * @fn Reset phtr value.
-     */
-    void reset();
 
+    /**
+     * @param Charge capacitor (can't set us unit).
+     */
     uint16_t read(const uint16_t charge_time_ms = 1) {
         _led = 0;  //< コンデンサ充電開始
         HAL_Delay(charge_time_ms);
@@ -51,13 +50,8 @@ public:
         HAL_Delay(1);  //< 1mm秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電
 
         return _phtr.read() - _offset_value;
+        //ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
     }
-
-    void write(uint32_t led_hz);
-
-    uint16_t read();
-
-
 
 private:
 

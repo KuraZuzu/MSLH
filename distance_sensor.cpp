@@ -12,8 +12,8 @@
 
 void DistanceSensor::measureOffset() {
     _led = 0;
-    _phtr.start();
     HAL_Delay(1000);  //< Delay for the ADC to stabilize at startup.
+    _phtr.start();
     uint64_t average_value = 0;
     for (int i = 0; i < 10; ++i) {
         average_value += _phtr.read();

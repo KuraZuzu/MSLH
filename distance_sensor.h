@@ -10,6 +10,7 @@
 #ifndef ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
 #define ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
 
+#include "stm32f4xx_it.h"
 #include "pwm_out.h"
 #include "analog_in_dma_stream.h"
 #include "digital_out.h"
@@ -26,73 +27,50 @@ public:
     /**
      * @param phtr is Photo-Transistor adc handler.
      */
-    DistanceSensor(PWMOut led, AnalogInDMAStream phtr)
-    : _led(led)
-    , _phtr(phtr)
-    , _max_value(0)
-    , _current_value(0)
-    , _previous_value(0)
-    , _not_higher_count(0) {
+    DistanceSensor(PWMOut led, AnalogInDMAStream phtr);
 
-        _led.stop();  //< 明示的にLEDストップ
-        measureOffset();
-        write(1000);  //< Default setting is 1k[Hz].
-    }
-
-    void measureOffset() {
-        _phtr.start();
-        HAL_Delay(1000);  //< Delay for the ADC to stabilize at startup.
-        uint64_t average_value = 0;
-        for (int i = 0; i < 10; ++i) {
-            average_value += _phtr.read();
-        }
-        average_value /= 10;
-        _offset_value = static_cast<uint16_t>(average_value);
-    }
+    void measureOffset();
 
     /**
      * @fn Reset phtr value.
      */
-    void reset() {
-        _max_value = 0;
-        _current_value = 0;
-        _previous_value = 0;
-        _not_higher_count = 0;
-    }
+    void reset();
 
-    void star() {
-        _led.start();
-    }
+    void starFlash();
 
-    void write(uint32_t led_hz) {
-        _led.period(led_hz);
-        _led = 0.5;  //< Set duty ratio.
-    }
+    void stopFlash();
 
-    uint16_t read() {
-        return _max_value - _offset_value;
-    }
+    void write(uint32_t led_hz);
+
+    uint16_t read();
+
+    /**
+     * @fn
+     *   この関数を適宜自分のマシンで用いる ADC+DMA のコールバック関数に組み込んでください．
+     *   (コールバック関数をメンバにできない上に，使うDMAによって引数ではなく，コールバック関数名が変わってしまうため。)
+     *      (↑ 実は引数で呼び出せるかも．)
+     *
+     *   void DMA2_Stream0_IRQHandler(void){
+     *
+     * @example
+     *   void DMA2_Stream0_IRQHandler(void){
+     *
+     *       WMOut lf_led(htim2, TIM_CHANNEL_2);
+     *       AnalogInDMAStream lf_phtr(hadc1, 1);
+     *
+     *       DistanceSensor lf_sensor(lf_led, lf_phtr);
+     *       lf_sensor.updateValue();
+     *   }
+     *
+     */
+    void updateValue();
 
 
 private:
 
-    // これを適宜どうやって呼び出すか。
-    void measureValue() {
-        _previous_value = _current_value;
-        _current_value = _phtr.read();
-        int32_t diff_value = static_cast<int32_t >(_current_value) - _previous_value;
-        if(_max_value < _current_value) _max_value = _current_value;
-        else _not_higher_count++;
-    }
+    uint16_t getDistance_mm();
 
-    uint16_t getDistance_mm() {
-        return convert_12bit_to_mm(_phtr.read());
-    }
-
-    uint16_t convert_12bit_to_mm(uint16_t value) {
-        value = 0; //ここで距離変換の数式わちゃわちゃ。
-        return value;
-    }
+    uint16_t convert_12bit_to_mm(uint16_t value);
 
     PWMOut _led;
     AnalogInDMAStream _phtr;
@@ -101,6 +79,7 @@ private:
     uint16_t _previous_value;
     uint16_t _offset_value;  //< 外乱光のオフセット
     uint16_t _not_higher_count;  //< _max_value が更新されない回数。
+
 };
 
 

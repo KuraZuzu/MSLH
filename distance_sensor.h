@@ -27,14 +27,7 @@ public:
     /**
      * @param phtr is Photo-Transistor adc handler.
      */
-    DistanceSensor(DigitalOut led, AnalogInDMAStream phtr)
-    : _led(led)
-    , _phtr(phtr)
-    , _max_value(0)
-    , _offset_value(0) {
-
-        measureOffset();
-    }
+    DistanceSensor(DigitalOut led, AnalogInDMAStream phtr);
 
     void measureOffset();
 
@@ -42,15 +35,7 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    uint16_t read(const uint16_t charge_time_ms = 1) {
-        _led = 0;  //< コンデンサ充電開始
-        HAL_Delay(charge_time_ms);
-        _led = 1;
-        HAL_Delay(1);  //< 1mm秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電
-
-        return _phtr.read() - _offset_value;
-        //ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
-    }
+    uint16_t read(uint16_t charge_time_ms = 1);
 
 private:
 
@@ -60,9 +45,7 @@ private:
 
     DigitalOut _led;
     AnalogInDMAStream _phtr;
-    uint16_t _max_value;
     uint16_t _offset_value;  //< 外乱光のオフセット
-
 };
 
 

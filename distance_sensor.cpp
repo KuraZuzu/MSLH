@@ -9,6 +9,24 @@
 
 #include "distance_sensor.h"
 
+DistanceSensor::DistanceSensor(DigitalOut led, AnalogInDMAStream phtr)
+        : _led(led)
+        , _phtr(phtr)
+        , _offset_value(0)
+{
+    _phtr.start();
+    measureOffset();
+    _led.write(1);
+}
+
+uint16_t DistanceSensor::read(uint16_t charge_time_ms) {
+    _led = 0;  //< コンデンサ充電開始
+    HAL_Delay(charge_time_ms);
+    _led = 1;
+    HAL_Delay(1);  //< 1mm秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電
+    return 0;
+    //ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
+}
 
 void DistanceSensor::measureOffset() {
     _led = 0;
@@ -21,6 +39,7 @@ void DistanceSensor::measureOffset() {
     average_value /= 10;
     _offset_value = static_cast<uint16_t>(average_value);
     _led = 1;
+    HAL_Delay(100);
 }
 
 uint16_t DistanceSensor::getDistance_mm() {

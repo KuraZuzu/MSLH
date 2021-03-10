@@ -107,13 +107,12 @@ public:
 private:
     ADC_HandleTypeDef& _hadc;
     const uint32_t _rank;
-    static uint16_t* _adc1_value;
-    static uint16_t* _adc2_value;
-    static uint16_t* _adc3_value;
+    static uint16_t* _ADC1_DMA_value;
+    static uint16_t* _ADC2_DMA_value;
+    static uint16_t* _ADC3_DMA_value;
     static bool _active_ADC1_flag;
     static bool _active_ADC2_flag;
     static bool _active_ADC3_flag;
 };
-
 
 #endif //ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H

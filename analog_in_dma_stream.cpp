@@ -23,20 +23,19 @@ void AnalogInDMAStream::start() {
         for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc1_dma_value[i] = 0;
         HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc1_dma_value, _hadc.Init.NbrOfConversion);
         _active_ADC1_flag = true;
-//
+
     }else if (_hadc.Instance == ADC2 && !_active_ADC2_flag) {
         _adc2_dma_value = new uint16_t[_hadc.Init.NbrOfConversion];
         for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc2_dma_value[i] = 0;
         HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc2_dma_value, _hadc.Init.NbrOfConversion);
         _active_ADC2_flag = true;
-//
+
     }else if (_hadc.Instance == ADC3 && !_active_ADC3_flag) {
         _adc3_dma_value = new uint16_t[_hadc.Init.NbrOfConversion];
         for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc3_dma_value[i] = 0;
         HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc3_dma_value, _hadc.Init.NbrOfConversion);
         _active_ADC3_flag = true;
     }
-
 }
 
 uint16_t AnalogInDMAStream::read() const {

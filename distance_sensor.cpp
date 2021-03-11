@@ -28,7 +28,7 @@ uint16_t DistanceSensor::read(uint16_t charge_time_ms) {
     HAL_Delay(charge_time_ms);
     _led = 1;
     HAL_Delay(1);  //< 1mm秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電
-    return 0;
+    return _phtr.read();
     //ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
 }
 

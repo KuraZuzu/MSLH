@@ -29,7 +29,7 @@ public:
      */
     DistanceSensor(DigitalOut led, AnalogInDMAStream phtr);
 
-    void measureOffset();
+    void calibration();
 
     void start();
 
@@ -46,7 +46,7 @@ private:
 
     DigitalOut _led;
     AnalogInDMAStream _phtr;
-    uint16_t _offset_value;  //< 外乱光のオフセット
+    uint16_t _calibration_value;  //< 外乱光のオフセット
 };
 
 

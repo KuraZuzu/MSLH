@@ -12,11 +12,11 @@
 DistanceSensor::DistanceSensor(DigitalOut led, AnalogInDMAStream phtr)
         : _led(led)
         , _phtr(phtr)
-        , _offset_value(0)
+        , _calibration_value(0)
 {
-//    _phtr.start();  //< まだstartしてないから読んだらバグる。
-//    measureOffset();
-    _led.write(1);
+//    _phtr.start();    //< まだstartしてないから読んだらバグる。
+//    calibration();  //< こちらも同様
+    _led.write(1);  //< ledは常に点灯させておくことでコンデンサに給電させない。
 }
 
 void DistanceSensor::start() {
@@ -28,20 +28,18 @@ uint16_t DistanceSensor::read(uint16_t charge_time_ms) {
     HAL_Delay(charge_time_ms);
     _led = 1;
     HAL_Delay(1);  //< 1mm秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電
-    return _phtr.read();
+    return _phtr.read() - _calibration_value;
     //ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
 }
 
-void DistanceSensor::measureOffset() {
+void DistanceSensor::calibration() {
     _led = 0;
     HAL_Delay(1000);  //< Delay for the ADC to stabilize at startup.
     _phtr.start();
-    uint64_t average_value = 0;
     for (int i = 0; i < 10; ++i) {
-        average_value += _phtr.read();
+        _calibration_value += _phtr.read();
     }
-    average_value /= 10;
-    _offset_value = static_cast<uint16_t>(average_value);
+    _calibration_value /= 10;
     _led = 1;
     HAL_Delay(100);
 }

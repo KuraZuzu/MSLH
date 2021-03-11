@@ -13,6 +13,11 @@
  * This class deals with ADCs using DMA.
  *
  * 問題点
+ * ・ラッパ関数内でインスタンス生成しないとコンストラクタが呼ばれない．
+ *  他のラッパ関数内でMachineのインスタンスを生成するとAnalogInが読めない．
+ *  AnalogInについて，同じラッパ関数内で何回もインスタンスを生成しても読めるが，
+ *  他の関数でインスタンス生成していると読めない．バグ．
+ *
  * ・ADC+DMA でアナログ値が入力されるメモリの配列は複数確保できないため，共有される必要がある．
  * 　start() を呼び出した際に，同じハンドラのADCも自動的に開始されてしまう．
  * 　つまり，start() を呼んでいないインスタンスでも計測が開始されてしまう．(実行上での不具合は無い)
@@ -37,6 +42,7 @@
 #define ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
 
 #include "adc.h"
+#include "dma.h"
 
 /**
  * @brief
@@ -107,13 +113,9 @@ public:
 private:
     ADC_HandleTypeDef& _hadc;
     const uint32_t _rank;
-//    static uint16_t* _ADC1_DMA_value;
-//    static uint16_t* _ADC2_DMA_value;
-//    static uint16_t* _ADC3_DMA_value;
-    static uint16_t _ADC1_DMA_value[5];
-    static uint16_t _ADC2_DMA_value[5];
-    static uint16_t _ADC3_DMA_value[5];
-
+    static uint16_t* _adc1_dma_value;
+    static uint16_t* _adc2_dma_value;
+    static uint16_t* _adc3_dma_value;
     static bool _active_ADC1_flag;
     static bool _active_ADC2_flag;
     static bool _active_ADC3_flag;

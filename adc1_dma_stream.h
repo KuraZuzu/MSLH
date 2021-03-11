@@ -13,23 +13,20 @@
 #include "adc.h"
 #include "dma.h"
 
+enum ADC1_Rank{
+    LEFT_FRONT = 1,
+    LEFT_SIDE = 2,
+    RIGHT_SIDE = 3,
+    RIGHT_FRONT = 4,
+    BATTERY = 5
+};
+
+
 namespace adc1_dma_stream {
 
-    enum ADC1_Rank{
-        LEFT_FRONT,  // 0
-        LEFT_SIDE,
-        RIGHT_SIDE,
-        RIGHT_FRONT,
-        BATTERY_VOLTAGE
-    };
+    void init_adc1_dma_stream();
 
-    constexpr uint32_t _adc1_buffer = 5;  //< hadc1.Init.NbrOfConversion
-    uint16_t _adc1_dma_value[_adc1_buffer] = {0, 0, 0, 0, 0};
-    uint16_t _offset_adc1_dma_value;
-
-    void initAdc1DmaStream();
-
-    uint16_t read(uint16_t adc1_rank_starting_from_0);
+    uint16_t adc_read(uint16_t adc1_rank);
 }
 
 #endif //ZUZUHALFTPPMOD1_ADC1_DMA_STREAM_H

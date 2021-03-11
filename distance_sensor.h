@@ -31,6 +31,7 @@ public:
 
     void measureOffset();
 
+    void start();
 
     /**
      * @param Charge capacitor (can't set us unit).

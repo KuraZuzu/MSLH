@@ -19,20 +19,20 @@ AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t rank)
 
 void AnalogInDMAStream::start() {
     if(_hadc.Instance == ADC1 && !_active_ADC1_flag) {
-        _ADC1_DMA_value = new uint16_t[_hadc.Init.NbrOfConversion];
-        for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _ADC1_DMA_value[i] = 0;
+//        _ADC1_DMA_value = new uint16_t[_hadc.Init.NbrOfConversion];
+//        for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _ADC1_DMA_value[i] = 0;
         HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_ADC1_DMA_value, _hadc.Init.NbrOfConversion);
         _active_ADC1_flag = true;
-
+//
     }else if (_hadc.Instance == ADC2 && !_active_ADC2_flag) {
-        _ADC2_DMA_value = new uint16_t[_hadc.Init.NbrOfConversion];
-        for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _ADC2_DMA_value[i] = 0;
+//        _ADC2_DMA_value = new uint16_t[_hadc.Init.NbrOfConversion];
+//        for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _ADC2_DMA_value[i] = 0;
         HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_ADC2_DMA_value, _hadc.Init.NbrOfConversion);
         _active_ADC2_flag = true;
-
+//
     }else if (_hadc.Instance == ADC3 && !_active_ADC3_flag) {
-        _ADC3_DMA_value = new uint16_t[_hadc.Init.NbrOfConversion];
-        for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _ADC3_DMA_value[i] = 0;
+//        _ADC3_DMA_value = new uint16_t[_hadc.Init.NbrOfConversion];
+//        for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _ADC3_DMA_value[i] = 0;
         HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_ADC3_DMA_value, _hadc.Init.NbrOfConversion);
         _active_ADC3_flag = true;
     }
@@ -47,9 +47,12 @@ uint16_t AnalogInDMAStream::read() const {
 }
 
 
-uint16_t* AnalogInDMAStream::_ADC1_DMA_value;
-uint16_t* AnalogInDMAStream::_ADC2_DMA_value;
-uint16_t* AnalogInDMAStream::_ADC3_DMA_value;
+//uint16_t* AnalogInDMAStream::_ADC1_DMA_value;
+//uint16_t* AnalogInDMAStream::_ADC2_DMA_value;
+//uint16_t* AnalogInDMAStream::_ADC3_DMA_value;
+uint16_t AnalogInDMAStream::_ADC1_DMA_value[5] = {0, 0, 0, 0, 0};
+uint16_t AnalogInDMAStream::_ADC2_DMA_value[5] = {0, 0, 0, 0, 0};
+uint16_t AnalogInDMAStream::_ADC3_DMA_value[5] = {0, 0, 0, 0, 0};
 bool AnalogInDMAStream::_active_ADC1_flag = false;
 bool AnalogInDMAStream::_active_ADC2_flag = false;
 bool AnalogInDMAStream::_active_ADC3_flag = false;

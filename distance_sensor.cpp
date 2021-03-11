@@ -14,9 +14,13 @@ DistanceSensor::DistanceSensor(DigitalOut led, AnalogInDMAStream phtr)
         , _phtr(phtr)
         , _offset_value(0)
 {
-    _phtr.start();
-    measureOffset();
+//    _phtr.start();  //< まだstartしてないから読んだらバグる。
+//    measureOffset();
     _led.write(1);
+}
+
+void DistanceSensor::start() {
+    _phtr.start();
 }
 
 uint16_t DistanceSensor::read(uint16_t charge_time_ms) {

@@ -12,8 +12,7 @@
 DistanceSensor::DistanceSensor(DigitalOut led, AnalogInDMAStream phtr)
         : _led(led)
         , _phtr(phtr)
-        , _calibration_value(0)
-{
+        , _calibration_value(0) {
 //    _phtr.start();    //< まだstartしてないから読んだらバグる。
 //    calibration();  //< こちらも同様
     _led.write(1);  //< ledは常に点灯させておくことでコンデンサに給電させない。
@@ -24,12 +23,14 @@ void DistanceSensor::start() {
 }
 
 uint16_t DistanceSensor::read(uint16_t charge_time_ms) {
+    //結局PWMがいいのではないか。 Fさん。
     _led = 0;  //< コンデンサ充電開始
-    HAL_Delay(charge_time_ms);
+    HAL_Delay(charge_time_ms); //< 1m秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電 1.5m秒くらい欲しいかも？
+    //HAL_Delay()だと正確な時間が保証されるか不明。
     _led = 1;
-    HAL_Delay(1);  //< 1mm秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電
+//    HAL_Delay(1);  // < 波形がピークになるのをまつ まだ仮
     return _phtr.read() - _calibration_value;
-    //ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
+    // ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
 }
 
 void DistanceSensor::calibration() {

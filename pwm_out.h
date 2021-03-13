@@ -68,7 +68,7 @@ public:
     /**
      * @fn Write Duty ratio (0.0 ~ 1.0).
      */
-    void write(double duty_ratio);
+    void write(float duty_ratio);
 
     void period(uint32_t period);
 
@@ -79,7 +79,7 @@ public:
      *   Duty Ratio (duty_ratio) can be treated like a variable.  <br>
      *   Duty比(duty_ratio) を変数のように扱えるようになるが，バグの温床となる可能性もある．
      */
-    PWMOut& operator = (double duty_ratio);
+    PWMOut& operator = (float duty_ratio);
 
 private:
     TIM_HandleTypeDef& _htim_x;

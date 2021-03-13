@@ -23,10 +23,10 @@ void Motor::stop() {
     _motor_pwm.stop();
 }
 
-void Motor::update(double duty_ratio) {
+void Motor::update(float duty_ratio) {
 
-    if(duty_ratio < -1.0) duty_ratio = -1.0;
-    else if (duty_ratio > 1.0) duty_ratio = 1.0;
+    if(duty_ratio < -1.0f) duty_ratio = -1.0f;
+    else if (duty_ratio > 1.0f) duty_ratio = 1.0f;
 
     _motor_phase = _forward_wise;  //< Set default forward wise.
 

@@ -59,7 +59,7 @@ void PWMOut::stop() {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 
-void PWMOut::write(double duty_ratio) {
+void PWMOut::write(float duty_ratio) {
     // The reason "+1" of last argument exists is that the duty ratio starts at 0.
     // (The output is equivalent even at 0).
     // Aが存在する理由は、Duty比が0から開始されるためです。(0でも出力は等価)
@@ -79,7 +79,7 @@ void PWMOut::pulse_width(uint32_t pulse_width) {
     __HAL_TIM_SET_COMPARE(&_htim_x, _channel, _pulse_width / _period);
 }
 
-PWMOut &PWMOut::operator=(double duty_ratio) {
+PWMOut &PWMOut::operator=(float duty_ratio) {
     write(duty_ratio);
     return *this;
 }

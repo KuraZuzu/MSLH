@@ -82,7 +82,7 @@ public:
      *
      * @param duty_ratio {-1.0 ≦ duty_ratio ≦ 1.0}
      */
-    void update(double duty_ratio);
+    void update(float duty_ratio);
 
 private:
     PWMOut _motor_pwm;

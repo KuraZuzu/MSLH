@@ -42,7 +42,7 @@ public:
 
     explicit Buzzer(PWMOut buzzer_pwm)
     : _buzzer_pwm(buzzer_pwm){
-        _buzzer_pwm = 0.5;
+        _buzzer_pwm = 0.5f;
     }
 
     /**

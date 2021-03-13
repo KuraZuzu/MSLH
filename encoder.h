@@ -100,19 +100,19 @@ public:
     void update();
 
 
-     /**
-      *  @return
-      *    Pulse difference between the latest call to update_encoder()
-      *    and the last call to update()
-      */
-     int32_t getDeltaPulse();  //< 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
+    /**
+     *  @return
+     *    Pulse difference between the latest call to update_encoder()
+     *    and the last call to update()
+     */
+    int32_t getDeltaPulse();  //< 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
 
 
     /**
      *  @return
      *    Total number of rotations at the time of the latest update() call.
      */
-    int64_t getRotationCount(); //< 最新で呼んだ update() 時点での合計回転数を取得
+     int64_t getRotationCount(); //< 最新で呼んだ update() 時点での合計回転数を取得
 
 
     /**

@@ -39,12 +39,6 @@
  */
 class DigitalOut {
 
-private:
-    GPIO_TypeDef* _gpio_x;
-    const uint16_t _gpio_pin;
-    int32_t _pinstate;
-
-
 public:
     /**
      * @param GPIO pin in the case of "PC_5", they are ""GPIOC" and """GPIO_PIN_6".
@@ -75,6 +69,11 @@ public:
     operator int32_t () const;
 //    operator int32_t (){ return _pinstate; }
 
+
+private:
+    GPIO_TypeDef* _gpio_x;
+    const uint16_t _gpio_pin;
+    int32_t _pinstate;
 };
 
 

@@ -9,19 +9,21 @@
 
 #include "motor.h"
 
-Motor::Motor(PWMOut motor_pwm, DigitalOut motor_phase, bool cw)
-        :_motor_pwm(motor_pwm)
-        , _motor_phase(motor_phase)
-        , _forward_wise(static_cast<GPIO_PinState>(cw)) {
-
+Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw)
+        : _phase_x(phase_x),
+          _phase_pin(phase_pin),
+          _htim_x(htim_x),
+          _channel(channel),
+          _forward_wise(static_cast<GPIO_PinState>(cw))
+{
 }
 
 void Motor::start() {
-    _motor_pwm.start();
+    HAL_TIM_PWM_Start(&_htim_x, _channel);
 }
 
 void Motor::stop() {
-    _motor_pwm.stop();
+    HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 
 void Motor::update(float duty_ratio) {
@@ -29,14 +31,14 @@ void Motor::update(float duty_ratio) {
     if(duty_ratio < -1.0f) duty_ratio = -1.0f;
     else if (duty_ratio > 1.0f) duty_ratio = 1.0f;
 
-    _motor_phase = _forward_wise;  //< Set default forward wise.
+    HAL_GPIO_WritePin(_phase_x, _phase_pin, _forward_wise);  //< Set default forward wise.
 
     // Toggle rotation wise, If duty_ratio less than 0.0.
     if (duty_ratio < 0) {
-        _motor_phase = !_motor_phase;   //< Toggle rotation.
+        HAL_GPIO_TogglePin(_phase_x, _phase_pin);   //< Toggle rotation.
         duty_ratio *= -1;  //< Normalize duty_ratio.
     }
 
-    _motor_pwm = duty_ratio;
+    __HAL_TIM_SET_COMPARE(&_htim_x, _channel, (duty_ratio * _htim_x.Init.Period));
 }
 

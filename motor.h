@@ -25,7 +25,7 @@
  *
  *   #include "motor.h"
  *
- *   Motor motor(PWMOut(htim1, TIM_CHANNEL_1), DigitalOut(GPIOA, GPIO_PIN_6), true);
+ *   Motor motor(htim1, TIM_CHANNEL_1, GPIOA, GPIO_PIN_6, true);
  *
  *   int main() {
  *      // Abbreviation Microcomputer startup settings
@@ -54,14 +54,13 @@ public:
 
     /**
      * @note
-     *   Motor(___ , ___ , bool cw);  <br>
+     *   Motor(___ , ___ , ___, ___,  bool cw);  <br>
      *
      * @param
      *   bool cw: The direction corresponds
      *   to the forward rotation of your machine.
      */
-    Motor(PWMOut motor_pwm, DigitalOut motor_phase, bool cw);
-
+    Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw);
 
     /**
      * @fn Start motor.
@@ -85,10 +84,11 @@ public:
     void update(float duty_ratio);
 
 private:
-    PWMOut _motor_pwm;
-    DigitalOut _motor_phase;
-    const GPIO_PinState _forward_wise;
-};
+    GPIO_TypeDef* _phase_x;
+    const uint16_t _phase_pin;
+    TIM_HandleTypeDef& _htim_x;
+    const uint64_t _channel;
+    const GPIO_PinState _forward_wise;};
 
 
 #endif //ZUZU_HALFMOUSE_2019_MOTOR_H

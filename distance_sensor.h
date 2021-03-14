@@ -44,7 +44,6 @@ private:
 
     uint16_t convert_12bit_to_mm(uint16_t value);
 
-//    DigitalOut _led;
     GPIO_TypeDef* _led_x;
     const uint16_t _led_pin;
     AnalogInDMAStream _phtr;

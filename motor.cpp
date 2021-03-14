@@ -9,6 +9,7 @@
 
 #include "motor.h"
 
+<<<<<<< HEAD
 Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw)
         : _phase_x(phase_x),
           _phase_pin(phase_pin),
@@ -16,6 +17,13 @@ Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x,
           _channel(channel),
           _forward_wise(static_cast<GPIO_PinState>(cw))
 {
+=======
+Motor::Motor(PWMOut motor_pwm, DigitalOut motor_phase, bool cw)
+        :_motor_pwm(motor_pwm)
+        , _motor_phase(motor_phase)
+        , _forward_wise(static_cast<GPIO_PinState>(cw)) {
+
+>>>>>>> 6fa4e3e60fc1221ce8723e26413686e5ef6ccb33
 }
 
 void Motor::start() {

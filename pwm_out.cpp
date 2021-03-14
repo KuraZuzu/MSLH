@@ -44,7 +44,7 @@
 
 #include "pwm_out.h"
 
-PWMOut::PWMOut(TIM_HandleTypeDef& htim_x, uint32_t channel)
+PWMOut::PWMOut(TIM_HandleTypeDef &htim_x, uint32_t channel)
         :_htim_x(htim_x)
         , _channel(channel)
         , _period(_htim_x.Init.Period)

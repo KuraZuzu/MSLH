@@ -18,7 +18,7 @@
 class GyroSensor {
 
 public:
-    GyroSensor(SPI_HandleTypeDef& hspi, DigitalOut cs_pin)
+    GyroSensor(SPI_HandleTypeDef &hspi, DigitalOut cs_pin)
     : _hspi(hspi)
     , _cs_pin(cs_pin) {
         _cs_pin = 0;
@@ -63,7 +63,7 @@ public:
     }
 
 private:
-    SPI_HandleTypeDef& _hspi;
+    SPI_HandleTypeDef &_hspi;
     DigitalOut _cs_pin;
 };
 

@@ -52,7 +52,7 @@ public:
     /**
      * @param Timer-handler and Timer-channel.
      */
-    PWMOut(TIM_HandleTypeDef& htim_x, uint32_t channel);
+    PWMOut(TIM_HandleTypeDef &htim_x, uint32_t channel);
 
     /**
      * @fn Start output PWM.
@@ -82,9 +82,9 @@ public:
     PWMOut& operator = (float duty_ratio);
 
 private:
-    TIM_HandleTypeDef& _htim_x;
+    TIM_HandleTypeDef &_htim_x;
     const uint32_t _channel;
-    uint32_t& _period;
+    uint32_t &_period;
     uint32_t _pulse_width;
 };
 

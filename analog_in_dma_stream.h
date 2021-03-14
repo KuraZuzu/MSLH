@@ -90,7 +90,7 @@ public:
     /**
      * @param (uint32_t rank) is the ACD priority, it is set by STM32CubeMX(.ioc)
      */
-    AnalogInDMAStream(ADC_HandleTypeDef& hadc, uint32_t rank);
+    AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t rank);
 
     /**
      * @fn
@@ -113,9 +113,9 @@ public:
 private:
     ADC_HandleTypeDef& _hadc;
     const uint32_t _rank;
-    static uint16_t* _adc1_dma_value;
-    static uint16_t* _adc2_dma_value;
-    static uint16_t* _adc3_dma_value;
+    static uint16_t *_adc1_dma_value;
+    static uint16_t *_adc2_dma_value;
+    static uint16_t *_adc3_dma_value;
     static bool _active_ADC1_flag;
     static bool _active_ADC2_flag;
     static bool _active_ADC3_flag;

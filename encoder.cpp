@@ -9,7 +9,7 @@
 
 #include "encoder.h"
 
-Encoder::Encoder(TIM_HandleTypeDef& htim_x, uint16_t one_rotation_pulse, bool cw)
+Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw)
 :_offset_pulse(0x0FFF),
  _integral_pulse(0),
  _htim_x(htim_x),

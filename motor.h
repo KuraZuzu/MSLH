@@ -84,9 +84,9 @@ public:
     void update(float duty_ratio);
 
 private:
-    GPIO_TypeDef* _phase_x;
+    GPIO_TypeDef *_phase_x;
     const uint16_t _phase_pin;
-    TIM_HandleTypeDef& _htim_x;
+    TIM_HandleTypeDef &_htim_x;
     const uint64_t _channel;
     const GPIO_PinState _forward_wise;};
 

@@ -44,7 +44,7 @@ private:
 
     uint16_t convert_12bit_to_mm(uint16_t value);
 
-    GPIO_TypeDef* _led_x;
+    GPIO_TypeDef *_led_x;
     const uint16_t _led_pin;
     AnalogInDMAStream _phtr;
     uint16_t _calibration_value;  //< 外乱光のオフセット

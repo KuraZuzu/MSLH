@@ -43,7 +43,7 @@ public:
     /**
      * @param GPIO pin in the case of "PC_5", they are ""GPIOC" and """GPIO_PIN_6".
      * */
-    DigitalOut(GPIO_TypeDef* gpio_x, uint16_t gpio_pin);
+    DigitalOut(GPIO_TypeDef *gpio_x, uint16_t gpio_pin);
 
 
     /**
@@ -71,7 +71,7 @@ public:
 
 
 private:
-    GPIO_TypeDef* _gpio_x;
+    GPIO_TypeDef *_gpio_x;
     const uint16_t _gpio_pin;
     int32_t _pinstate;
 };

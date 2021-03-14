@@ -13,6 +13,7 @@ Motor::Motor(PWMOut motor_pwm, DigitalOut motor_phase, bool cw)
         :_motor_pwm(motor_pwm)
         , _motor_phase(motor_phase)
         , _forward_wise(static_cast<GPIO_PinState>(cw)) {
+
 }
 
 void Motor::start() {

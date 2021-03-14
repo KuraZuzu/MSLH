@@ -27,7 +27,7 @@ public:
     /**
      * @param phtr is Photo-Transistor adc handler.
      */
-    DistanceSensor(DigitalOut led, AnalogInDMAStream phtr);
+    DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream phtr);
 
     void calibration();
 
@@ -44,7 +44,9 @@ private:
 
     uint16_t convert_12bit_to_mm(uint16_t value);
 
-    DigitalOut _led;
+//    DigitalOut _led;
+    GPIO_TypeDef* _led_x;
+    const uint16_t _led_pin;
     AnalogInDMAStream _phtr;
     uint16_t _calibration_value;  //< 外乱光のオフセット
 };

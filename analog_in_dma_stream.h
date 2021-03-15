@@ -111,14 +111,11 @@ public:
     uint16_t read() const;
 
 private:
+    uint16_t _adc_x;
     ADC_HandleTypeDef& _hadc;
-    const uint32_t _rank;
-    static uint16_t *_adc1_dma_value;
-    static uint16_t *_adc2_dma_value;
-    static uint16_t *_adc3_dma_value;
-    static bool _active_ADC1_flag;
-    static bool _active_ADC2_flag;
-    static bool _active_ADC3_flag;
+    const uint32_t _rank;  //< 本来はランクは1からはじまるが，配列の最初の0からにオフセット．
+    static bool _active_flag[3];  //< ADC1, ADC2, ADC3 の３つ分
+    static uint16_t *_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分
 };
 
 #endif //ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H

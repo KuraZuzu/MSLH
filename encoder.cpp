@@ -27,7 +27,6 @@ void Encoder::start() {
 }
 
 void Encoder::stop() {
-    update();
     HAL_TIM_Encoder_Stop(&_htim_x, TIM_CHANNEL_ALL);
 }
 

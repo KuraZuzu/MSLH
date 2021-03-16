@@ -45,6 +45,7 @@ public:
      * */
     DigitalOut(GPIO_TypeDef *gpio_x, uint16_t gpio_pin);
 
+    DigitalOut(const DigitalOut &obj);
 
     /**
      * @fn

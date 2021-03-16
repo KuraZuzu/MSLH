@@ -20,6 +20,12 @@ void DigitalOut::write(int32_t value) {
     HAL_GPIO_WritePin(_gpio_x, _gpio_pin, static_cast<GPIO_PinState>(_pinstate));
 }
 
+DigitalOut::DigitalOut(const DigitalOut &obj)
+        : _gpio_x(obj._gpio_x)
+        , _gpio_pin(obj._gpio_pin)
+        , _pinstate(obj._pinstate) {
+}
+
 DigitalOut &DigitalOut::operator=(int32_t value) {
     _pinstate = value;
     write(_pinstate);

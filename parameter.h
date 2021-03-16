@@ -23,7 +23,7 @@ namespace machine_param {
 // Math parameters
     constexpr float PI = 3.14159f;
 
-// MachineTest speed parameters
+// Test speed parameters
     constexpr float ACCEL = 0.05f;
 
 // Unit is "pulse"

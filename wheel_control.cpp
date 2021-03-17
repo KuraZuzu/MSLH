@@ -29,9 +29,6 @@ void WheelControl::start() {
     _encoder.reset();
     _motor.start();
     _motor.update(0);
-
-    // 試験的にここで有効化しているが，1つ上の階層で呼び出したい。(左右のモーターで呼び出すと２つ使うから。)
-    // HAL_TIM_Base_Start_IT(&htim6);  //< Callback function for measurement speed.
 }
 
 void WheelControl::goStraight(float speed, float distance) {
@@ -49,13 +46,14 @@ void WheelControl::goStraight(float speed, float distance) {
 void WheelControl::stop() {
     _encoder.stop();
     _motor.stop();
-
-    // 試験的にここで有効化しているが，1つ上の階層で呼び出したい。(左右のモーターで呼び出すと２つ使うから。)
-    // HAL_TIM_Base_Stop_IT(&htim6); //< Callback function for measurement speed.
 }
 
 int64_t WheelControl::getRotationState() {
     return _encoder.getRotationCount();
+}
+
+int16_t WheelControl::getSpeed() {
+    return _speed;
 }
 
 void WheelControl::controlSpeed(float speed) {

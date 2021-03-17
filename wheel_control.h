@@ -61,6 +61,8 @@ public:
 
     int64_t getRotationState();
 
+    int16_t getSpeed();
+
 private:
 
     void controlSpeed(float speed);

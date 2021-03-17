@@ -110,7 +110,7 @@ public:
 
     /**
      *  @return
-     *    Total number of rotations at the time of the latest update() call.
+     *    Total number of rotations at the abs_time of the latest update() call.
      */
      int64_t getRotationCount(); //< 最新で呼んだ update() 時点での合計回転数を取得
 
@@ -118,7 +118,7 @@ public:
     /**
      * @return
      *   Excess pulses of less than one revolution
-     *   at the time of the latest call to update().
+     *   at the abs_time of the latest call to update().
      */
     int64_t getSurplusPulse();  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 

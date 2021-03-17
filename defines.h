@@ -10,8 +10,16 @@
 #ifndef ZUZUHALFTPPMOD1_DEFINES_H
 #define ZUZUHALFTPPMOD1_DEFINES_H
 
-void delay_us() {
-    asm("NOP");
+#include "stm32f4xx.h"
+
+//void delay_us() {
+//    asm("NOP");
+//}
+
+//namespace timer {}
+
+namespace timer {
+  static int abs_time = 3;
 }
 
 #endif //ZUZUHALFTPPMOD1_DEFINES_H

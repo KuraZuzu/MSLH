@@ -26,7 +26,7 @@ void Motor::stop() {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 
-void Motor::update(float duty_ratio) {
+void Motor::update(float32_t duty_ratio) {
 
     if(duty_ratio < -1.0f) duty_ratio = -1.0f;
     else if (duty_ratio > 1.0f) duty_ratio = 1.0f;

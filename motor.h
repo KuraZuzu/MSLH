@@ -13,6 +13,8 @@
 #include "pwm_out.h"
 #include "tim.h"
 #include "digital_out.h"
+#include "defines.h"
+
 /**
  * @brief
  *   This Class, the target of the control is Motor-Driver "DRV8836".  <br>
@@ -81,7 +83,7 @@ public:
      *
      * @param duty_ratio {-1.0 ≦ duty_ratio ≦ 1.0}
      */
-    void update(float duty_ratio);
+    void update(float32_t duty_ratio);
 
 private:
     GPIO_TypeDef *_phase_x;

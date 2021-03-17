@@ -31,7 +31,7 @@ void WheelControl::start() {
     _motor.update(0);
 }
 
-void WheelControl::goStraight(float speed, float distance) {
+void WheelControl::goStraight(float32_t speed, float32_t distance) {
     uint16_t pulse = 0;
     uint16_t distance_pulse = distance / param::DISTANCE_PER_PULSE;
 
@@ -56,7 +56,7 @@ int16_t WheelControl::getSpeed() {
     return _speed;
 }
 
-void WheelControl::controlSpeed(float speed) {
+void WheelControl::controlSpeed(float32_t speed) {
     if(fabsf(_speed) > fabsf(speed)) _duty_ratio *= _accel_duty_ratio;
     else if(fabsf(_speed) < fabsf(speed)) _duty_ratio *= _decelerate_duty_ratio;
 

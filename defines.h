@@ -11,6 +11,8 @@
 #define ZUZUHALFTPPMOD1_DEFINES_H
 
 #include "stm32f4xx.h"
+#include "arm_fp16.h"
+#include "arm_math.h"
 
 //void delay_us() {
 //    asm("NOP");

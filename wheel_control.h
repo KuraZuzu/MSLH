@@ -55,7 +55,7 @@ public:
 
     void start();
 
-    void goStraight(float speed, float distance);
+    void goStraight(float32_t speed, float32_t distance);
 
     void stop();
 
@@ -70,10 +70,10 @@ private:
 
     Motor _motor;
     Encoder _encoder;
-    float _duty_ratio;
-    float _accel_duty_ratio;       //< 1.5
-    float _decelerate_duty_ratio;  //<0.75
-    float _speed;  //< mm_per_second.
+    float32_t _duty_ratio;
+    float32_t _accel_duty_ratio;       //< 1.5
+    float32_t _decelerate_duty_ratio;  //<0.75
+    float32_t _speed;  //< mm_per_second.
 };
 
 

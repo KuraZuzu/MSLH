@@ -35,9 +35,11 @@ void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
     if(speed_mm_s < 0) _duty_ratio = -0.5f;
     else if(!speed_mm_s) _duty_ratio = 0.0f;
 
+//    while(1){}
     // 指定の距離分のパルスまで処理．
     while (pulse < distance_pulse) {
         controlSpeed(speed_mm_s);
+        _encoder.update();
         pulse += _encoder.getDeltaPulse();
     }
     _motor.update(0);

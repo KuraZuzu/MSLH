@@ -27,7 +27,7 @@ void WheelControl::start() {
     _encoder.start();
 }
 
-void WheelControl::goStraight(float32_t speed, float32_t distance) {
+void WheelControl::run(float32_t speed, float32_t distance) {
     uint16_t pulse = 0;
     uint16_t distance_pulse = distance / param::DISTANCE_PER_PULSE;
 

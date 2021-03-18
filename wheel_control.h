@@ -58,7 +58,7 @@ public:
 
     void start();
 
-    void goStraight(float32_t speed, float32_t distance);
+    void run(float32_t speed, float32_t distance);
 
     void stop();
 

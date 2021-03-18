@@ -27,8 +27,14 @@ void WheelControl::start() {
 }
 
 void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
+    // ここで _motor.update() すると永遠にブザーがなる。
     uint16_t pulse = 0;
     uint16_t distance_pulse = static_cast<float32_t>(distance_mm) / param::DISTANCE_PER_PULSE;  //< キャスト地獄
+
+    // first default duty ratio. 初速のDuty比．
+    _duty_ratio = 0.5f;
+    if(speed_mm_s < 0) _duty_ratio = -0.5f;
+    else if(!speed_mm_s) _duty_ratio = 0.0f;
 
     // 指定の距離分のパルスまで処理．
     while (pulse < distance_pulse) {

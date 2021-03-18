@@ -17,7 +17,6 @@ WheelControl::WheelControl(Motor motor, Encoder encoder)
         , _accel_duty_ratio(1.5)
         , _decelerate_duty_ratio(0.75)
         , _abs_speed(0)
-        , _old_time(0)
 {}
 
 
@@ -27,13 +26,13 @@ void WheelControl::start() {
     _encoder.start();
 }
 
-void WheelControl::run(float32_t speed, float32_t distance) {
+void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
     uint16_t pulse = 0;
-    uint16_t distance_pulse = distance / param::DISTANCE_PER_PULSE;
+    uint16_t distance_pulse = static_cast<float32_t>(distance_mm) / param::DISTANCE_PER_PULSE;  //< キャスト地獄
 
     // 指定の距離分のパルスまで処理．
     while (pulse < distance_pulse) {
-        controlSpeed(speed);
+        controlSpeed(speed_mm_s);
         pulse += _encoder.getDeltaPulse();
     }
     _motor.update(0);
@@ -48,6 +47,6 @@ int64_t WheelControl::getRotationState() {
     return _encoder.getRotationCount();
 }
 
-int16_t WheelControl::getSpeed() const {
+int32_t WheelControl::getSpeed() const {
     return _speed;
 }

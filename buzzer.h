@@ -51,6 +51,9 @@ public:
      */
     void beep_x(uint16_t times);
 
+    void error_v1();
+
+    void error_v2();
 
 private:
     PWMOut _buzzer_pwm;

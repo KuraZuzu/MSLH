@@ -27,11 +27,10 @@ void WheelControl::start() {
 }
 
 void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
-    // ここで _motor.update() すると永遠にブザーがなる。
     uint16_t pulse = 0;
     uint16_t distance_pulse = static_cast<float32_t>(distance_mm) / param::DISTANCE_PER_PULSE;  //< キャスト地獄
 
-    // first default duty ratio. 初速のDuty比．
+    // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
     _duty_ratio = 0.5f;
     if(speed_mm_s < 0) _duty_ratio = -0.5f;
     else if(!speed_mm_s) _duty_ratio = 0.0f;
@@ -42,6 +41,7 @@ void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
         pulse += _encoder.getDeltaPulse();
     }
     _motor.update(0);
+    //どうやら、この関数が永遠に完了しないバグ。
 }
 
 void WheelControl::stop() {

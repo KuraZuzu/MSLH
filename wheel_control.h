@@ -14,6 +14,7 @@
 #include "encoder.h"
 #include "parameter.h"
 #include <cmath>
+#include "defines.h"
 //#include "cmsis_version.h"
 //#include "cmsis_gcc.h"
 //#include "cmsis_compiler.h"
@@ -74,6 +75,7 @@ private:
     float32_t _accel_duty_ratio;       //< 1.5
     float32_t _decelerate_duty_ratio;  //<0.75
     float32_t _speed;  //< mm_per_second.
+    float32_t _abs_speed;  //< convert _speed to absolute.
 };
 
 

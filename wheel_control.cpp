@@ -9,7 +9,6 @@
 
 #include "wheel_control.h"
 
-
 WheelControl::WheelControl(Motor motor, Encoder encoder)
         : _motor(motor)
         , _encoder(encoder)
@@ -17,6 +16,7 @@ WheelControl::WheelControl(Motor motor, Encoder encoder)
         , _duty_ratio(0.0)
         , _accel_duty_ratio(1.5)
         , _decelerate_duty_ratio(0.75)
+        , _abs_speed(0)
 {}
 
 void WheelControl::measureSpeed() {
@@ -57,8 +57,15 @@ int16_t WheelControl::getSpeed() {
 }
 
 void WheelControl::controlSpeed(float32_t speed) {
-    if(fabsf(_speed) > fabsf(speed)) _duty_ratio *= _accel_duty_ratio;
-    else if(fabsf(_speed) < fabsf(speed)) _duty_ratio *= _decelerate_duty_ratio;
+
+    /// cmsis-dsp を使わない旧バージョン
+///    if(fabs(_speed) > fabsf(speed)) _duty_ratio *= _accel_duty_ratio;
+///    else if(fabsf(_speed) < fabsf(speed)) _duty_ratio *= _decelerate_duty_ratio;
+
+    arm_abs_f32(&_speed, &_abs_speed, 1);
+    arm_abs_f32(&speed, &speed, 1);
+    if(_abs_speed > speed) _duty_ratio *= _accel_duty_ratio;
+    else if(_abs_speed < speed) _duty_ratio *= _decelerate_duty_ratio;
 
     _motor.update(_duty_ratio);
 }

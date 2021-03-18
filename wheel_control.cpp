@@ -24,6 +24,7 @@ void WheelControl::start() {
     _motor.start();
     _motor.update(0);
     _encoder.start();
+    _encoder.reset();
 }
 
 void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
@@ -35,7 +36,7 @@ void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
     if(speed_mm_s < 0) _duty_ratio = -0.5f;
     else if(!speed_mm_s) _duty_ratio = 0.0f;
 
-//    while(1){}
+    _encoder.reset();  // < 前回までのエンコーダの値を
     // 指定の距離分のパルスまで処理．
     while (pulse < distance_pulse) {
         controlSpeed(speed_mm_s);
@@ -43,7 +44,6 @@ void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
         pulse += _encoder.getDeltaPulse();
     }
     _motor.update(0);
-    //どうやら、この関数が永遠に完了しないバグ。
 }
 
 void WheelControl::stop() {

@@ -34,10 +34,5 @@ void AnalogInDMAStream::start() {
     }
 }
 
-uint16_t AnalogInDMAStream::read() const {
-    return _adc_value[_adc_x][_rank];
-}
-
-
 bool AnalogInDMAStream::_active_flag[3] = {false, false, false};  //<  ADC1, ADC2, ADC3 の３つ分
 uint16_t *AnalogInDMAStream::_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分

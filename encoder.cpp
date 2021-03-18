@@ -18,8 +18,6 @@ Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw
  _delta_pulse(0),
  _forward_wise(cw)
 {
-    stop();
-    reset();
 }
 
 void Encoder::start() {
@@ -42,14 +40,7 @@ void Encoder::update() {
     update_rotation_count();
 }
 
-int32_t Encoder::getDeltaPulse() { return _delta_pulse; }
-
-int64_t Encoder::getRotationCount() { return _rotation_count; }
-
-int64_t Encoder::getSurplusPulse() { return _integral_pulse; }
-
-int64_t Encoder::getTotalPulse() { return _one_rotation_pulse * _rotation_count + _integral_pulse; }
-
+int64_t Encoder::getTotalPulse() const { return _one_rotation_pulse * _rotation_count + _integral_pulse; }
 
 
 void Encoder::update_pulse() {

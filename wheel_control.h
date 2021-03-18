@@ -51,7 +51,10 @@ public:
     /**
      * @fn この関数を１つ上の階層のタイマ割り込み(任意の周期)でに計測しないと動作しない。
      */
-    void measureSpeed();
+    inline void measureSpeed() {
+        _encoder.update();
+        _speed = param::DISTANCE_PER_PULSE * _encoder.getDeltaPulse() * 1000;
+    }
 
     void start();
 
@@ -61,11 +64,20 @@ public:
 
     int64_t getRotationState();
 
-    int16_t getSpeed();
+    int16_t getSpeed() const;
 
 private:
 
-    void controlSpeed(float32_t speed);
+
+    inline void controlSpeed(float32_t speed) {
+
+        arm_abs_f32(&_speed, &_abs_speed, 1);
+        arm_abs_f32(&speed, &speed, 1);
+        if(_abs_speed > speed) _duty_ratio *= _accel_duty_ratio;
+        else if(_abs_speed < speed) _duty_ratio *= _decelerate_duty_ratio;
+
+        _motor.update(_duty_ratio);
+    }
 
     Motor _motor;
     Encoder _encoder;

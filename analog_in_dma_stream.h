@@ -108,7 +108,9 @@ public:
      * @fn Get analog value.
      * @return value size is unsigned_int 0~12[bit] (0x0FFF).
      */
-    uint16_t read() const;
+    inline uint16_t read() const {
+        return _adc_value[_adc_x][_rank];
+    }
 
 private:
     uint16_t _adc_x;

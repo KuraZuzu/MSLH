@@ -20,13 +20,6 @@ WheelControl::WheelControl(Motor motor, Encoder encoder)
         , _old_time(0)
 {}
 
-void WheelControl::measureSpeed() {
-    _encoder.update();
-    _speed = param::DISTANCE_PER_PULSE * _encoder.getDeltaPulse() * 1000;
-//    uint16_t delta_time_ms = HAL_GetTick() - _old_time;
-//    _old_time = HAL_GetTick();
-//    _speed = param::DISTANCE_PER_PULSE * _encoder.getDeltaPulse() / static_cast<float32_t>(delta_time_ms) / 1000.0;
-}
 
 void WheelControl::start() {
     _motor.start();
@@ -55,20 +48,6 @@ int64_t WheelControl::getRotationState() {
     return _encoder.getRotationCount();
 }
 
-int16_t WheelControl::getSpeed() {
+int16_t WheelControl::getSpeed() const {
     return _speed;
-}
-
-void WheelControl::controlSpeed(float32_t speed) {
-
-    /// cmsis-dsp を使わない旧バージョン
-///    if(fabs(_speed) > fabsf(speed)) _duty_ratio *= _accel_duty_ratio;
-///    else if(fabsf(_speed) < fabsf(speed)) _duty_ratio *= _decelerate_duty_ratio;
-
-    arm_abs_f32(&_speed, &_abs_speed, 1);
-    arm_abs_f32(&speed, &speed, 1);
-    if(_abs_speed > speed) _duty_ratio *= _accel_duty_ratio;
-    else if(_abs_speed < speed) _duty_ratio *= _decelerate_duty_ratio;
-
-    _motor.update(_duty_ratio);
 }

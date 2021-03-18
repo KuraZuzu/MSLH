@@ -10,7 +10,8 @@
 #ifndef ZUZUHALFTPPMOD1_DEFINES_H
 #define ZUZUHALFTPPMOD1_DEFINES_H
 
-#include "stm32f4xx.h"
+#include <cstdio>
+#include "usart.h"
 #include "arm_fp16.h"
 #include "arm_math.h"
 

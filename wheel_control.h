@@ -21,7 +21,6 @@
 
 namespace param = machine_param;
 
-
 /**
  * @warning
  *     生成した WheelControlクラス のインスタンス全てに対して，
@@ -66,8 +65,7 @@ public:
 
 private:
 
-    void controlSpeed(float speed);
-
+    void controlSpeed(float32_t speed);
 
     Motor _motor;
     Encoder _encoder;
@@ -76,6 +74,7 @@ private:
     float32_t _decelerate_duty_ratio;  //<0.75
     float32_t _speed;  //< mm_per_second.
     float32_t _abs_speed;  //< convert _speed to absolute.
+    uint16_t _old_time;
 };
 
 

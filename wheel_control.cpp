@@ -17,18 +17,21 @@ WheelControl::WheelControl(Motor motor, Encoder encoder)
         , _accel_duty_ratio(1.5)
         , _decelerate_duty_ratio(0.75)
         , _abs_speed(0)
+        , _old_time(0)
 {}
 
 void WheelControl::measureSpeed() {
     _encoder.update();
-    _speed = param::DISTANCE_PER_PULSE * _encoder.getDeltaPulse() * param::SPEED_MEASURE_Hz;
+    _speed = param::DISTANCE_PER_PULSE * _encoder.getDeltaPulse() * 1000;
+//    uint16_t delta_time_ms = HAL_GetTick() - _old_time;
+//    _old_time = HAL_GetTick();
+//    _speed = param::DISTANCE_PER_PULSE * _encoder.getDeltaPulse() / static_cast<float32_t>(delta_time_ms) / 1000.0;
 }
 
 void WheelControl::start() {
-    _encoder.start();
-    _encoder.reset();
     _motor.start();
     _motor.update(0);
+    _encoder.start();
 }
 
 void WheelControl::goStraight(float32_t speed, float32_t distance) {

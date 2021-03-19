@@ -109,6 +109,12 @@ public:
 
 
     /**
+     * @return Total number of pulses counted so far.
+     */
+    inline int64_t getTotalPulse() const { return _one_rotation_pulse * _rotation_count + _integral_pulse; }
+
+
+    /**
      *  @return
      *    Total number of rotations at the abs_time of the latest update() call.
      */
@@ -121,17 +127,6 @@ public:
      *   at the abs_time of the latest call to update().
      */
     inline int64_t getSurplusPulse() const { return _integral_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
-
-
-    /**
-     * @fn
-     *   It is function for debug. Do not use it.  <br>
-     *   この関数は主にデバッグ用です．使わないでください．
-     *
-     * @return Total number of pulses counted so far.
-     */
-    int64_t getTotalPulse() const; //< 蓄積パルスが多すぎるとオーバーフローする恐れあり
-
 
 
 private:

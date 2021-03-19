@@ -40,8 +40,6 @@ void Encoder::update() {
     update_rotation_count();
 }
 
-int64_t Encoder::getTotalPulse() const { return _one_rotation_pulse * _rotation_count + _integral_pulse; }
-
 
 void Encoder::update_pulse() {
     auto pulse_count = static_cast<int32_t>(_htim_x.Instance->CNT);

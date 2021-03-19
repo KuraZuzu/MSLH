@@ -45,5 +45,5 @@ void Encoder::update() {
     if (!_forward_wise) _delta_pulse *= -1;
 
     /// _total_pulse を更新
-    _total_pulse += static_cast<int64_t>(_delta_pulse);  //< この時点では _total_pulse は合計パルスとして振る舞う．
+    _total_pulse += static_cast<int64_t>(_delta_pulse);
 }

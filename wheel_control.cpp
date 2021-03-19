@@ -23,28 +23,29 @@ WheelControl::WheelControl(Motor motor, Encoder encoder)
 void WheelControl::start() {
     _motor.start();
     _motor.update(0);
-    _encoder.start();
     _encoder.reset();
+    _encoder.start();
 }
 
 void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
 
-    // 現在のパルス数を取得
-    int64_t offset_total_pulse = _encoder.getTotalPulse();
-    int32_t pulse = 0;  // abs()に突っ込むために int64_t でなく int32_t
-    const uint16_t distance_pulse = static_cast<float32_t>(distance_mm) / param::DISTANCE_PER_PULSE;  //< キャスト地獄
-
-    // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
-    _duty_ratio = 0.5f;
-    if(speed_mm_s < 0) _duty_ratio = -0.5f;
-    else if(!speed_mm_s) _duty_ratio = 0.0f;
-
-    // 指定の距離分のパルスまで処理．
-    while (abs(pulse) < distance_pulse) {
-        controlSpeed(speed_mm_s);
-        pulse += _encoder.getTotalPulse() - offset_total_pulse;
-    }
-    _motor.update(0);
+    _motor.update(1.0f);
+//    // 現在のパルス数を取得
+//    int64_t offset_total_pulse = _encoder.getTotalPulse();
+//    int32_t pulse = 0;  // abs()に突っ込むために int64_t でなく int32_t
+//    const int32_t distance_pulse = static_cast<float32_t>(distance_mm) / param::DISTANCE_PER_PULSE;  //< キャスト地獄
+//
+//    // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
+//    _duty_ratio = 0.5f;
+//    if(speed_mm_s < 0) _duty_ratio = -0.5f;
+//    else if(!speed_mm_s) _duty_ratio = 0.0f;
+//
+//    // 指定の距離分のパルスまで処理．
+//    while (abs(pulse) < distance_pulse) {
+//        controlSpeed(speed_mm_s);
+//        pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+//    }
+//    _motor.update(0);
 }
 
 void WheelControl::stop() {

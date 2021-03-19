@@ -111,44 +111,46 @@ public:
     /**
      * @return Total number of pulses counted so far.
      */
-    inline int64_t getTotalPulse() const { return _one_rotation_pulse * _rotation_count + _integral_pulse; }
+    inline int64_t getTotalPulse() const { return _total_pulse; }
 
 
     /**
      *  @return
      *    Total number of rotations at the abs_time of the latest update() call.
      */
-    inline int64_t getRotationCount() const { return _rotation_count; } //< 最新で呼んだ update() 時点での合計回転数を取得
+    inline int32_t getRotationCount() const { return _rotation_count; } //< 最新で呼んだ update() 時点での合計回転数を取得
 
 
     /**
+     * @fn 余剰カウントが必要になったら実装(計算コストが増える)
+     *
      * @return
      *   Excess pulses of less than one revolution
      *   at the abs_time of the latest call to update().
      */
-    inline int64_t getSurplusPulse() const { return _integral_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
-
+    // inline int32_t getSurplusPulse() const { return _surplus_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 
 private:
 
+    int64_t _total_pulse;
+    int32_t _delta_pulse;
+    int32_t _rotation_count;
+    // int32_t _surplus_pulse;  //< 余剰カウントが必要になったら実装(計算コストが増える)
     TIM_HandleTypeDef& _htim_x;
-    const uint16_t _one_rotation_pulse;
+    const int32_t _one_rotation_pulse;
     const bool _forward_wise;
 
 
     /**
      * @note
-     *   エンコーダ内部のカウントは uint16_t の範囲内でカウントされる．  <br>
+     *   エンコーダ内部のカウントは uint16_t の範囲内でカウントされる．(ただし型は uint32_t)  <br>
      *  　　  0 ≦ _htim_x->Instance->CNT ≦ 65535      <br>
      *    (最大値は 0~65535 の範囲で，.ioc から設定可能)  <br>
      *
-     *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化される．
+     *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化する．
      */
-    const uint16_t _offset_pulse ; //< 0x0FFF
+    const uint32_t _offset_pulse ; //< 0x0FFF
 
-    int32_t _delta_pulse;
-    int64_t _integral_pulse;
-    int64_t _rotation_count;
 
     void update_pulse();
 

@@ -19,7 +19,7 @@
 namespace machine_param {
 
 // MCU parameters
-    constexpr uint16_t SPEED_MEASURE_Hz = 100;  //< Setup frequency for measure speed;
+    constexpr int32_t SPEED_MEASURE_Hz = 100;  //< Setup frequency for measure speed;
 
 // Math parameters
 //    constexpr float PI = 3.14159f;  //< It was defined by CMSIS-DSP
@@ -28,7 +28,7 @@ namespace machine_param {
     constexpr float32_t ACCEL = 0.05f;
 
 // Unit is "pulse"
-    constexpr uint16_t MES6_x4_PULSE = 500 * 4;
+    constexpr int32_t MES6_x4_PULSE = 500 * 4;
 
 // Unit is "mm"
     constexpr uint16_t ONE_BLOCK = 90;

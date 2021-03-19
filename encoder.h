@@ -73,17 +73,11 @@ public:
 
 
     /**
-     * @fn Copy constructor.
-     */
-    Encoder(const Encoder &obj);
-
-
-    /**
      * @fn Start encoder measurement.
      */
     void start();
 
-    virtual /**
+    /**
      * @fn Stop encoder measurement.
      */
     void stop();

@@ -66,12 +66,6 @@ public:
 
 
     /**
-     * @fn Copy constructor.
-     */
-    Motor(const Motor &obj);
-
-
-    virtual /**
      * @fn Start motor.
      */
     void start();

@@ -9,7 +9,7 @@
 
 #include "wheel_control.h"
 
-WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
+WheelControl::WheelControl(const Motor& motor, const Encoder& encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
         : Motor(motor)
         , Encoder(encoder)
         , _speed(0.0)

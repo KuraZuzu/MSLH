@@ -18,14 +18,6 @@ Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x,
 {
 }
 
-Motor::Motor(const Motor &obj)
-        : _phase_x(obj._phase_x)
-        , _phase_pin(obj._phase_pin)
-        , _htim_x(obj._htim_x)
-        , _channel(obj._channel)
-        , _forward_wise(obj._forward_wise) {
-}
-
 void Motor::start() {
     HAL_TIM_PWM_Start(&_htim_x, _channel);
 }

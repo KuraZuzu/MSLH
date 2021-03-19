@@ -11,8 +11,7 @@
 
 Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw)
   : _delta_pulse(0)
-  , _rotation_count(0)
-  , _surplus_pulse(0)
+  , _total_pulse(0)
   , _offset_pulse(65536/2 - 1)
   , _htim_x(htim_x)
   , _one_rotation_pulse(static_cast<int32_t>(one_rotation_pulse))  //< 計算高速化のため．
@@ -31,8 +30,7 @@ void Encoder::stop() {
 
 void Encoder::reset() {
     _delta_pulse = 0;
-    _rotation_count = 0;
-    _surplus_pulse = 0;
+    _total_pulse = 0;
     _htim_x.Instance->CNT = _offset_pulse;
 }
 
@@ -47,7 +45,5 @@ void Encoder::update() {
     if (!_forward_wise) _delta_pulse *= -1;
 
     /// _total_pulse を更新
-    _surplus_pulse += static_cast<int64_t>(_delta_pulse);  //< この時点では _surplus_pulse は合計パルスとして振る舞う．
-    _rotation_count = _surplus_pulse / _one_rotation_pulse;
-    _surplus_pulse %= _one_rotation_pulse;
+    _total_pulse += static_cast<int64_t>(_delta_pulse);  //< この時点では _total_pulse は合計パルスとして振る舞う．
 }

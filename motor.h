@@ -64,7 +64,14 @@ public:
      */
     Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw);
 
+
     /**
+     * @fn Copy constructor.
+     */
+    Motor(const Motor &obj);
+
+
+    virtual /**
      * @fn Start motor.
      */
     void start();
@@ -90,7 +97,7 @@ private:
     const uint16_t _phase_pin;
     TIM_HandleTypeDef &_htim_x;
     const uint64_t _channel;
-    const GPIO_PinState _forward_wise;};
-
+    const GPIO_PinState _forward_wise;
+};
 
 #endif //ZUZU_HALFMOUSE_2019_MOTOR_H

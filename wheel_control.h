@@ -15,11 +15,6 @@
 #include "parameter.h"
 #include <cmath>
 #include "defines.h"
-//#include "cmsis_version.h"
-//#include "cmsis_gcc.h"
-//#include "cmsis_compiler.h"
-
-namespace param = machine_param;
 
 /**
  * @warning
@@ -53,14 +48,14 @@ public:
      */
     inline void measureSpeed() {
         Encoder::update();
-        _speed = param::DISTANCE_PER_PULSE * Encoder::getDeltaPulse() * 1000;
+        _speed = _distance_per_pulse * Encoder::getDeltaPulse() * _speed_sampling_time;
     }
 
-    void start();
+    void start() override;
 
     void run(int32_t speed_mm_s, uint32_t distance_mm);
 
-    void stop();
+    void stop() override;
 
 
     int32_t getSpeed() const;

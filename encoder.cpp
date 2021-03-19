@@ -19,6 +19,16 @@ Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw
 {
 }
 
+Encoder::Encoder(const Encoder &obj)
+        : _delta_pulse(obj._delta_pulse)
+        , _total_pulse(obj._total_pulse)
+        , _htim_x(obj._htim_x)
+        , _forward_wise(obj._forward_wise)
+        , _offset_pulse(obj._offset_pulse)
+        , _one_rotation_pulse(obj._one_rotation_pulse)
+{
+}
+
 void Encoder::start() {
     reset();
     HAL_TIM_Encoder_Start(&_htim_x, TIM_CHANNEL_ALL);

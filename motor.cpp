@@ -10,12 +10,20 @@
 #include "motor.h"
 
 Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw)
-        : _phase_x(phase_x),
-          _phase_pin(phase_pin),
-          _htim_x(htim_x),
-          _channel(channel),
-          _forward_wise(static_cast<GPIO_PinState>(cw))
+        : _htim_x(htim_x)
+        , _channel(channel)
+        , _phase_x(phase_x)
+        , _phase_pin(phase_pin)
+        , _forward_wise(static_cast<GPIO_PinState>(cw))
 {
+}
+
+Motor::Motor(const Motor &obj)
+        : _phase_x(obj._phase_x)
+        , _phase_pin(obj._phase_pin)
+        , _htim_x(obj._htim_x)
+        , _channel(obj._channel)
+        , _forward_wise(obj._forward_wise) {
 }
 
 void Motor::start() {
@@ -28,7 +36,7 @@ void Motor::stop() {
 
 void Motor::update(float32_t duty_ratio) {
 
-    if(duty_ratio < -1.0f) duty_ratio = -1.0f;
+    if (duty_ratio < -1.0f) duty_ratio = -1.0f;
     else if (duty_ratio > 1.0f) duty_ratio = 1.0f;
 
     HAL_GPIO_WritePin(_phase_x, _phase_pin, _forward_wise);  //< Set default forward wise.
@@ -41,4 +49,3 @@ void Motor::update(float32_t duty_ratio) {
 
     __HAL_TIM_SET_COMPARE(&_htim_x, _channel, (duty_ratio * _htim_x.Init.Period));
 }
-

@@ -71,12 +71,19 @@ public:
      */
     Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw);
 
+
+    /**
+     * @fn Copy constructor.
+     */
+    Encoder(const Encoder &obj);
+
+
     /**
      * @fn Start encoder measurement.
      */
     void start();
 
-    /**
+    virtual /**
      * @fn Stop encoder measurement.
      */
     void stop();

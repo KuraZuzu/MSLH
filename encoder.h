@@ -109,9 +109,10 @@ public:
 
 
     /**
+     * @warning 返り値が 64bit値 であることに注意してください．
      * @return Total number of pulses counted so far.
      */
-    inline int64_t getTotalPulse() const { return _total_pulse; }
+    inline int64_t getTotalPulse() const { return static_cast<int64_t>(_rotation_count) * _one_rotation_pulse + _surplus_pulse; }
 
 
     /**
@@ -128,14 +129,13 @@ public:
      *   Excess pulses of less than one revolution
      *   at the abs_time of the latest call to update().
      */
-    // inline int32_t getSurplusPulse() const { return _surplus_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
+    inline int32_t getSurplusPulse() const { return _surplus_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 
 private:
 
-    int64_t _total_pulse;
     int32_t _delta_pulse;
     int32_t _rotation_count;
-    // int32_t _surplus_pulse;  //< 余剰カウントが必要になったら実装(計算コストが増える)
+    int32_t _surplus_pulse;
     TIM_HandleTypeDef& _htim_x;
     const int32_t _one_rotation_pulse;
     const bool _forward_wise;
@@ -150,11 +150,6 @@ private:
      *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化する．
      */
     const uint32_t _offset_pulse ; //< 0x0FFF
-
-
-    void update_pulse();
-
-    void update_rotation_count();
 };
 
 

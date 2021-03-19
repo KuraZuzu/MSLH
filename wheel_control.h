@@ -43,26 +43,25 @@ namespace param = machine_param;
  * }
  * @endcode
  */
-class WheelControl {
+class WheelControl : public Motor, public Encoder {
 
 public:
-    WheelControl(Motor motor, Encoder encoder);
+    WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
 
     /**
      * @fn この関数を１つ上の階層のタイマ割り込み(任意の周期)でに計測しないと動作しない。
      */
     inline void measureSpeed() {
-        _encoder.update();
-        _speed = param::DISTANCE_PER_PULSE * _encoder.getDeltaPulse() * 1000;
+        Encoder::update();
+        _speed = param::DISTANCE_PER_PULSE * Encoder::getDeltaPulse() * 1000;
     }
 
     void start();
 
-    void run(int32_t speed_mm_s, uint16_t distance_mm);
+    void run(int32_t speed_mm_s, uint32_t distance_mm);
 
     void stop();
 
-    int64_t getRotationState();
 
     int32_t getSpeed() const;
 
@@ -78,16 +77,16 @@ private:
         if(abs(_speed) > abs(speed)) _duty_ratio *= _accel_duty_ratio;
         else if(abs(_speed) < abs(speed)) _duty_ratio *= _decelerate_duty_ratio;
 
-        _motor.update(_duty_ratio);
+        Motor::update(_duty_ratio);
     }
 
-    Motor _motor;
-    Encoder _encoder;
     float32_t _duty_ratio;
     float32_t _accel_duty_ratio;       //< 1.5
     float32_t _decelerate_duty_ratio;  //<0.75
     int32_t _speed;  //< mm_per_second.
     int32_t _abs_speed;  //< convert _speed to absolute.
+    int32_t _speed_sampling_time;
+    int32_t _distance_per_pulse;
 };
 
 

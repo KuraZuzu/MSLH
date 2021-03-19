@@ -34,7 +34,7 @@ namespace machine_param {
     constexpr uint16_t ONE_BLOCK = 90;
     constexpr float32_t WHEEL_DIAMETER = 13.5f;
     constexpr float32_t MACHINE_TREAD = 36.2f; /*(40 - 3.8)*/
-    constexpr float32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / MES6_x4_PULSE;
+    constexpr int32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / MES6_x4_PULSE;
 }
 
 #endif //PARAMETER_H

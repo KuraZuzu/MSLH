@@ -9,52 +9,49 @@
 
 #include "wheel_control.h"
 
-WheelControl::WheelControl(Motor motor, Encoder encoder)
-        : _motor(motor)
-        , _encoder(encoder)
+WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
+        : Motor(motor)
+        , Encoder(encoder)
         , _speed(0.0)
         , _duty_ratio(0.0)
         , _accel_duty_ratio(1.5)
         , _decelerate_duty_ratio(0.75)
         , _abs_speed(0)
+        , _speed_sampling_time(static_cast<int32_t>(speed_sampling_time))
+        , _distance_per_pulse(wheel_diameter*PI/Encoder::_one_rotation_pulse)
 {}
 
 
 void WheelControl::start() {
-    _motor.start();
-    _motor.update(0);
-    _encoder.reset();
-    _encoder.start();
+    Motor::start();
+    Motor::update(0);
+    Encoder::reset();
+    Encoder::start();
 }
 
-void WheelControl::run(int32_t speed_mm_s, uint16_t distance_mm) {
+void WheelControl::run(int32_t speed_mm_s, uint32_t distance_mm) {
 
-    _motor.update(1.0f);
-//    // 現在のパルス数を取得
-//    int64_t offset_total_pulse = _encoder.getTotalPulse();
-//    int32_t pulse = 0;  // abs()に突っ込むために int64_t でなく int32_t
-//    const int32_t distance_pulse = static_cast<float32_t>(distance_mm) / param::DISTANCE_PER_PULSE;  //< キャスト地獄
-//
-//    // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
-//    _duty_ratio = 0.5f;
-//    if(speed_mm_s < 0) _duty_ratio = -0.5f;
-//    else if(!speed_mm_s) _duty_ratio = 0.0f;
-//
-//    // 指定の距離分のパルスまで処理．
-//    while (abs(pulse) < distance_pulse) {
-//        controlSpeed(speed_mm_s);
-//        pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
-//    }
-//    _motor.update(0);
+    // 現在のパルス数を取得
+    int64_t offset_total_pulse = getTotalPulse();
+    int32_t pulse = 0;  // abs()に突っ込むために int64_t でなく int32_t
+    const int32_t distance_pulse = distance_mm / _distance_per_pulse;
+
+    // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
+    _duty_ratio = 0.5f;
+    if(speed_mm_s < 0) _duty_ratio = -0.5f;
+    else if(!speed_mm_s) _duty_ratio = 0.0f;
+
+    // 指定の距離分のパルスまで処理．
+    while (abs(pulse) < distance_pulse) {
+        controlSpeed(speed_mm_s);
+        pulse += static_cast<int32_t>(getTotalPulse() - offset_total_pulse);
+    }
+    Motor::update(0);
 }
 
 void WheelControl::stop() {
-    _encoder.stop();
-    _motor.stop();
-}
-
-int64_t WheelControl::getRotationState() {
-    return _encoder.getRotationCount();
+    Encoder::stop();
+    Motor::stop();
 }
 
 int32_t WheelControl::getSpeed() const {

@@ -136,7 +136,6 @@ private:
     int32_t _delta_pulse;
     int32_t _total_pulse;
     TIM_HandleTypeDef& _htim_x;
-    const int32_t _one_rotation_pulse;
     const bool _forward_wise;
 
 
@@ -149,6 +148,10 @@ private:
      *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化する．
      */
     const uint32_t _offset_pulse ; //< 0x0FFF
+
+protected:
+    const int32_t _one_rotation_pulse;
+
 };
 
 

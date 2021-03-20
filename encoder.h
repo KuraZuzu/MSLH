@@ -11,7 +11,6 @@
 #define ZUZUHALFTPPMOD1_ENCODER_H
 
 #include "tim.h"
-#include "interface.h"
 
 /**
  * @brief
@@ -61,7 +60,7 @@
  *   }
  * @endcode
  */
-class Encoder : public Interface {
+class Encoder {
 
 public:
 
@@ -76,12 +75,12 @@ public:
     /**
      * @fn Start encoder measurement.
      */
-    void start() override;
+    void start();
 
     /**
      * @fn Stop encoder measurement.
      */
-    void stop() override;
+    void stop();
 
     /**
      * @fn Reset all measured data.
@@ -125,13 +124,13 @@ public:
 
 
     /**
-     * @fn 余剰カウントが必要になったら実装(計算コストが増える)
-     *
      * @return
      *   Excess pulses of less than one revolution
      *   at the abs_time of the latest call to update().
      */
-//    inline int32_t getSurplusPulse() const { return _total_pulse % _one_rotation_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
+    inline int32_t getSurplusPulse() const { return _total_pulse % _one_rotation_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
+
+    int32_t getOneRotationPulse() const;
 
 private:
 
@@ -139,7 +138,7 @@ private:
     int32_t _total_pulse;
     TIM_HandleTypeDef& _htim_x;
     const bool _forward_wise;
-
+    const int32_t _one_rotation_pulse;
 
     /**
      * @note
@@ -150,10 +149,6 @@ private:
      *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化する．
      */
     const uint32_t _offset_pulse ; //< 0x0FFF
-
-protected:
-    const int32_t _one_rotation_pulse;
-
 };
 
 

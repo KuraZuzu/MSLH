@@ -9,31 +9,31 @@
 
 #include "wheel_control.h"
 
-WheelControl::WheelControl(const Motor& motor, const Encoder& encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
-        : Motor(motor)
-        , Encoder(encoder)
+WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
+        : _motor(motor)
+        , _encoder(encoder)
         , _speed(0.0)
         , _duty_ratio(0.0)
         , _accel_duty_ratio(1.5)
         , _decelerate_duty_ratio(0.75)
-        , _abs_speed(0)
         , _speed_sampling_time(static_cast<int32_t>(speed_sampling_time))
-        , _distance_per_pulse(wheel_diameter*PI/Encoder::_one_rotation_pulse)
+        , _distance_per_pulse(wheel_diameter*PI/_encoder.getOneRotationPulse())
 {}
 
 
 void WheelControl::start() {
-    Motor::start();
-    Motor::update(0);
-    Encoder::reset();
-    Encoder::start();
+    _motor.start();
+    _motor.update(0);
+    _encoder.reset();
+    _encoder.start();
 }
 
 void WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
 
     // 現在のパルス数を取得
-    int64_t offset_total_pulse = getTotalPulse();
-    int32_t pulse = 0;  // abs()に突っ込むために int64_t でなく int32_t
+    int64_t offset_total_pulse = _encoder.getTotalPulse();
+    int32_t pulse = 0;
+    int32_t abs_pulse = 0;
     const int32_t distance_pulse = distance_mm / _distance_per_pulse;
 
     // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
@@ -42,16 +42,17 @@ void WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
     else if(!speed_mm_s) _duty_ratio = 0.0f;
 
     // 指定の距離分のパルスまで処理．
-    while (abs(pulse) < distance_pulse) {
+    while (abs_pulse < distance_pulse) {
         controlSpeed(speed_mm_s);
-        pulse += static_cast<int32_t>(getTotalPulse() - offset_total_pulse);
+        pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+        if(pulse < 0) abs_pulse = pulse;
     }
-    Motor::update(0);
+    _motor.update(0);
 }
 
 void WheelControl::stop() {
-    Encoder::stop();
-    Motor::stop();
+    _encoder.stop();
+    _motor.stop();
 }
 
 int32_t WheelControl::getSpeed() const {

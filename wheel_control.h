@@ -38,25 +38,24 @@
  * }
  * @endcode
  */
-class WheelControl :public Motor, public Encoder {
+class WheelControl {
 
 public:
-    WheelControl(const Motor& motor, const Encoder& encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
+    WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
 
     /**
      * @fn この関数を１つ上の階層のタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください。
      */
     inline void measureSpeed() {
-        Encoder::update();
-        _speed = _distance_per_pulse * Encoder::getDeltaPulse() * _speed_sampling_time;
+        _encoder.update();
+        _speed = _distance_per_pulse * _encoder.getDeltaPulse() * _speed_sampling_time;
     }
 
-    void start() override;
+    void start();
 
     void run(int32_t speed_mm_s, int32_t distance_mm);
 
-    void stop() override;
-
+    void stop();
 
     int32_t getSpeed() const;
 
@@ -64,24 +63,20 @@ private:
 
 
     inline void controlSpeed(int32_t speed) {
-//        arm_abs_f32(&_speed, &_abs_speed, 1);
-//        arm_abs_f32(&speed, &speed, 1);
-//        if(_abs_speed > speed) _duty_ratio *= _accel_duty_ratio;
-//        else if(_abs_speed < speed) _duty_ratio *= _decelerate_duty_ratio;
+        if(abs(_speed) < abs(speed)) _duty_ratio *= _accel_duty_ratio;
+        else if(abs(_speed) > abs(speed)) _duty_ratio *= _decelerate_duty_ratio;
 
-        if(abs(_speed) > abs(speed)) _duty_ratio *= _accel_duty_ratio;
-        else if(abs(_speed) < abs(speed)) _duty_ratio *= _decelerate_duty_ratio;
-
-        Motor::update(_duty_ratio);
+        _motor.update(_duty_ratio);
     }
 
+    Encoder _encoder;
+    Motor _motor;
     float32_t _duty_ratio;
-    float32_t _accel_duty_ratio;       //< 1.5
-    float32_t _decelerate_duty_ratio;  //<0.75
-    int32_t _speed;  //< mm_per_second.
-    int32_t _abs_speed;  //< convert _speed to absolute.
-    int32_t _speed_sampling_time;
-    int32_t _distance_per_pulse;
+    int32_t _speed;  //< [mm/s] mm_per_second.
+    const float32_t _accel_duty_ratio;       //< 1.5
+    const float32_t _decelerate_duty_ratio;  //<0.75
+    const int32_t _speed_sampling_time;
+    const int32_t _distance_per_pulse;
 };
 
 

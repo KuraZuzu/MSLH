@@ -47,3 +47,7 @@ void Encoder::update() {
     /// _total_pulse を更新
     _total_pulse += static_cast<int64_t>(_delta_pulse);
 }
+
+int32_t Encoder::getOneRotationPulse() const {
+    return _one_rotation_pulse;
+}

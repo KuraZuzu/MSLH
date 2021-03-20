@@ -14,7 +14,6 @@
 #include "tim.h"
 #include "digital_out.h"
 #include "defines.h"
-#include "interface.h"
 
 /**
  * @brief
@@ -51,7 +50,7 @@
  *   }
  * @endcode
  */
-class Motor : public Interface {
+class Motor {
 
 public:
 
@@ -69,12 +68,12 @@ public:
     /**
      * @fn Start motor.
      */
-    void start() override;
+    void start();
 
     /**
      * @fn Stop motor.
      */
-    void stop() override;
+    void stop();
 
     /**
      * @fn Specifies the PWM of the motor.

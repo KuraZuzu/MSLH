@@ -51,11 +51,11 @@ PWMOut::PWMOut(TIM_HandleTypeDef &htim_x, uint32_t channel)
 {
 }
 
-void PWMOut::start() {
+void PWMOut::start() const {
     HAL_TIM_PWM_Start(&_htim_x, _channel);
 }
 
-void PWMOut::stop() {
+void PWMOut::stop() const {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 

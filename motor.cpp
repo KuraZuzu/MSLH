@@ -18,11 +18,11 @@ Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x,
 {
 }
 
-void Motor::start() {
+void Motor::start() const {
     HAL_TIM_PWM_Start(&_htim_x, _channel);
 }
 
-void Motor::stop() {
+void Motor::stop() const {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 

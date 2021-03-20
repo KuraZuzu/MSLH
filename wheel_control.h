@@ -69,10 +69,10 @@ private:
         _motor.update(_duty_ratio);
     }
 
-    Encoder _encoder;
-    Motor _motor;
     float32_t _duty_ratio;
     int32_t _speed;  //< [mm/s] mm_per_second.
+    Encoder _encoder;
+    Motor _motor;
     const float32_t _accel_duty_ratio;       //< 1.5
     const float32_t _decelerate_duty_ratio;  //<0.75
     const int32_t _speed_sampling_time;

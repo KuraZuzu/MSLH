@@ -58,13 +58,13 @@ public:
     /**
      * @fn Start output PWM.
      */
-    void start();
+    void start() const;
 
 
     /**
      * @fn Stop output PWM.
      */
-    void stop();
+    void stop() const;
 
     /**
      * @fn Write Duty ratio (0.0 ~ 1.0).

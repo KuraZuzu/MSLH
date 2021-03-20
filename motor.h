@@ -68,12 +68,12 @@ public:
     /**
      * @fn Start motor.
      */
-    void start();
+    void start() const;
 
     /**
      * @fn Stop motor.
      */
-    void stop();
+    void stop() const;
 
     /**
      * @fn Specifies the PWM of the motor.

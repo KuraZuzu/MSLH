@@ -19,12 +19,11 @@ Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw
 {
 }
 
-void Encoder::start() {
-    reset();
+void Encoder::start() const {
     HAL_TIM_Encoder_Start(&_htim_x, TIM_CHANNEL_ALL);
 }
 
-void Encoder::stop() {
+void Encoder::stop() const {
     HAL_TIM_Encoder_Stop(&_htim_x, TIM_CHANNEL_ALL);
 }
 

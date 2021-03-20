@@ -25,9 +25,9 @@ class DistanceSensor {
 public:
 
     /**
-     * @param phtr is Photo-Transistor adc handler.
+     * @param photo_transistor is Photo-Transistor adc handler.
      */
-    DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream phtr);
+    DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor);
 
     void calibration();
 
@@ -36,7 +36,7 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    uint16_t read(uint16_t charge_time_ms = 1);
+    uint16_t read(uint16_t charge_time_ms = 1) const;
 
 private:
 
@@ -46,7 +46,7 @@ private:
 
     GPIO_TypeDef *_led_x;
     const uint16_t _led_pin;
-    AnalogInDMAStream _phtr;
+    AnalogInDMAStream _photo_transistor;
     uint16_t _calibration_value;  //< 外乱光のオフセット
 };
 

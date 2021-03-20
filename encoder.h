@@ -75,12 +75,12 @@ public:
     /**
      * @fn Start encoder measurement.
      */
-    void start();
+    void start() const ;
 
     /**
      * @fn Stop encoder measurement.
      */
-    void stop();
+    void stop() const ;
 
     /**
      * @fn Reset all measured data.

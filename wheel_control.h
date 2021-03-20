@@ -53,7 +53,7 @@ public:
 
     void start();
 
-    void run(int32_t speed_mm_s, uint32_t distance_mm);
+    void run(int32_t speed_mm_s, int32_t distance_mm);
 
     void stop();
 

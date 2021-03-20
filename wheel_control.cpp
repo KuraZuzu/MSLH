@@ -29,7 +29,7 @@ void WheelControl::start() {
     Encoder::start();
 }
 
-void WheelControl::run(int32_t speed_mm_s, uint32_t distance_mm) {
+void WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
 
     // 現在のパルス数を取得
     int64_t offset_total_pulse = getTotalPulse();

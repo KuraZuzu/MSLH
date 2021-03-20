@@ -11,6 +11,7 @@
 #define ZUZUHALFTPPMOD1_ENCODER_H
 
 #include "tim.h"
+#include "interface.h"
 
 /**
  * @brief
@@ -60,7 +61,7 @@
  *   }
  * @endcode
  */
-class Encoder {
+class Encoder : public Interface {
 
 public:
 
@@ -75,12 +76,12 @@ public:
     /**
      * @fn Start encoder measurement.
      */
-    void start();
+    void start() override;
 
     /**
      * @fn Stop encoder measurement.
      */
-    void stop();
+    void stop() override;
 
     /**
      * @fn Reset all measured data.

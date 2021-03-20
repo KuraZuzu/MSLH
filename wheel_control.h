@@ -38,24 +38,24 @@
  * }
  * @endcode
  */
-class WheelControl : public Motor, public Encoder {
+class WheelControl :public Motor, public Encoder {
 
 public:
     WheelControl(const Motor& motor, const Encoder& encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
 
     /**
-     * @fn この関数を１つ上の階層のタイマ割り込み(任意の周期)でに計測しないと動作しない。
+     * @fn この関数を１つ上の階層のタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください。
      */
     inline void measureSpeed() {
         Encoder::update();
         _speed = _distance_per_pulse * Encoder::getDeltaPulse() * _speed_sampling_time;
     }
 
-    void start();
+    void start() override;
 
     void run(int32_t speed_mm_s, int32_t distance_mm);
 
-    void stop();
+    void stop() override;
 
 
     int32_t getSpeed() const;

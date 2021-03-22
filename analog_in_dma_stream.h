@@ -111,16 +111,16 @@ public:
      * @fn Get analog value.
      * @return value size is unsigned_int 0~12[bit] (0x0FFF).
      */
-    inline uint16_t read() const {
+    inline uint32_t read() const {
         return _adc_value[_adc_x][_rank];
     }
 
 private:
-    uint16_t _adc_x;
+    uint32_t _adc_x;
     ADC_HandleTypeDef& _hadc;
     const uint32_t _rank;  //< 本来はランクは1からはじまるが，配列の最初の0からにオフセット．
     static bool _active_flag[3];  //< ADC1, ADC2, ADC3 の３つ分
-    static uint16_t *_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分
+    static uint32_t *_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分
 };
 
 }

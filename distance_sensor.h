@@ -38,13 +38,13 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    uint16_t read(uint16_t charge_time_ms = 1) const;
+    uint32_t read(uint32_t charge_time_ms = 1) const;
 
 private:
 
-    uint16_t getDistance_mm();
+    uint32_t getDistance_mm();
 
-    uint16_t convert_12bit_to_mm(uint16_t value);
+    uint32_t convert_12bit_to_mm(uint16_t value);
 
     GPIO_TypeDef *_led_x;
     const uint16_t _led_pin;

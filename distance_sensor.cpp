@@ -23,16 +23,23 @@ void mslh::DistanceSensor::start() {
     _photo_transistor.start();
 }
 
-uint16_t mslh::DistanceSensor::read(uint16_t charge_time_ms) const {
-    //結局PWMがいいのではないか。 Fさん。
+uint32_t mslh::DistanceSensor::read(uint32_t charge_time_ms) const {
+    //結局PWMがいいのではないか。 by Fさん。
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_RESET);;  //< コンデンサ充電開始
 
     HAL_Delay(charge_time_ms); //< 1m秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電 1.5m秒くらい欲しいかも？
     //HAL_Delay()だと正確な時間が保証されるか不明。
 
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);
-//    HAL_Delay(1);  // < 波形がピークになるのをまつ まだ仮時間
-    return _photo_transistor.read() - _calibration_value;
+    HAL_Delay(1);  // < 波形がピークになるのをまつ まだ仮時間
+    uint32_t current_value = _photo_transistor.read();
+    uint32_t max_value = 0;
+    while (max_value < current_value) {
+        max_value = current_value;
+        current_value = _photo_transistor.read();
+    }
+
+    return max_value - _calibration_value;
     // ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
 }
 
@@ -50,11 +57,11 @@ void mslh::DistanceSensor::calibration() {
     HAL_Delay(100);
 }
 
-uint16_t mslh::DistanceSensor::getDistance_mm() {
+uint32_t mslh::DistanceSensor::getDistance_mm() {
     return convert_12bit_to_mm(_photo_transistor.read());
 }
 
-uint16_t mslh::DistanceSensor::convert_12bit_to_mm(uint16_t value) {
+uint32_t mslh::DistanceSensor::convert_12bit_to_mm(uint16_t value) {
     value = 0; //ここで距離変換の数式わちゃわちゃ。
     return value;
 }

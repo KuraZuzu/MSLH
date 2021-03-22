@@ -9,7 +9,7 @@
 
 #include "motor.h"
 
-Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw)
+mslh::Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw)
         : _htim_x(htim_x)
         , _channel(channel)
         , _phase_x(phase_x)
@@ -18,15 +18,15 @@ Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x,
 {
 }
 
-void Motor::start() const {
+void mslh::Motor::start() const {
     HAL_TIM_PWM_Start(&_htim_x, _channel);
 }
 
-void Motor::stop() const {
+void mslh::Motor::stop() const {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 
-void Motor::update(float32_t duty_ratio) {
+void mslh::Motor::update(float32_t duty_ratio) {
 
     if (duty_ratio < -1.0f) duty_ratio = -1.0f;
     else if (duty_ratio > 1.0f) duty_ratio = 1.0f;

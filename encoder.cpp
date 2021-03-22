@@ -9,7 +9,7 @@
 
 #include "encoder.h"
 
-Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw)
+mslh::Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw)
   : _delta_pulse(0)
   , _total_pulse(0)
   , _offset_pulse(65536/2 - 1)
@@ -19,21 +19,21 @@ Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw
 {
 }
 
-void Encoder::start() const {
+void mslh::Encoder::start() const {
     HAL_TIM_Encoder_Start(&_htim_x, TIM_CHANNEL_ALL);
 }
 
-void Encoder::stop() const {
+void mslh::Encoder::stop() const {
     HAL_TIM_Encoder_Stop(&_htim_x, TIM_CHANNEL_ALL);
 }
 
-void Encoder::reset() {
+void mslh::Encoder::reset() {
     _delta_pulse = 0;
     _total_pulse = 0;
     _htim_x.Instance->CNT = _offset_pulse;
 }
 
-void Encoder::update() {
+void mslh::Encoder::update() {
     uint32_t pulse_count = _htim_x.Instance->CNT;
     _htim_x.Instance->CNT = _offset_pulse;
 
@@ -47,6 +47,6 @@ void Encoder::update() {
     _total_pulse += static_cast<int64_t>(_delta_pulse);
 }
 
-int32_t Encoder::getOneRotationPulse() const {
+int32_t mslh::Encoder::getOneRotationPulse() const {
     return _one_rotation_pulse;
 }

@@ -13,11 +13,11 @@
  */
 #include "analog_in_dma_stream.h"
 
-AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t rank)
+mslh::AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t rank)
         : _hadc(hadc), _rank(rank-1), _adc_x(0) {
 }
 
-void AnalogInDMAStream::start() {
+void mslh::AnalogInDMAStream::start() {
 
     if(_hadc.Instance == ADC1) _adc_x = 0;
     else if(_hadc.Instance == ADC2) _adc_x = 1;
@@ -34,5 +34,5 @@ void AnalogInDMAStream::start() {
     }
 }
 
-bool AnalogInDMAStream::_active_flag[3] = {false, false, false};  //<  ADC1, ADC2, ADC3 の３つ分
-uint16_t *AnalogInDMAStream::_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分
+bool mslh::AnalogInDMAStream::_active_flag[3] = {false, false, false};  //<  ADC1, ADC2, ADC3 の３つ分
+uint16_t *mslh::AnalogInDMAStream::_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分

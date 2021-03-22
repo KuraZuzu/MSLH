@@ -10,7 +10,10 @@
 #ifndef ZUZUHALFTPPMOD1_ENCODER_H
 #define ZUZUHALFTPPMOD1_ENCODER_H
 
+#include "arm_math.h"
 #include "tim.h"
+
+namespace mslh {
 
 /**
  * @brief
@@ -151,5 +154,6 @@ private:
     const uint32_t _offset_pulse ; //< 0x0FFF
 };
 
+}  // namespace mslh
 
 #endif

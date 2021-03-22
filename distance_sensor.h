@@ -10,10 +10,12 @@
 #ifndef ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
 #define ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
 
-#include "stm32f4xx_it.h"
+#include "arm_math.h"
 #include "pwm_out.h"
 #include "analog_in_dma_stream.h"
 #include "digital_out.h"
+
+namespace mslh {
 
 /**
  * @brief
@@ -50,5 +52,6 @@ private:
     uint16_t _calibration_value;  //< 外乱光のオフセット
 };
 
+}  // namespace mslh
 
 #endif //ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H

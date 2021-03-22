@@ -44,22 +44,22 @@
 
 #include "pwm_out.h"
 
-PWMOut::PWMOut(TIM_HandleTypeDef &htim_x, uint32_t channel)
+mslh::PWMOut::PWMOut(TIM_HandleTypeDef &htim_x, uint32_t channel)
         :_htim_x(htim_x)
         , _channel(channel)
         , _period(_htim_x.Init.Period)
 {
 }
 
-void PWMOut::start() const {
+void mslh::PWMOut::start() const {
     HAL_TIM_PWM_Start(&_htim_x, _channel);
 }
 
-void PWMOut::stop() const {
+void mslh::PWMOut::stop() const {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 
-void PWMOut::write(float32_t duty_ratio) {
+void mslh::PWMOut::write(float32_t duty_ratio) {
     // The reason "+1" of last argument exists is that the duty ratio starts at 0.
     // (The output is equivalent even at 0).
     // Aが存在する理由は、Duty比が0から開始されるためです。(0でも出力は等価)
@@ -69,17 +69,17 @@ void PWMOut::write(float32_t duty_ratio) {
     __HAL_TIM_SET_COMPARE(&_htim_x, _channel, duty_ratio * _period + 1);
 }
 
-void PWMOut::period(uint32_t period) {
+void mslh::PWMOut::period(uint32_t period) {
     _period = period;
     if(!_period) __HAL_TIM_SET_COMPARE(&_htim_x, _channel, _pulse_width / _period);
 }
 
-void PWMOut::pulse_width(uint32_t pulse_width) {
+void mslh::PWMOut::pulse_width(uint32_t pulse_width) {
     _pulse_width = pulse_width;
     __HAL_TIM_SET_COMPARE(&_htim_x, _channel, _pulse_width / _period);
 }
 
-PWMOut &PWMOut::operator=(float32_t duty_ratio) {
+mslh::PWMOut &mslh::PWMOut::operator=(float32_t duty_ratio) {
     write(duty_ratio);
     return *this;
 }

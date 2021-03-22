@@ -15,6 +15,8 @@
 #include "digital_out.h"
 #include "defines.h"
 
+namespace mslh {
+
 /**
  * @brief
  *   This Class, the target of the control is Motor-Driver "DRV8836".  <br>
@@ -93,5 +95,7 @@ private:
     const uint64_t _channel;
     const GPIO_PinState _forward_wise;
 };
+
+}  // namespace mslh
 
 #endif //ZUZU_HALFMOUSE_2019_MOTOR_H

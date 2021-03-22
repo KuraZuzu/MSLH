@@ -10,7 +10,10 @@
 #ifndef ZUZUHALFTPPMOD1_BUZZER_H
 #define ZUZUHALFTPPMOD1_BUZZER_H
 
+#include "arm_math.h"
 #include "pwm_out.h"
+
+namespace mslh {
 
 /**
  * @brief
@@ -59,5 +62,6 @@ private:
     PWMOut _buzzer_pwm;
 };
 
+}  // namespace mslh
 
 #endif //ZUZUHALFTPPMOD1_BUZZER_H

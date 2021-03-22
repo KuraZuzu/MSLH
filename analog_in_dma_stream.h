@@ -41,8 +41,11 @@
 #ifndef ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
 #define ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
 
+#include "arm_math.h"
 #include "adc.h"
 #include "dma.h"
+
+namespace mslh {
 
 /**
  * @brief
@@ -120,4 +123,5 @@ private:
     static uint16_t *_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分
 };
 
+}
 #endif //ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H

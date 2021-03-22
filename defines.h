@@ -10,8 +10,6 @@
 #ifndef ZUZUHALFTPPMOD1_DEFINES_H
 #define ZUZUHALFTPPMOD1_DEFINES_H
 
-#include <cstdio>
-#include "usart.h"
 #include "arm_fp16.h"
 #include "arm_math.h"
 
@@ -23,7 +21,7 @@
 
 //namespace timer {}
 
-namespace timer {
+//namespace timer {
 //  static int abs_time = 3;
 
 //  static void timerStart() {
@@ -35,6 +33,6 @@ namespace timer {
 //      TIM6->DIER = TIM_DIER_UIE;
 //      NVIC_EnableIRQ(TIM6_DAC_IRQn);
 //  };
-}
+//}
 
 #endif //ZUZUHALFTPPMOD1_DEFINES_H

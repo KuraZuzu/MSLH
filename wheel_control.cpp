@@ -9,7 +9,7 @@
 
 #include "wheel_control.h"
 
-WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
+mslh::WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
         : _motor(motor)
         , _encoder(encoder)
         , _speed(0.0)
@@ -21,14 +21,14 @@ WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diamete
 {}
 
 
-void WheelControl::start() {
+void mslh::WheelControl::start() {
     _motor.start();
     _motor.update(0);
     _encoder.reset();
     _encoder.start();
 }
 
-void WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
+void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
 
     const int64_t offset_total_pulse = _encoder.getTotalPulse();  //< 現在のパルス数取得(オフセット)
     const int32_t distance_pulse = distance_mm / _distance_per_pulse;  //< 目標パルス数算出
@@ -47,11 +47,7 @@ void WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
     _motor.update(0);
 }
 
-void WheelControl::stop() {
+void mslh::WheelControl::stop() {
     _encoder.stop();
     _motor.stop();
-}
-
-int32_t WheelControl::getSpeed() const {
-    return _speed;
 }

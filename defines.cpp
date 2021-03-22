@@ -12,4 +12,3 @@
 //namespace timer {
 //    int abs_time = 0;
 //}
-int abs_time = 0;

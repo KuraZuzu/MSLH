@@ -10,11 +10,14 @@
 #ifndef ZUZUHALFTPPMOD1_WHEEL_CONTROL_H
 #define ZUZUHALFTPPMOD1_WHEEL_CONTROL_H
 
+#include "arm_math.h"
+#include "defines.h"
 #include "motor.h"
 #include "encoder.h"
 #include "parameter.h"
 #include <cmath>
-#include "defines.h"
+
+namespace mslh {
 
 /**
  * @warning
@@ -57,7 +60,7 @@ public:
 
     void stop();
 
-    int32_t getSpeed() const;
+    inline int32_t getSpeed() const { return _speed; }
 
 private:
 
@@ -79,5 +82,6 @@ private:
     const int32_t _distance_per_pulse;
 };
 
+}  // namespace mslh
 
 #endif //ZUZUHALFTPPMOD1_WHEEL_CONTROL_H

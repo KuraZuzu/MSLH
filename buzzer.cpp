@@ -9,7 +9,7 @@
 
 #include "buzzer.h"
 
-void Buzzer::beep_x(uint16_t times) {
+void mslh::Buzzer::beep_x(uint16_t times) {
 
     for(uint16_t i = 0; i < times; i++) {
         _buzzer_pwm.start();
@@ -19,7 +19,7 @@ void Buzzer::beep_x(uint16_t times) {
     }
 }
 
-void Buzzer::error_v1() {
+void mslh::Buzzer::error_v1() {
     uint16_t time = 1000;
     for (int i = 0; i < 10; ++i) {
         _buzzer_pwm.start();
@@ -30,7 +30,7 @@ void Buzzer::error_v1() {
     }
 }
 
-void Buzzer::error_v2() {
+void mslh::Buzzer::error_v2() {
     _buzzer_pwm.start();
     HAL_Delay(5000);
     _buzzer_pwm.stop();

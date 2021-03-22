@@ -10,6 +10,12 @@
 #ifndef ZUZUHALFTPPMOD1_PWM_OUT_H
 #define ZUZUHALFTPPMOD1_PWM_OUT_H
 
+#include "arm_math.h"
+#include "defines.h"
+#include "tim.h"
+
+namespace mslh {
+
 /**
  * @brief
  *   PWM output with specified duty ratio.
@@ -43,10 +49,6 @@
  *   }
  * @endcode
  */
-
-#include "tim.h"
-#include "defines.h"
-
 class PWMOut {
 public:
 
@@ -88,5 +90,7 @@ private:
     uint32_t &_period;
     uint32_t _pulse_width;
 };
+
+}
 
 #endif //ZUZUHALFTPPMOD1_PWM_OUT_H

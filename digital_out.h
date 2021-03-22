@@ -12,7 +12,10 @@
 #ifndef ZUZUHALFTPPMOD1_DIGITAL_OUT_H
 #define ZUZUHALFTPPMOD1_DIGITAL_OUT_H
 
+#include "arm_math.h"
 #include "gpio.h"
+
+namespace mslh {
 
 /**
  * @brief
@@ -77,5 +80,6 @@ private:
     int32_t _pinstate;
 };
 
+}  // namespace mslh
 
 #endif //ZUZUHALFTPPMOD1_DIGITAL_OUT_H

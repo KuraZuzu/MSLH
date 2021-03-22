@@ -7,6 +7,7 @@
  * see https://opensource.org/licenses/MIT
  */
 
+#include "arm_math.h"
 #include "spi.h"
 #include "dma.h"
 #include "digital_out.h"
@@ -14,6 +15,8 @@
 
 #ifndef ZUZUHALFTPPMOD1_GYRO_SENSOR_H
 #define ZUZUHALFTPPMOD1_GYRO_SENSOR_H
+
+namespace mslh {
 
 class GyroSensor {
 
@@ -67,5 +70,6 @@ private:
     DigitalOut _cs_pin;
 };
 
+}  // namespace mslh
 
 #endif //ZUZUHALFTPPMOD1_GYRO_SENSOR_H

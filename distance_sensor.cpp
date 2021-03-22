@@ -9,7 +9,7 @@
 
 #include "distance_sensor.h"
 
-DistanceSensor::DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor)
+mslh::DistanceSensor::DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor)
         : _photo_transistor(photo_transistor)
         , _led_x(led_x)
         , _led_pin(led_pin)
@@ -19,11 +19,11 @@ DistanceSensor::DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDM
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);  //< ledは常に点灯させておくことでコンデンサに給電させない。
 }
 
-void DistanceSensor::start() {
+void mslh::DistanceSensor::start() {
     _photo_transistor.start();
 }
 
-uint16_t DistanceSensor::read(uint16_t charge_time_ms) const {
+uint16_t mslh::DistanceSensor::read(uint16_t charge_time_ms) const {
     //結局PWMがいいのではないか。 Fさん。
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_RESET);;  //< コンデンサ充電開始
 
@@ -36,7 +36,7 @@ uint16_t DistanceSensor::read(uint16_t charge_time_ms) const {
     // ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
 }
 
-void DistanceSensor::calibration() {
+void mslh::DistanceSensor::calibration() {
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_RESET);
     HAL_Delay(1000);  //< Delay for the ADC to stabilize at startup.
 
@@ -50,11 +50,11 @@ void DistanceSensor::calibration() {
     HAL_Delay(100);
 }
 
-uint16_t DistanceSensor::getDistance_mm() {
+uint16_t mslh::DistanceSensor::getDistance_mm() {
     return convert_12bit_to_mm(_photo_transistor.read());
 }
 
-uint16_t DistanceSensor::convert_12bit_to_mm(uint16_t value) {
+uint16_t mslh::DistanceSensor::convert_12bit_to_mm(uint16_t value) {
     value = 0; //ここで距離変換の数式わちゃわちゃ。
     return value;
 }

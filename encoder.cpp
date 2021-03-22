@@ -34,8 +34,8 @@ void mslh::Encoder::reset() {
 }
 
 void mslh::Encoder::update() {
-    uint32_t pulse_count = _htim_x.Instance->CNT;
-    _htim_x.Instance->CNT = _offset_pulse;
+    uint32_t pulse_count = __HAL_TIM_GET_COUNTER(&_htim_x);
+    __HAL_TIM_SET_COUNTER(&_htim_x, _offset_pulse);
 
     /// _delta_pulse を更新
     _delta_pulse = static_cast<int32_t>(pulse_count - _offset_pulse);

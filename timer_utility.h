@@ -16,16 +16,17 @@
 
 namespace my_timer {
 
-    void start();
+    void wait_timer_start();
+
+    static volatile uint32_t tim_count;
 
     inline void wait_us(uint32_t time_us) {
         tim_count = 0;
-        __HAL_TIM_SET_COUNTER(&htim6, 0);
         while (tim_count < time_us) {
         }
     }
 
-    static bool timer_start_flag = false;
+    static bool timer_start_flag;
 
 }  //< namespace mslh
 

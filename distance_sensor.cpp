@@ -32,8 +32,8 @@ uint32_t mslh::DistanceSensor::read(uint32_t charge_time_ms) const {
 
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);
     HAL_Delay(1);  // < 波形がピークになるのをまつ まだ仮時間
-    uint32_t current_value = _photo_transistor.read();
     uint32_t max_value = 0;
+    uint32_t current_value = _photo_transistor.read();
     while (max_value < current_value) {
         max_value = current_value;
         current_value = _photo_transistor.read();

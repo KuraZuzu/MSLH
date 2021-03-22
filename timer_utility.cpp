@@ -9,9 +9,10 @@
 
 #include "timer_utility.h"
 
-void my_timer::start() {
+void my_timer::wait_timer_start() {
     if(!timer_start_flag) {
         HAL_TIM_Base_Start_IT(&htim6);
         timer_start_flag = true;
     }
+
 }

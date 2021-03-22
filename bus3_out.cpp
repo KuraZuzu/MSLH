@@ -7,7 +7,7 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#include "Bus3Out.h"
+#include "bus3_out.h"
 
 Bus3Out::Bus3Out(DigitalOut bit3, DigitalOut bit2, DigitalOut bit1)
         : _bit{bit3, bit2, bit1}, _pinstate(0), _mask(0b00000001){

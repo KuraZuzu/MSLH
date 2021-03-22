@@ -30,11 +30,9 @@ void WheelControl::start() {
 
 void WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
 
-    // 現在のパルス数を取得
-    int64_t offset_total_pulse = _encoder.getTotalPulse();
-    int32_t pulse = 0;
-    int32_t abs_pulse = 0;
-    const int32_t distance_pulse = distance_mm / _distance_per_pulse;
+    const int64_t offset_total_pulse = _encoder.getTotalPulse();  //< 現在のパルス数取得(オフセット)
+    const int32_t distance_pulse = distance_mm / _distance_per_pulse;  //< 目標パルス数算出
+    int32_t pulse = 0;  //< これから更新するパルス
 
     // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
     _duty_ratio = 0.5f;
@@ -42,10 +40,9 @@ void WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
     else if(!speed_mm_s) _duty_ratio = 0.0f;
 
     // 指定の距離分のパルスまで処理．
-    while (abs_pulse < distance_pulse) {
+    while (abs(pulse) < distance_pulse) {
         controlSpeed(speed_mm_s);
         pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
-        if(pulse < 0) abs_pulse = pulse;
     }
     _motor.update(0);
 }

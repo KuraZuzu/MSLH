@@ -15,8 +15,10 @@
 #include "arm_fp16.h"
 #include "arm_math.h"
 
-//void delay_us() {
-//    asm("NOP");
+//void wait(const unsigned int count)
+//{
+//    volatile unsigned int vcount = count;
+//    while (vcount--);
 //}
 
 //namespace timer {}

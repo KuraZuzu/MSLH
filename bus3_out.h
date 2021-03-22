@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_BUS3OUT_H
-#define ZUZUHALFTPPMOD1_BUS3OUT_H
+#ifndef ZUZUHALFTPPMOD1_BUS3_OUT_H
+#define ZUZUHALFTPPMOD1_BUS3_OUT_H
 
 #include "digital_out.h"
 
@@ -36,4 +36,4 @@ private:
 };
 
 
-#endif //ZUZUHALFTPPMOD1_BUS3OUT_H
+#endif //ZUZUHALFTPPMOD1_BUS3_OUT_H

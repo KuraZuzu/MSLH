@@ -16,9 +16,10 @@
 
 namespace my_timer {
 
-    void wait_timer_start();
-
     static volatile uint32_t tim_count;
+
+    void wait_timer_start();
+    void wait_timer_stop();
 
     inline void wait_us(uint32_t time_us) {
         tim_count = 0;

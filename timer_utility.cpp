@@ -14,5 +14,11 @@ void my_timer::wait_timer_start() {
         HAL_TIM_Base_Start_IT(&htim6);
         timer_start_flag = true;
     }
+}
 
+void my_timer::wait_timer_stop() {
+    if(timer_start_flag) {
+        HAL_TIM_Base_Start_IT(&htim6);
+        timer_start_flag = false;
+    }
 }

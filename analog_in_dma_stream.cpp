@@ -19,13 +19,12 @@ mslh::AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t ran
 
 void mslh::AnalogInDMAStream::start() {
 
-    if(_hadc.Instance == ADC1) _adc_x = 0;
-    else if(_hadc.Instance == ADC2) _adc_x = 1;
-    else if(_hadc.Instance == ADC3) _adc_x = 2;
+    if(_hadc.Instance == ADC1) _adc_x = 0;  //< ADC1だが，0からのインデックスなので (1-1 = 0)．
+    else if(_hadc.Instance == ADC2) _adc_x = 1;  //< 2-1 = 0
+    else if(_hadc.Instance == ADC3) _adc_x = 2;  //< 3-1 = 2
     // このどれにも当てはまらない場合はエラーを投げたい．
 
     if (!_active_flag[_adc_x]) {
-        _adc_x = 0;  //< ADC1だが，0からのインデックスなので (1-1 = 0)．
         _adc_value[_adc_x] = new uint32_t[_hadc.Init.NbrOfConversion];
         for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc_value[_adc_x][i] = 0;
         HAL_ADC_Start_DMA(&_hadc, _adc_value[_adc_x], _hadc.Init.NbrOfConversion);

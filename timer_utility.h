@@ -14,22 +14,22 @@
 #include "tim.h"
 #include "stm32f4xx_it.h"
 
+
+extern uint32_t tim_count;
+extern bool timer_start_flag;
+
 namespace my_timer {
 
-    static volatile uint32_t tim_count;
+//    extern uint32_t tim_count;
+//    extern bool timer_start_flag;
 
     void wait_timer_start();
     void wait_timer_stop();
 
-    inline void wait_us(uint32_t time_us) {
-        tim_count = 0;
-        while (tim_count < time_us) {
-        }
-    }
+    void wait_us(uint32_t time_us);
 
-    static bool timer_start_flag;
 
-}  //< namespace mslh
+}  //< namespace my_timer
 
 
 #endif //ZUZUHALFTPPMOD1_TIMER_UTILITY_H

@@ -111,16 +111,28 @@ public:
      * @fn Get analog value.
      * @return value size is unsigned_int 0~12[bit] (0x0FFF).
      */
-    inline uint32_t read() const {
+    inline uint16_t read() const {
         return _adc_value[_adc_x][_rank];
     }
 
 private:
+    /**
+     * @warning
+     *     Absolutely must be declared with the bit width set by ADC+DMA, so change NG!  <br>
+     *     Never declare the argument of HAL_ADC_Start_DMA as 32-bit just because it is uint32_t*. Always follow the width set by the DMA.
+     *     It will bug you.Never declare the argument of HAL_ADC_Start_DMA as 32-bit just because it is uint32_t*.
+     *     Always follow the width set by the DMA. It will bug you.
+     *
+     *     絶対に ADC+DMA で設定した bit幅で宣言する必要があるので変更NG！  <br>
+     *     HAL_ADC_Start_DMAの引数がuint32_t*だからといって、決して32bitで宣言してはいけない。
+     *     必ずDMAで設定した幅に従うように。バグるぞ。
+     */
+    static uint16_t *_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分
+    static bool _active_flag[3];  //< ADC1, ADC2, ADC3 の３つ分
+
     uint32_t _adc_x;
     ADC_HandleTypeDef& _hadc;
     const uint32_t _rank;  //< 本来はランクは1からはじまるが，配列の最初の0からにオフセット．
-    static bool _active_flag[3];  //< ADC1, ADC2, ADC3 の３つ分
-    static uint32_t *_adc_value[3];  //< ADC1, ADC2, ADC3 の３つ分
 };
 
 }

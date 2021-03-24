@@ -41,13 +41,12 @@
 #include "analog_in_dma_stream.h"
 #include "distance_sensor.h"
 #include "digital_out.h"
-#include "Bus3Out.h"
+#include "bus3_out.h"
 #include "pwm_out.h"
 #include "buzzer.h"
 #include "motor.h"
 #include "encoder.h"
 #include "wheel_control.h"
-#include "gyro_sensor.h"
 
 using namespace mslh;
 

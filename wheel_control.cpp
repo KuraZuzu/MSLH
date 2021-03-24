@@ -17,8 +17,8 @@ mslh::WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_d
         , _accel_duty_ratio(1.5)
         , _decelerate_duty_ratio(0.75)
         , _speed_sampling_time(static_cast<int32_t>(speed_sampling_time))
-//        , _distance_per_pulse(wheel_diameter*PI/_encoder.getOneRotationPulse())
-        , _distance_per_pulse(wheel_diameter*PI/_encoder.getRotationCount())
+        , _distance_per_pulse(wheel_diameter*PI/_encoder.getOneRotationPulse())
+//        , _distance_per_pulse(wheel_diameter*PI/_encoder.getRotationCount())
 {}
 
 

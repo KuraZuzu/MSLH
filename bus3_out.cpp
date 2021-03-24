@@ -7,13 +7,14 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#include "Bus3Out.h"
+#include "arm_math.h"
+#include "bus3_out.h"
 
-Bus3Out::Bus3Out(DigitalOut bit3, DigitalOut bit2, DigitalOut bit1)
+mslh::Bus3Out::Bus3Out(DigitalOut bit3, DigitalOut bit2, DigitalOut bit1)
         : _bit{bit3, bit2, bit1}, _pinstate(0), _mask(0b00000001){
 }
 
-void Bus3Out::write(int32_t value) {
+void mslh::Bus3Out::write(int32_t value) {
     _pinstate = value % 8;
 
     for (uint16_t i = 0; i < 3; ++i) {
@@ -23,10 +24,10 @@ void Bus3Out::write(int32_t value) {
 }
 
 
-Bus3Out &Bus3Out::operator=(int32_t value) {
+mslh::Bus3Out &mslh::Bus3Out::operator=(int32_t value) {
     _pinstate = value % 8;
     write(_pinstate);
     return *this;
 }
 
-Bus3Out::operator int32_t() const { return _pinstate; }
+mslh::Bus3Out::operator int32_t() const { return _pinstate; }

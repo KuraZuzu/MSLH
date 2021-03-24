@@ -9,27 +9,27 @@
 
 #include "digital_out.h"
 
-DigitalOut::DigitalOut(GPIO_TypeDef *gpio_x, uint16_t gpio_pin)
+mslh::DigitalOut::DigitalOut(GPIO_TypeDef *gpio_x, uint16_t gpio_pin)
         :_gpio_x(gpio_x), _gpio_pin(gpio_pin), _pinstate(0){
 
     HAL_GPIO_WritePin(_gpio_x, _gpio_pin, static_cast<GPIO_PinState >(_pinstate));
 }
 
-void DigitalOut::write(int32_t value) {
+void mslh::DigitalOut::write(int32_t value) {
     _pinstate = value;
     HAL_GPIO_WritePin(_gpio_x, _gpio_pin, static_cast<GPIO_PinState>(_pinstate));
 }
 
-DigitalOut::DigitalOut(const DigitalOut &obj)
+mslh::DigitalOut::DigitalOut(const DigitalOut &obj)
         : _gpio_x(obj._gpio_x)
         , _gpio_pin(obj._gpio_pin)
         , _pinstate(obj._pinstate) {
 }
 
-DigitalOut &DigitalOut::operator=(int32_t value) {
+mslh::DigitalOut &mslh::DigitalOut::operator=(int32_t value) {
     _pinstate = value;
     write(_pinstate);
     return *this;
 }
 
-DigitalOut::operator int32_t() const { return _pinstate; }
+mslh::DigitalOut::operator int32_t() const { return _pinstate; }

@@ -9,64 +9,44 @@
 
 #include "encoder.h"
 
-Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw)
-:_offset_pulse(0x0FFF),
- _integral_pulse(0),
- _htim_x(htim_x),
- _one_rotation_pulse(one_rotation_pulse),
- _rotation_count(0),
- _delta_pulse(0),
- _forward_wise(cw)
+mslh::Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw)
+  : _delta_pulse(0)
+  , _total_pulse(0)
+  , _htim_x(htim_x)
+  , _offset_pulse(__HAL_TIM_GET_AUTORELOAD(&_htim_x) / 2 - 1)
+  , _one_rotation_pulse(static_cast<int32_t>(one_rotation_pulse))  //< 計算高速化のため．
+  , _forward_wise(cw)
 {
-    stop();
-    reset();
 }
 
-void Encoder::start() {
+void mslh::Encoder::start() const {
     HAL_TIM_Encoder_Start(&_htim_x, TIM_CHANNEL_ALL);
 }
 
-void Encoder::stop() {
+void mslh::Encoder::stop() const {
     HAL_TIM_Encoder_Stop(&_htim_x, TIM_CHANNEL_ALL);
 }
 
-void Encoder::reset() {
-    _integral_pulse = 0;
-    _rotation_count = 0;
+void mslh::Encoder::reset() {
     _delta_pulse = 0;
+    _total_pulse = 0;
     _htim_x.Instance->CNT = _offset_pulse;
 }
 
-void Encoder::update() {
-    update_pulse();
-    update_rotation_count();
-}
+void mslh::Encoder::update() {
+    uint32_t pulse_count = __HAL_TIM_GET_COUNTER(&_htim_x);
+    __HAL_TIM_SET_COUNTER(&_htim_x, _offset_pulse);
 
-int32_t Encoder::getDeltaPulse() { return _delta_pulse; }
+    /// _delta_pulse を更新
+    _delta_pulse = static_cast<int32_t>(pulse_count - _offset_pulse);
 
-int64_t Encoder::getRotationCount() { return _rotation_count; }
-
-int64_t Encoder::getSurplusPulse() { return _integral_pulse; }
-
-int64_t Encoder::getTotalPulse() { return _one_rotation_pulse * _rotation_count + _integral_pulse; }
-
-
-
-void Encoder::update_pulse() {
-    auto pulse_count = static_cast<int32_t>(_htim_x.Instance->CNT);
-    _htim_x.Instance->CNT = _offset_pulse;
-
-    // _delta_pulse を更新
-    _delta_pulse = pulse_count - static_cast<int32_t>(_offset_pulse);
-
-    // _forward_wise が true の時にカウントアップとする
+    /// _forward_wise が true の時にカウントアップとする
     if (!_forward_wise) _delta_pulse *= -1;
 
-    // _integral_pulse を更新
-    _integral_pulse += static_cast<int64_t>(_delta_pulse);
+    /// _total_pulse を更新
+    _total_pulse += static_cast<int64_t>(_delta_pulse);
 }
 
-void Encoder::update_rotation_count() {
-    _rotation_count += _integral_pulse / static_cast<int64_t>(_one_rotation_pulse);
-    _integral_pulse %= static_cast<int64_t>(_one_rotation_pulse);
+int32_t mslh::Encoder::getOneRotationPulse() const {
+    return _one_rotation_pulse;
 }

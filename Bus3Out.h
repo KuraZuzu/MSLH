@@ -7,13 +7,10 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_BUS3_OUT_H
-#define ZUZUHALFTPPMOD1_BUS3_OUT_H
+#ifndef ZUZUHALFTPPMOD1_BUS3OUT_H
+#define ZUZUHALFTPPMOD1_BUS3OUT_H
 
-#include "arm_math.h"
 #include "digital_out.h"
-
-namespace mslh {
 
 class Bus3Out {
 
@@ -38,6 +35,5 @@ private:
     int32_t _pinstate;
 };
 
-}  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_BUS3_OUT_H
+#endif //ZUZUHALFTPPMOD1_BUS3OUT_H

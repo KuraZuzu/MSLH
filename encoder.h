@@ -10,10 +10,7 @@
 #ifndef ZUZUHALFTPPMOD1_ENCODER_H
 #define ZUZUHALFTPPMOD1_ENCODER_H
 
-#include "arm_math.h"
 #include "tim.h"
-
-namespace mslh {
 
 /**
  * @brief
@@ -74,16 +71,15 @@ public:
      */
     Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw);
 
-
     /**
      * @fn Start encoder measurement.
      */
-    void start() const ;
+    void start();
 
     /**
      * @fn Stop encoder measurement.
      */
-    void stop() const ;
+    void stop();
 
     /**
      * @fn Reset all measured data.
@@ -109,21 +105,14 @@ public:
      *    Pulse difference between the latest call to update_encoder()
      *    and the last call to update()
      */
-    inline int32_t getDeltaPulse() const { return _delta_pulse; }  //< 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
-
-
-    /**
-     * @warning 返り値が 64bit値 であることに注意してください．
-     * @return Total number of pulses counted so far.
-     */
-    inline int64_t getTotalPulse() const { return _total_pulse; }
+    int32_t getDeltaPulse();  //< 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
 
 
     /**
      *  @return
      *    Total number of rotations at the abs_time of the latest update() call.
      */
-    inline int32_t getRotationCount() const { return _total_pulse / _one_rotation_pulse; } //< 最新で呼んだ update() 時点での合計回転数を取得
+     int64_t getRotationCount(); //< 最新で呼んだ update() 時点での合計回転数を取得
 
 
     /**
@@ -131,29 +120,45 @@ public:
      *   Excess pulses of less than one revolution
      *   at the abs_time of the latest call to update().
      */
-    inline int32_t getSurplusPulse() const { return _total_pulse % _one_rotation_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
+    int64_t getSurplusPulse();  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 
-    int32_t getOneRotationPulse() const;
+
+    /**
+     * @fn
+     *   It is function for debug. Do not use it.  <br>
+     *   この関数は主にデバッグ用です．使わないでください．
+     *
+     * @return Total number of pulses counted so far.
+     */
+    int64_t getTotalPulse(); //< 蓄積パルスが多すぎるとオーバーフローする恐れあり
+
+
 
 private:
 
-    int32_t _delta_pulse;
-    int32_t _total_pulse;
     TIM_HandleTypeDef& _htim_x;
+    const uint16_t _one_rotation_pulse;
     const bool _forward_wise;
-    const int32_t _one_rotation_pulse;
+
 
     /**
      * @note
-     *   エンコーダ内部のカウントは uint16_t の範囲内でカウントされる．(ただし型は uint32_t)  <br>
+     *   エンコーダ内部のカウントは uint16_t の範囲内でカウントされる．  <br>
      *  　　  0 ≦ _htim_x->Instance->CNT ≦ 65535      <br>
      *    (最大値は 0~65535 の範囲で，.ioc から設定可能)  <br>
      *
-     *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化する．
+     *    パルス差分カウントのためのオフセットは中間の 0x0FFF=(65536/2 - 1) で初期化される．
      */
-    const uint32_t _offset_pulse ; //< 0x0FFF
+    const uint16_t _offset_pulse ; //< 0x0FFF
+
+    int32_t _delta_pulse;
+    int64_t _integral_pulse;
+    int64_t _rotation_count;
+
+    void update_pulse();
+
+    void update_rotation_count();
 };
 
-}  // namespace mslh
 
 #endif

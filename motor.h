@@ -15,8 +15,6 @@
 #include "digital_out.h"
 #include "defines.h"
 
-namespace mslh {
-
 /**
  * @brief
  *   This Class, the target of the control is Motor-Driver "DRV8836".  <br>
@@ -66,16 +64,15 @@ public:
      */
     Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw);
 
-
     /**
      * @fn Start motor.
      */
-    void start() const;
+    void start();
 
     /**
      * @fn Stop motor.
      */
-    void stop() const;
+    void stop();
 
     /**
      * @fn Specifies the PWM of the motor.
@@ -93,9 +90,7 @@ private:
     const uint16_t _phase_pin;
     TIM_HandleTypeDef &_htim_x;
     const uint64_t _channel;
-    const GPIO_PinState _forward_wise;
-};
+    const GPIO_PinState _forward_wise;};
 
-}  // namespace mslh
 
 #endif //ZUZU_HALFMOUSE_2019_MOTOR_H

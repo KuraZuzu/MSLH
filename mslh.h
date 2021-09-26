@@ -47,6 +47,7 @@
 #include "motor.h"
 #include "encoder.h"
 #include "wheel_control.h"
+#include "gyro_sensor.h"
 
 using namespace mslh;
 

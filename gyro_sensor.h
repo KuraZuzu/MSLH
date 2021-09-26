@@ -21,10 +21,11 @@ namespace mslh {
 class GyroSensor {
 
 public:
-    GyroSensor(SPI_HandleTypeDef &hspi, DigitalOut cs_pin)
+    GyroSensor(SPI_HandleTypeDef &hspi, GPIO_TypeDef *cs_x, uint16_t cs_pin)
     : _hspi(hspi)
+    , _cs_x(cs_x)
     , _cs_pin(cs_pin) {
-        _cs_pin = 0;
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
     }
 
     void start() {
@@ -34,40 +35,36 @@ public:
         MX_SPI3_Init();
         MX_DMA_Init();
         MX_GPIO_Init();
+        HAL_SPI_Init(&hspi3);
 
 
         uint8_t rx_data[2] = {0x00, 0x00};  //< Reserved for receive data
         rx_data[0] = 0x00;
         rx_data[1] = 0x00;
 
-        uint8_t reg = 0x75;   //< Input Hello::0x75 return(0x12)?
-        uint8_t data = 0x00;  //< No data for reading
+        uint8_t reg = 0x75;   //< Input Hello::0x75 return(0x12)
+        uint8_t data = 0x00;  //< No data for reading (Dummy data)
         uint8_t tx_data[2];
-        tx_data[0] = reg | 0x80;
+        tx_data[0] = 0x80 | reg;
         tx_data[1] = data;
 
-        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
-        HAL_SPI_Init(&hspi3);
 
         while(1) {
-            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);
 
             HAL_SPI_TransmitReceive_DMA(&hspi3, (uint8_t*)tx_data, (uint8_t*)rx_data, 2);
+            while (HAL_SPI_GetState(&hspi3) != HAL_SPI_STATE_READY) { }
+            HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
 
-            while (HAL_SPI_GetState(&hspi3) != HAL_SPI_STATE_READY) {
-            }
-            test_buzzer();
-
-            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
-//        printf("%d\r\n",rx_data);
-            printf("%04x\r\n",rx_data);
+            printf("0x%x\r\n",rx_data);
             HAL_Delay(10);
         }
     }
 
 private:
     SPI_HandleTypeDef &_hspi;
-    DigitalOut _cs_pin;
+    GPIO_TypeDef *_cs_x;
+    const uint16_t _cs_pin;
 };
 
 }  // namespace mslh

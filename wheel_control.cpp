@@ -40,12 +40,24 @@ void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
     if(speed_mm_s < 0) _duty_ratio = -0.5f;
     else _duty_ratio = 0.0f;
 
-    // 指定の距離分のパルスまで処理．
-    while (abs(pulse) < distance_pulse) {
-        controlSpeed(speed_mm_s);
-        pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+    // 指定の距離分のパルスまで処理．(前転と後転で場合分け．もう少し最適化できそう．)
+    if(distance_pulse > 0) {
+        while (pulse < distance_pulse) {
+            controlSpeed(speed_mm_s);
+            pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+        }
+
+    } else if(distance_pulse < 0) {
+        while (pulse > distance_pulse) {
+            controlSpeed(speed_mm_s);
+            pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+        }
+
     }
+
+
     _motor.update(0);
+
 }
 
 void mslh::WheelControl::stop() {

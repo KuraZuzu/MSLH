@@ -36,9 +36,9 @@ void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
     int32_t pulse = 0;  //< これから更新するパルス
 
     // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
-    _duty_ratio = 0.5f;
+    if(speed_mm_s > 0) _duty_ratio = 0.5f;
     if(speed_mm_s < 0) _duty_ratio = -0.5f;
-    else if(!speed_mm_s) _duty_ratio = 0.0f;
+    else _duty_ratio = 0.0f;
 
     // 指定の距離分のパルスまで処理．
     while (abs(pulse) < distance_pulse) {

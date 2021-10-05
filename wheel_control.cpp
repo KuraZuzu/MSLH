@@ -55,9 +55,7 @@ void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
 
     }
 
-
     _motor.update(0);
-
 }
 
 void mslh::WheelControl::stop() {

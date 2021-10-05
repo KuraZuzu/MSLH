@@ -66,9 +66,9 @@ private:
 
 
     inline void controlSpeed(int32_t speed) {
+        // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
         if(abs(_speed) < abs(speed)) _duty_ratio *= _accel_duty_ratio;
         else if(abs(_speed) > abs(speed)) _duty_ratio *= _decelerate_duty_ratio;
-
         _motor.update(_duty_ratio);
     }
 

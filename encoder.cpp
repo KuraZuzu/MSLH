@@ -30,7 +30,7 @@ void mslh::Encoder::stop() const {
 void mslh::Encoder::reset() {
     _delta_pulse = 0;
     _total_pulse = 0;
-    _htim_x.Instance->CNT = _offset_pulse;
+    __HAL_TIM_SET_COUNTER(&_htim_x, _offset_pulse); // まだ動作未確認 元:_htim_x.Instance->CNT = _offset_pulse;
 }
 
 void mslh::Encoder::update() {

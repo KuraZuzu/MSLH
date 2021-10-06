@@ -14,7 +14,7 @@ mslh::Encoder::Encoder(TIM_HandleTypeDef &htim_x, int32_t one_rotation_pulse, bo
   , _total_pulse(0)
   , _htim_x(htim_x)
   , _offset_pulse(__HAL_TIM_GET_AUTORELOAD(&_htim_x) / 2 - 1)
-  , _one_rotation_pulse(static_cast<int32_t>(one_rotation_pulse))  //< 計算高速化のため．
+  , _one_rotation_pulse(one_rotation_pulse)  //< 計算高速化のため．
   , _forward_wise(cw)
 {
 }

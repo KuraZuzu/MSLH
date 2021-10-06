@@ -9,7 +9,7 @@
 
 #include "encoder.h"
 
-mslh::Encoder::Encoder(TIM_HandleTypeDef &htim_x, uint16_t one_rotation_pulse, bool cw)
+mslh::Encoder::Encoder(TIM_HandleTypeDef &htim_x, int32_t one_rotation_pulse, bool cw)
   : _delta_pulse(0)
   , _total_pulse(0)
   , _htim_x(htim_x)

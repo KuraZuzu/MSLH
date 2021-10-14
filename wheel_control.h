@@ -45,9 +45,11 @@ class WheelControl {
 
 public:
     /**
-    * @note WheelControl(___ , ___ , ___ , uint16_t speed_sampling_time);
+    * @note WheelControl(___ , ___ , float32_t wheel_diameter, uint16_t speed_sampling_time);
     *
-    * @param speed_sampling_time is milli second [ms].
+    * @param
+    *   wheel_diameter     : milli meter [mm].
+    *   speed_sampling_time: milli second [ms].
     */
     WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
 

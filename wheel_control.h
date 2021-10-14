@@ -77,7 +77,7 @@ private:
     Encoder _encoder;
     Motor _motor;
     const float32_t _accel_duty_ratio;       //< 1.5
-    const float32_t _decelerate_duty_ratio;  //<0.75
+    const float32_t _decelerate_duty_ratio;  //< 0.75
     const int32_t _speed_sampling_time;
     const int32_t _distance_per_pulse;
 };

@@ -59,6 +59,6 @@ void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
 }
 
 void mslh::WheelControl::stop() {
-    _encoder.stop();
     _motor.stop();
+    _encoder.stop();
 }

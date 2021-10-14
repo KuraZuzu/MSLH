@@ -44,6 +44,11 @@ namespace mslh {
 class WheelControl {
 
 public:
+    /**
+    * @note WheelControl(___ , ___ , ___ , uint16_t speed_sampling_time);
+    *
+    * @param speed_sampling_time is milli second [ms].
+    */
     WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
 
     /**
@@ -51,7 +56,7 @@ public:
      */
     inline void measureSpeed() {
         _encoder.update();
-        _speed = _distance_per_pulse * _encoder.getDeltaPulse() * _speed_sampling_time;
+        _speed = _distance_per_pulse * _encoder.getDeltaPulse() * 1000 / _speed_sampling_time;
     }
 
     void start();
@@ -78,8 +83,8 @@ private:
     Motor _motor;
     const float32_t _accel_duty_ratio;       //< 1.5
     const float32_t _decelerate_duty_ratio;  //< 0.75
-    const int32_t _speed_sampling_time;
-    const int32_t _distance_per_pulse;
+    const int32_t _speed_sampling_time;      // milli second [ms]
+    const int32_t _distance_per_pulse;       // [mm]/[sec]
 };
 
 }  // namespace mslh

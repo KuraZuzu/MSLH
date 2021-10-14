@@ -23,10 +23,9 @@ mslh::WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_d
 
 
 void mslh::WheelControl::start() {
+    _encoder.start();
     _motor.start();
     _motor.update(0);
-    _encoder.reset();
-    _encoder.start();
 }
 
 void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {

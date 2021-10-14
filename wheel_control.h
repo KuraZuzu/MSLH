@@ -47,7 +47,7 @@ public:
     WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
 
     /**
-     * @fn この関数を１つ上の階層のタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください。
+     * @fn 呼び出し側のプログラムで，この関数をタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください．
      */
     inline void measureSpeed() {
         _encoder.update();

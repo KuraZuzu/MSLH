@@ -55,12 +55,10 @@ public:
 
     /**
      * @fn 呼び出し側のプログラムで，この関数をタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください．
-     * ！！！！！！なぜか、そもそもこの関数が呼ばれても動作しない。　！！！！！！！！
      */
     void measureSpeed() {
         _encoder.update();
-//        _speed = _distance_per_pulse * _encoder.getDeltaPulse() * 1000 / _speed_sampling_time;
-        _speed = 111;
+        _speed = _distance_per_pulse * _encoder.getDeltaPulse() * 1000 / _speed_sampling_time;
     }
 
     void start();
@@ -69,7 +67,9 @@ public:
 
     void stop();
 
-    inline int32_t getSpeed() { return _speed; }
+    inline int32_t getSpeed() {
+        return _speed;
+    }
 
 
 private:

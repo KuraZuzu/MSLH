@@ -31,6 +31,8 @@ namespace mslh {
  *
  *   #include "pwm_out.h"
  *
+ *   using namepsace mslh;
+ *
  *   PWMOut pwm_out(htim1, TIM_CHANNEL_1);
  *
  *   int main() {

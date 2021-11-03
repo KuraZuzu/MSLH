@@ -30,6 +30,8 @@ namespace mslh {
  *
  *   #include "encoder.h"
  *
+ *   using namespace mslh;
+ *
  *   Encoder encoder(htim3, 500, false);
  *
  *   int main() {
@@ -42,7 +44,7 @@ namespace mslh {
  *       int64_t delta_pulse;
  *       int64_t rotation_count;
  *
- *       encoder.start();  //< Start encoder measurement
+ *       encoder.start();  //< Start encoder measurement.
  *
  *
  *

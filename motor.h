@@ -28,14 +28,16 @@ namespace mslh {
  *   // 3 seconds each, and then stopped.
  *
  *   #include "motor.h"
+
+ *   using namepsace mslh;
  *
  *   Motor motor(htim1, TIM_CHANNEL_1, GPIOA, GPIO_PIN_6, true);
  *
  *   int main() {
- *      // Abbreviation Microcomputer startup settings
+ *      // Abbreviation Microcomputer startup settings.
  *
- *       MX_TIM1_Init();  //< Need setup HAL encoder timer parameters.
- *       MX_GPIO_Init();  //< Need setup HAL_GPIO.
+ *       MX_TIM1_Init();  //< Need setup HAL motor timer parameters.
+ *       MX_GPIO_Init();  //< Need setup HAL_GPIO for motor direction.
  *
  *       motor.start();   //< Start drive motor
  *

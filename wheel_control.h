@@ -26,19 +26,42 @@ namespace mslh {
  *
  * Example:
  * @code
- *     WheelControl left_wheel(省略);
- *     WheelControl right_wheel(省略);
+ *
+ *   using namespace mslh;
+ *
+ *   WheelControl wheel( Motor(htim1, TIM_CHANNEL_1, GPIOC, GPIO_PIN_0, false), Encoder(htim3, 500*4, true), 300, 10);
  *
  *
- *     // 90M[Hz](APB1) / 36000 = 2500[Hz](TIM6)
- *     // 2500[Hz] / 25(Period) = 100[Hz]
- *     // 0.01秒ごとに呼び出される．コールバック関数．
- *     void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
- *     if(htim == &htim6) {
- *         left_wheel.measureSpeed();
- *         right_wheel.measureSpeed();
- *     }
- * }
+ *   // Need ticker for measure speed.
+ *   void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+ *
+ *       // 90M[Hz](APB1) / 36000 = 2500[Hz](TIM6)
+ *       // 2500[Hz] / 25(Period) = 100[Hz]
+ *       //
+ *       // -> 10[ms] ごとに呼び出される．コールバック関数．
+ *       if(htim == &htim6) {
+ *           wheel.measureSpeed();
+ *   }
+ *
+ *
+ *   int main() {
+ *       // Abbreviation Microcomputer startup settings.
+ *
+ *       int32_t speed;
+ *
+ *       MX_TIM1_Init();                 //< Need setup HAL motor timer parameters.
+ *       MX_TIM3_Init();                 //< Need setup HAL encoder timer parameters.
+ *       MX_GPIO_Init();                 //< Need setup HAL_GPIO for motor direction.
+ *       MX_TIM6_Init();                 //< Need setup HAL ticker(callback) timer parameters.
+ *       HAL_TIM_Base_Start_IT(&htim6);  //< Need start ticker(callback) timer parameters.
+ *
+ *       test.start(3000, 1000000);  //< Need start motor and encoder.
+ *       test.run();    //< Run (wheel rotation) speed and distance order.
+ *
+ *       int32_t wheel_speed = test_wheel.getSpeed();  //< measure wheel speed
+ *
+ *       test.stop();  //< Stop all work (Encoder values are retained).
+ *   }
  * @endcode
  */
 class WheelControl {

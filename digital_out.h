@@ -26,6 +26,8 @@ namespace mslh {
  *   // Toggle a LED
  *   #include "digitalout.h"
  *
+ *   using namespace mslh;
+ *
  *   DigitalOut led(GPIOC, GPIO_PIN_3);
  *
  *   int main() {

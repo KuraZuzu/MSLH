@@ -25,6 +25,8 @@ namespace mslh {
  *
  *   #include "buzzer.h"
  *
+ *   using namespace mslh;
+ *
  *   Buzzer buzzer(PWMOut(htim8, TIM_CHANNEL_1));
  *
  *   int main() {

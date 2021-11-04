@@ -12,7 +12,7 @@
 mslh::WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
         : _motor(motor)
         , _encoder(encoder)
-        , _speed(112)
+        , _speed(0)
         , _duty_ratio(0.0)
         , _speed_sampling_time(static_cast<int32_t>(speed_sampling_time))
         , _distance_per_pulse(wheel_diameter*PI/_encoder.getOneRotationPulse())
@@ -29,7 +29,7 @@ void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
 
     const int64_t offset_total_pulse = _encoder.getTotalPulse();  //< 現在のパルス数取得(オフセット)
     const int32_t distance_pulse = distance_mm / _distance_per_pulse;  //< 目標パルス数算出
-    int32_t pulse = 0;  //< これから更新するパルス
+    int32_t current_pulse = 0;  //< これから更新するパルス
 
     // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
     if(speed_mm_s > 0) _duty_ratio = 0.5f;
@@ -37,19 +37,22 @@ void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
     else _duty_ratio = 0.0f;
 
     // 指定の距離分のパルスまで処理．(前転と後転で場合分け．もう少し最適化できそう．)
-    if(distance_pulse > 0) {
-        while (pulse < distance_pulse) {
+//    if(distance_pulse > 0) {
+//        while (current_pulse < distance_pulse) {
+//            controlSpeed(speed_mm_s);
+//            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+//        }
+//
+//    } else if(distance_pulse < 0) {
+//        while (current_pulse > distance_pulse) {
+//            controlSpeed(speed_mm_s);
+//            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+//        }
+        while (current_pulse < distance_pulse) {
             controlSpeed(speed_mm_s);
-            pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
-        }
+            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
 
-    } else if(distance_pulse < 0) {
-        while (pulse > distance_pulse) {
-            controlSpeed(speed_mm_s);
-            pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
         }
-
-    }
 
     _motor.update(0);
 }

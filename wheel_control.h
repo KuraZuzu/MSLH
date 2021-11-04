@@ -41,7 +41,7 @@ namespace mslh {
  *       // -> 10[ms] ごとに呼び出される．コールバック関数．
  *       if(htim == &htim6) {
  *           wheel.measureSpeed();
- *   }
+ *       }
  *
  *
  *   int main() {

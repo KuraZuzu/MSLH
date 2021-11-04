@@ -97,8 +97,8 @@ private:
 
     inline void controlSpeed(int32_t speed) {
         // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
-        if(abs(_speed) < abs(speed)) _duty_ratio *= _accel_duty_ratio;
-        else if(abs(_speed) > abs(speed)) _duty_ratio *= _decelerate_duty_ratio;
+        const int32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
+        _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．
         _motor.update(_duty_ratio);
     }
 
@@ -106,10 +106,8 @@ private:
     int32_t _speed;  //< [mm/s] mm_per_second.
     Encoder _encoder;
     Motor _motor;
-    const float32_t _accel_duty_ratio;       //< 1.5
-    const float32_t _decelerate_duty_ratio;  //< 0.75
     const int32_t _speed_sampling_time;      // milli second [ms]
-    const int32_t _distance_per_pulse;       // [mm]/[sec]
+    const float32_t _distance_per_pulse;       // [mm]/[sec]
 };
 
 }  // namespace mslh

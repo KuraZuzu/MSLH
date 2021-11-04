@@ -55,8 +55,8 @@ namespace mslh {
  *       MX_TIM6_Init();                 //< Need setup HAL ticker(callback) timer parameters.
  *       HAL_TIM_Base_Start_IT(&htim6);  //< Need start ticker(callback) timer parameters.
  *
- *       test.start(3000, 1000000);  //< Need start motor and encoder.
- *       test.run();    //< Run (wheel rotation) speed and distance order.
+ *       test.start(3000, 1000000);      //< Need start motor and encoder.
+ *       test.run();                     //< Run (wheel rotation) speed and distance order.
  *
  *       int32_t wheel_speed = test_wheel.getSpeed();  //< measure wheel speed
  *

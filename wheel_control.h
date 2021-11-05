@@ -107,8 +107,8 @@ private:
     int32_t _speed;  //< [mm/s] mm_per_second.
     Encoder _encoder;
     Motor _motor;
-    const int32_t _speed_sampling_time;      // milli second [ms]
-    const float32_t _distance_per_pulse;       // [mm]/[sec]
+    const int32_t _speed_sampling_time;  // milli second [ms]
+    const float32_t _distance_per_pulse; // [mm/pulse]
 };
 
 }  // namespace mslh

@@ -24,9 +24,6 @@ namespace mslh {
     // MCU parameters
         constexpr int32_t SPEED_MEASURE_Hz = 100;  //< Setup frequency for measure speed;
 
-    // Math parameters
-    //    constexpr float PI = 3.14159f;  //< It was defined by CMSIS-DSP
-
     // Test speed parameters
         constexpr float32_t ACCEL = 0.05f;
 

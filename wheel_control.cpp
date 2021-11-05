@@ -18,11 +18,15 @@ mslh::WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_d
         , _distance_per_pulse(wheel_diameter*PI/_encoder.getOneRotationPulse())
 {}
 
-
 void mslh::WheelControl::start() {
     _encoder.start();
     _motor.start();
     _motor.update(0);
+}
+
+void mslh::WheelControl::stop() {
+    _motor.stop();
+    _encoder.stop();
 }
 
 void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
@@ -32,32 +36,23 @@ void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
     int32_t current_pulse = 0;  //< これから更新するパルス
 
     // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
-    if(speed_mm_s > 0) _duty_ratio = 0.5f;
-    if(speed_mm_s < 0) _duty_ratio = -0.5f;
+    if (speed_mm_s > 0) _duty_ratio = 0.5f;
+    if (speed_mm_s < 0) _duty_ratio = -0.5f;
     else _duty_ratio = 0.0f;
 
     // 指定の距離分のパルスまで処理．(前転と後転で場合分け．もう少し最適化できそう．)
-//    if(distance_pulse > 0) {
-//        while (current_pulse < distance_pulse) {
-//            controlSpeed(speed_mm_s);
-//            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
-//        }
-//
-//    } else if(distance_pulse < 0) {
-//        while (current_pulse > distance_pulse) {
-//            controlSpeed(speed_mm_s);
-//            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
-//        }
+    if (distance_pulse > 0) {
         while (current_pulse < distance_pulse) {
             controlSpeed(speed_mm_s);
             current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
-
         }
 
-    _motor.update(0);
-}
+    } else if (distance_pulse < 0) {
+        while (current_pulse > distance_pulse) {
+            controlSpeed(speed_mm_s);
+            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
+        }
 
-void mslh::WheelControl::stop() {
-    _motor.stop();
-    _encoder.stop();
+        _motor.update(0);
+    }
 }

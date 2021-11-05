@@ -10,8 +10,8 @@
 class Position {
 public:
     Position();
-    int32_t x;
-    int32_t y;
+    float32_t x;
+    float32_t y;
     float32_t direction_rad;
 };
 

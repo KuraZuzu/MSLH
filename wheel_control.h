@@ -82,29 +82,29 @@ public:
      */
     inline void measureSpeed() {
         _encoder.update();
-        _speed = _encoder.getDeltaPulse() * _speed_per_pulse;
+        _speed = _speed_per_pulse * _encoder.getDeltaPulse();
     }
+
+    inline float32_t getSpeed() { return _speed; }
 
     void start();
 
-    void run(int32_t speed_mm_s, int32_t distance_mm);
+    void run(float32_t speed_mm_s, float32_t distance_mm);
 
     void stop();
-
-    inline int32_t getSpeed() { return _speed; }
 
 
 private:
 
-    inline void controlSpeed(int32_t speed) {
+    inline void controlSpeed(float32_t speed) {
         // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
-        const int32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
+        const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
         _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．
         _motor.update(_duty_ratio);
     }
 
     float32_t _duty_ratio;
-    int32_t _speed;  //< [mm/s] mm_per_second.
+    float32_t _speed;  //< [mm/s] mm_per_second.
     Encoder _encoder;
     Motor _motor;
     const int32_t _speed_sampling_time;  // milli second [ms]

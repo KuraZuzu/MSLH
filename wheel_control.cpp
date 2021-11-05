@@ -30,10 +30,10 @@ void mslh::WheelControl::stop() {
     _encoder.stop();
 }
 
-void mslh::WheelControl::run(int32_t speed_mm_s, int32_t distance_mm) {
+void mslh::WheelControl::run(float32_t speed_mm_s, float32_t distance_mm) {
 
     const int64_t offset_total_pulse = _encoder.getTotalPulse();  //< 現在のパルス数取得(オフセット)
-    const int32_t distance_pulse = distance_mm / _distance_per_pulse;  //< 目標パルス数算出
+    const float32_t distance_pulse = distance_mm / _distance_per_pulse;  //< 目標パルス数算出
     int32_t current_pulse = 0;  //< これから更新するパルス
 
     // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．

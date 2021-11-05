@@ -82,7 +82,7 @@ public:
      */
     inline void measureSpeed() {
         _encoder.update();
-        _speed = _distance_per_pulse * _encoder.getDeltaPulse() * 1000 / _speed_sampling_time;
+        _speed = _encoder.getDeltaPulse() * _speed_per_pulse;
     }
 
     void start();
@@ -109,6 +109,7 @@ private:
     Motor _motor;
     const int32_t _speed_sampling_time;  // milli second [ms]
     const float32_t _distance_per_pulse; // [mm/pulse]
+    const float32_t _speed_per_pulse;    // callbackされるサンプリングタイムも考慮したパラメータ
 };
 
 }  // namespace mslh

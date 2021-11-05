@@ -16,6 +16,7 @@ mslh::WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_d
         , _duty_ratio(0.0)
         , _speed_sampling_time(static_cast<int32_t>(speed_sampling_time))
         , _distance_per_pulse(wheel_diameter*PI/_encoder.getOneRotationPulse())
+        , _speed_per_pulse(_distance_per_pulse * 1000 / _speed_sampling_time)
 {}
 
 void mslh::WheelControl::start() {

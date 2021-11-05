@@ -21,8 +21,8 @@ namespace mslh {
 
 /**
  * @warning
- *     生成した WheelControlクラス のインスタンス全てに対して，
- *     measureSpeed() をタイマ割り込みで呼び出す必要がある．
+ *     For all instances of the generated WheelControl class　
+ *     measureSpeed() must be called at explicit intervals such as timer interrupt.
  *
  * Example:
  * @code
@@ -33,12 +33,13 @@ namespace mslh {
  *
  *
  *   // Need ticker for measure speed.
+ *   // This interrupt intervals are set in .ioc-file (timer.c).
  *   void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
  *
- *       // 90M[Hz](APB1) / 36000 = 2500[Hz](TIM6)
- *       // 2500[Hz] / 25(Period) = 100[Hz]
- *       //
- *       // -> 10[ms] ごとに呼び出される．コールバック関数．
+ *       // [ TIM6 (&htim6) ]
+ *       // This callback function is Called every 10[ms].
+ *       // 90M[Hz](APB1) / 36000 = 2500[Hz]
+ *       // 2500[Hz] / 25(Period) = 100[Hz]   -> 10[ms]
  *       if(htim == &htim6) {
  *           wheel.measureSpeed();
  *       }

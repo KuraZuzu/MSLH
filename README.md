@@ -20,10 +20,13 @@ CMSIS-DSPライブラリがSTM32Cubeの "/STM32Cube/Repository/<現在のファ�
 
 <br>
 また，
+
 ```
 add_definitions(-DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__FPU_PRESENT=1)
 ```
+
 を
+
 ```
 include_directories(Inc Drivers/STM32F4xx_HAL_Driver/Inc Drivers/STM32F4xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F4xx/Include Drivers/CMSIS/Include Drivers/CMSIS/DSP/Include)
 ```

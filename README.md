@@ -6,9 +6,11 @@ Please refer to the following repository(https://github.com/KuraZuzu/MSLH.git) f
 [author: Kazushi Kurasawa (KuraZuzu)]
 
 You need generate code from .ioc(STM32CubeMX) project. <br>
+[.ioc version : 6.2.1]
 
 これはマイクロマウス向けのc/c++プログラムであり，HALドライバを用いています．
 .ioc ファイル(STM32CubeMX) によるピンや内部クロックの設定から生成されたコードを必要とします．このプロジェクトではCmakeに向けて解説します． <br>
+また，説明のために "MSLH" が "ZuzuHalfTPPmod1" というProjectに内包されているものと仮定します． <br>
 <br>
 CMSIS-DSPライブラリがSTM32Cubeの "/STM32Cube/Repository/<現在のファームウェアバージョン(例:STM32Cube_FW_F4_V1.26.1)>/Drivers/CMSIS/DSP/" に存在します．<br>
 この中の "Include" と "Source" をコピーして，プロジェクトの"Drivers/CMSIS/DSP(なければ作る)" に配置し，コンパイルの設定に追加します．<br>

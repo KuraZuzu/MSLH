@@ -12,7 +12,7 @@
 
 #include <cstdio>
 #include "usart.h"
-#include "arm_fp16.h"
+//#include "arm_fp16.h" // これ何 ?
 #include "arm_math.h"
 
 #endif //ZUZUHALFTPPMOD1_DEFINES_H

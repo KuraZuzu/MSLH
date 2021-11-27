@@ -9,7 +9,7 @@
 
 #include "map.h"
 
-Map3::Map3(uint8_t x_size, uint8_t y_size) {
+Map::Map(uint8_t x_size, uint8_t y_size) {
 
     _x_size = x_size;
     _y_size = y_size;
@@ -23,7 +23,7 @@ Map3::Map3(uint8_t x_size, uint8_t y_size) {
 
 }
 
-Map3::~Map3() {
+Map::~Map() {
 
     for (int i = 0; i < _y_size; ++i) {
         delete _block[i];
@@ -32,7 +32,7 @@ Map3::~Map3() {
 }
 
 
-void Map3::map_init() {
+void Map::map_init() {
 
     _block[0][0].set_wall(EAST_MASK + SOUTH_MASK + WEST_MASK);
     _block[1][0].set_wall(WEST_MASK);
@@ -48,7 +48,7 @@ void Map3::map_init() {
     }
 }
 
-void Map3::set_block(Block block, Point<uint8_t> point) {
+void Map::set_block(Block block, Point<uint8_t> point) {
     _block[point.x][point.y].walk_cnt=block.walk_cnt;
     _block[point.x][point.y].set_searched();
     _block[point.x][point.y].set_wall(block.get_wall());
@@ -67,7 +67,7 @@ void Map3::set_block(Block block, Point<uint8_t> point) {
     }
 }
 
-Block& Map3::at(Point<uint8_t> point) {
+Block& Map::at(Point<uint8_t> point) {
     return _block[point.x][point.y];
 }
 

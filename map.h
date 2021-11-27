@@ -1,54 +1,59 @@
 /*!
 * @file map.h v1.0
-* @Copyright © 2021 Kazushi Kurasawa
-* @date 2021.11.28
+* @Copyright © 2018 Kazushi Kurasawa
+* @date 2018.11.16
 *
 * Released under the MIT license.
 * see https://opensource.org/licenses/MIT
 */
+#ifndef NEWZUZUMOUSE_MAP_3_H
+#define NEWZUZUMOUSE_MAP_3_H
 
-#ifndef ZUZUHALFTPPMOD1_MAP_H
-#define ZUZUHALFTPPMOD1_MAP_H
-
+#include "block.h"
 #include "defines.h"
-#include <vector>
+#include "Point.h"
 
-struct Block {
-    uint8_t _wall_data = 0;
-    uint8_t _walk_count = UINT8_MAX;
-};
-
-class Map {
-
+class Map3 {
 public:
-    Map(uint8_t map_size_x, uint8_t map_size_y) {
+    Map3(uint8_t x_size, uint8_t y_size);
 
-        _block.resize(map_size_x);
-
-        for (int i = 0; i < map_size_y; ++i) {
-            _block[i].resize(map_size_y);
+    Map3(const Map3& _m){
+        Map3(_m._x_size, _m._y_size);
+        for (int i = 0; i < _x_size; ++i) {
+            for (int j = 0; j < _y_size; ++j) {
+                _block[i][j] = _m._block[i][j];
+            }
         }
-
     }
 
-    ~Map() {}
+    ~Map3();
 
-    void set_wall(uint8_t x, uint8_t y, uint8_t wall_data) {
+/* マップの壁情報とかセット */
+    void set_block(Block block, Point<uint8_t> point);
+
+/* 歩数情報をセット */
+    void set_walk_cnt(Point<uint8_t> point, int walk_cnt){
+        _block[point.x][point.y].walk_cnt = walk_cnt;
     }
 
-    void update_walk_count() {
+    Block& at(Point<uint8_t> point);
+
+    Point<uint8_t> size(){
+        return Point<uint8_t >(_x_size, _y_size);
     }
 
-    void set_goal(uint8_t goal_x, uint8_t goal_y) {
-        _goal_x = goal_x;
-        _goal_y = goal_y;
-    }
 
-private:
-    uint8_t _goal_x = 8;
-    uint8_t _goal_y = 8;
-    std::vector< std::vector<Block> > _block;
+protected:
+    Block **_block;
+    uint8_t _x_size = 0;
+    uint8_t _y_size = 0;
+
+    Point <uint8_t>_point;
+
+
+    void map_init();
+
 };
 
 
-#endif //ZUZUHALFTPPMOD1_MAP_H
+#endif //NEWZUZUMOUSE_MAP_3_H

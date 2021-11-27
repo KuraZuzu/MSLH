@@ -15,4 +15,10 @@
 //#include "arm_fp16.h" // これ何 ?
 #include "arm_math.h"
 
+constexpr uint8_t SEARCH_MASK = 0b00010000;
+constexpr uint8_t NORTH_MASK = 0b00001000;
+constexpr uint8_t EAST_MASK = 0b00000100;
+constexpr uint8_t SOUTH_MASK = 0b00000010;
+constexpr uint8_t WEST_MASK = 0b00000001;
+
 #endif //ZUZUHALFTPPMOD1_DEFINES_H

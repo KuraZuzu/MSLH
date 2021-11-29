@@ -7,95 +7,95 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef NEWZUZUMOUSE_POINT_H
-#define NEWZUZUMOUSE_POINT_H
+#ifndef ZUZUHALFTPPMOD1_POINT_H
+#define ZUZUHALFTPPMOD1_POINT_H
 
 #include <cmath>
-#include <inttypes.h>
 
 template <typename T>
 struct Point{
 
 public:
-    Point():x(0),y(0){}
-    Point(T _x, T _y):x(_x),y(_y){}
+    Point(): _x(0), _y(0){}
+    Point(T x, T y): _x(x), _y(y){}
 
-    T x;
-    T y;
+    T _x;
+    T _y;
 
 };
 
 
 struct Position : public Point<double_t>{
+
 public:
     Position():rad(0.0){
-        x = 0.0;
-        y = 0.0;
+        _x = 0.0;
+        _y = 0.0;
     }
 
-    Position(const Position& _p): Point(), rad(_p.rad) {
-        x = _p.x;
-        y = _p.y;
+    Position(const Position& position): Point(), rad(position.rad) {
+        _x = position._x;
+        _y = position._y;
     }
 
-    double_t rad;
-
-    Position operator -(const Position& p){
-        Position v;
-        v.x = x - p.x;
-        v.y = y - p.y;
-        v.rad = rad - p.rad;
-        return v;
+    Position operator -(const Position &position){
+        Position temp_position;
+        temp_position._x = _x - position._x;
+        temp_position._y = _y - position._y;
+        temp_position.rad = rad - position.rad;
+        return temp_position;
     }
 
-    Position operator +(const Position& p){
-        Position v;
-        v.x = x + p.x;
-        v.y = y + p.y;
-        v.rad = rad + p.rad;
-        return v;
+    Position operator +(const Position &position){
+        Position temp_position;
+        temp_position._x = _x + position._x;
+        temp_position._y = _y + position._y;
+        temp_position.rad = rad + position.rad;
+        return temp_position;
     }
 
-    Position operator /(const Position& p){
-        Position v;
-        v.x = x / p.x;
-        v.y = y / p.y;
-        v.rad = rad / p.rad;
-        return v;
+    Position operator /(const Position& position){
+        Position temp_position;
+        temp_position._x = _x / position._x;
+        temp_position._y = _y / position._y;
+        temp_position.rad = rad / position.rad;
+        return temp_position;
     }
 
-    Position operator *(const Position& p){
-        Position v;
-        v.x = x * p.x;
-        v.y = y * p.y;
-        v.rad = rad * p.rad;
-        return v;
+    Position operator *(const Position& position){
+        Position temp_position;
+        temp_position._x = _x * position._x;
+        temp_position._y = _y * position._y;
+        temp_position.rad = rad * position.rad;
+        return temp_position;
     }
 
+    float32_t rad;
 
 };
+
 
 struct MapPosition : public Point<uint8_t>{
 
 public:
-    uint8_t direction;
-
 
     explicit operator Point<uint8_t>(){
-        Point<uint8_t> p;
-        p.x = x;
-        p.y = y;
-        return p;
+        Point<uint8_t> point;
+        point._x = _x;
+        point._y = _y;
+        return point;
     }
 
-    bool operator==(const MapPosition& _p)const{
-        return ((x ==_p.x) && (y == _p.y));
+    bool operator==(const MapPosition& position)const{
+        return ((_x == position._x) && (_y == position._y));
     }
 
-    bool operator!=(const MapPosition& _p)const{
-        return !operator==(_p);
+    bool operator!=(const MapPosition& position)const{
+        return !operator==(position);
     }
 
+
+    uint8_t direction;
 };
 
-#endif //NEWZUZUMOUSE_POINT_H
+#endif //ZUZUHALFTPPMOD1_

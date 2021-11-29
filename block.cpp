@@ -12,32 +12,32 @@
 // open = true 1
 // close = false 0
 
-void Block::set_wall(uint8_t b) {
-    _b |= b;
+void Block::setWall(uint8_t b) {
+    _block_data |= b;
 }
 
-bool Block::is_opened_wall(uint8_t b) {
-    return (_b & b);
+bool Block::isOpenedwall(uint8_t t) {
+    return (_block_data & t);
 }
 
-void Block::reset_wall() {
-    _b = 0b00000000;
+void Block::resetWall() {
+    _block_data = 0b00000000;
 }
 
-uint8_t Block::get_wall() {
-    return 0b1111 & _b;
+uint8_t Block::getWall() {
+    return 0b1111 & _block_data;
 }
 
-void Block::set_searched() {
-    _b |= SEARCH_MASK;
+void Block::setSearched() {
+    _block_data |= SEARCH_MASK;
 }
 
-bool Block::is_searched() {
-    return (_b&SEARCH_MASK)==SEARCH_MASK;
+bool Block::isSearched() {
+    return (_block_data & SEARCH_MASK) == SEARCH_MASK;
 }
 
 Block::Block() {
-    _b = 0b00000000;
+    _block_data = 0b00000000;
     walk_cnt = 255;
 }
 

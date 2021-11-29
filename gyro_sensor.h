@@ -56,7 +56,7 @@ public:
             while (HAL_SPI_GetState(&hspi3) != HAL_SPI_STATE_READY) { }
             HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
 
-            printf("0x%x\r\n",rx_data);
+            printf("0x%_x\r\n",rx_data);
             HAL_Delay(10);
         }
     }

@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef NEWZUZUMOUSE_BLOCK_H
-#define NEWZUZUMOUSE_BLOCK_H
+#ifndef ZUZUHALFTPPMOD1_BLOCK_H
+#define ZUZUHALFTPPMOD1_BLOCK_H
 
 
 #include "defines.h"
@@ -17,7 +17,7 @@ class Block {
 
 private:
 
-    uint8_t _b;  /* 0b0000****  <- 下4bitに各方角の壁情報を保存
+    uint8_t _block_data;  /* 0b0000****  <- 下4bitに各方角の壁情報を保存
                           NESW (North, East, South, West)//  */
 
 public:
@@ -28,27 +28,27 @@ public:
     /**
      * @fn 壁情報をセットする
      */
-    void set_wall(uint8_t b);
+    void setWall(uint8_t b);
 
     /**
      * @fn 壁情報をリセットする
      */
-    void reset_wall();
+    void resetWall();
 
     /**
      * @fn センサを参照せずに、マップ情報を元に壁の有無を返す
      */
-    bool is_opened_wall(uint8_t t);
+    bool isOpenedwall(uint8_t t);
 
     /**
      * @fn 壁情報を取得する
      */
-    uint8_t get_wall();
+    uint8_t getWall();
 
-    void set_searched();
+    void setSearched();
 
-    bool is_searched();
+    bool isSearched();
 };
 
 
-#endif //NEWZUZUMOUSE_BLOCK_H
+#endif //ZUZUHALFTPPMOD1_BLOCK_H

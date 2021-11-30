@@ -84,4 +84,4 @@ private:
 
 }  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_DIGITAL_OUT_H
+#endif //MSLH_DIGITAL_OUT_H

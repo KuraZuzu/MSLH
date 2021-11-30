@@ -2,8 +2,8 @@
 // Created by 倉澤　一詩
 //
 
-#ifndef NEWZUZUMOUSE_VECTOR_H
-#define NEWZUZUMOUSE_VECTOR_H
+#ifndef MSLH_VECTOR_H
+#define MSLH_VECTOR_H
 
 template <typename T>
 class Vector{
@@ -76,4 +76,4 @@ public:
 
 };
 
-#endif //NEWZUZUMOUSE_VECTOR_H
+#endif //MSLH_VECTOR_H

@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_BUZZER_H
-#define ZUZUHALFTPPMOD1_BUZZER_H
+#ifndef MSLH_BUZZER_H
+#define MSLH_BUZZER_H
 
 #include "arm_math.h"
 #include "pwm_out.h"
@@ -66,4 +66,4 @@ private:
 
 }  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_BUZZER_H
+#endif //MSLH_BUZZER_H

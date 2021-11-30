@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_BUS3_OUT_H
-#define ZUZUHALFTPPMOD1_BUS3_OUT_H
+#ifndef MSLH_BUS3_OUT_H
+#define MSLH_BUS3_OUT_H
 
 #include "arm_math.h"
 #include "digital_out.h"
@@ -40,4 +40,4 @@ private:
 
 }  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_BUS3_OUT_H
+#endif //MSLH_BUS3_OUT_H

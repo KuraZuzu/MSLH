@@ -7,8 +7,8 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef ZUZUHALFTPPMOD1_ENCODER_H
-#define ZUZUHALFTPPMOD1_ENCODER_H
+#ifndef MSLH_ENCODER_H
+#define MSLH_ENCODER_H
 
 #include "arm_math.h"
 #include "tim.h"
@@ -158,4 +158,4 @@ private:
 
 }  // namespace mslh
 
-#endif
+#endif //MSLH_ENCODER_H

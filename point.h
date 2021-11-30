@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_POINT_H
-#define ZUZUHALFTPPMOD1_POINT_H
+#ifndef MSLH_POINT_H
+#define MSLH_POINT_H
 
 #include <cmath>
 
@@ -98,4 +98,4 @@ public:
     uint8_t _direction;
 };
 
-#endif //ZUZUHALFTPPMOD1_
+#endif //MSLH_POINT_H

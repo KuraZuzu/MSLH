@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_WHEEL_CONTROL_H
-#define ZUZUHALFTPPMOD1_WHEEL_CONTROL_H
+#ifndef MSLH_WHEEL_CONTROL_H
+#define MSLH_WHEEL_CONTROL_H
 
 #include "arm_math.h"
 #include "defines.h"
@@ -114,4 +114,4 @@ private:
 
 }  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_WHEEL_CONTROL_H
+#endif //MSLH_WHEEL_CONTROL_H

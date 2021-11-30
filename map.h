@@ -6,8 +6,8 @@
 * Released under the MIT license.
 * see https://opensource.org/licenses/MIT
 */
-#ifndef ZUZUHALFTPPMOD1_MAP_H
-#define ZUZUHALFTPPMOD1_MAP_H
+#ifndef MSLH_MAP_H
+#define MSLH_MAP_H
 
 #include "block.h"
 #include "defines.h"
@@ -54,4 +54,4 @@ protected:
 };
 
 
-#endif //ZUZUHALFTPPMOD1__MAP_H
+#endif //MSLH_MAP_H

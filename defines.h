@@ -7,8 +7,8 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef ZUZUHALFTPPMOD1_DEFINES_H
-#define ZUZUHALFTPPMOD1_DEFINES_H
+#ifndef MSLH_DEFINES_H
+#define MSLH_DEFINES_H
 
 #include <cstdio>
 #include "usart.h"
@@ -21,4 +21,4 @@ constexpr uint8_t EAST_MASK = 0b00000100;
 constexpr uint8_t SOUTH_MASK = 0b00000010;
 constexpr uint8_t WEST_MASK = 0b00000001;
 
-#endif //ZUZUHALFTPPMOD1_DEFINES_H
+#endif //MSLH_DEFINES_H

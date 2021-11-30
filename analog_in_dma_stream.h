@@ -38,8 +38,8 @@
  * @author Kazushi Kurasawa
  */
 
-#ifndef ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
-#define ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
+#ifndef MSLH_ANALOG_IN_DMA_STREAM_H
+#define MSLH_ANALOG_IN_DMA_STREAM_H
 
 #include "arm_math.h"
 #include "adc.h"
@@ -136,4 +136,4 @@ private:
 };
 
 }
-#endif //ZUZUHALFTPPMOD1_ANALOG_IN_DMA_STREAM_H
+#endif //MSLH_ANALOG_IN_DMA_STREAM_H

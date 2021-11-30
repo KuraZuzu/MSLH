@@ -35,8 +35,8 @@
  *      (3) 1-1
  */
 
-#ifndef ZUZUHALFTPPMOD1_MSLH_H
-#define ZUZUHALFTPPMOD1_MSLH_H
+#ifndef MSLH_MSLH_H
+#define MSLH_MSLH_H
 
 #include "analog_in_dma_stream.h"
 #include "distance_sensor.h"
@@ -51,4 +51,4 @@
 
 using namespace mslh;
 
-#endif //ZUZUHALFTPPMOD1_MSLH_H
+#endif //MSLH_MSLH_H

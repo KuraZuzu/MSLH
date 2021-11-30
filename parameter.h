@@ -10,8 +10,8 @@
 #include "defines.h"
 #include "arm_math.h"
 
-#ifndef ZUZUHALFTPPMOD1_PARAMETER_H
-#define ZUZUHALFTPPMOD1_PARAMETER_H
+#ifndef MSLH_PARAMETER_H
+#define MSLH_PARAMETER_H
 
 namespace mslh {
 
@@ -44,4 +44,4 @@ namespace mslh {
 
 }  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_PARAMETER_H
+#endif //MSLH_PARAMETER_H

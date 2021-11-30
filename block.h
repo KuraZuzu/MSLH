@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_BLOCK_H
-#define ZUZUHALFTPPMOD1_BLOCK_H
+#ifndef MSLH_BLOCK_H
+#define MSLH_BLOCK_H
 
 
 #include "defines.h"
@@ -56,4 +56,4 @@ public:
 };
 
 
-#endif //ZUZUHALFTPPMOD1_BLOCK_H
+#endif //MSLH_BLOCK_H

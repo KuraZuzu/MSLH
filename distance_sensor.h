@@ -54,4 +54,4 @@ private:
 
 }  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
+#endif //MSLH_DISTANCE_SENSOR_H

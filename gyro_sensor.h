@@ -13,8 +13,8 @@
 #include "digital_out.h"
 #include "stdio.h"
 
-#ifndef ZUZUHALFTPPMOD1_GYRO_SENSOR_H
-#define ZUZUHALFTPPMOD1_GYRO_SENSOR_H
+#ifndef MSLH_GYRO_SENSOR_H
+#define MSLH_GYRO_SENSOR_H
 
 namespace mslh {
 
@@ -69,4 +69,4 @@ private:
 
 }  // namespace mslh
 
-#endif //ZUZUHALFTPPMOD1_GYRO_SENSOR_H
+#endif //MSLH_GYRO_SENSOR_H

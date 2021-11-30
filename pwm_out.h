@@ -7,8 +7,8 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef ZUZUHALFTPPMOD1_PWM_OUT_H
-#define ZUZUHALFTPPMOD1_PWM_OUT_H
+#ifndef MSLH_PWM_OUT_H
+#define MSLH_PWM_OUT_H
 
 #include "arm_math.h"
 #include "defines.h"
@@ -95,4 +95,4 @@ private:
 
 }
 
-#endif //ZUZUHALFTPPMOD1_PWM_OUT_H
+#endif //MSLH_PWM_OUT_H

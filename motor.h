@@ -7,8 +7,8 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef ZUZUHALFTPPMOD1_MOTOR_H
-#define ZUZUHALFTPPMOD1_MOTOR_H
+#ifndef MSLH_MOTOR_H
+#define MSLH_MOTOR_H
 
 #include "pwm_out.h"
 #include "tim.h"
@@ -100,4 +100,4 @@ private:
 
 }  // namespace mslh
 
-#endif //ZUZU_HALFMOUSE_2019_MOTOR_H
+#endif //MSLH_MOTOR_H

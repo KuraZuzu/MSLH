@@ -52,7 +52,7 @@ namespace mslh {
  *
  *       MX_TIM1_Init();                 //< Need setup HAL motor timer parameters.
  *       MX_TIM3_Init();                 //< Need setup HAL encoder timer parameters.
- *       MX_GPIO_Init();                 //< Need setup HAL_GPIO for motor direction.
+ *       MX_GPIO_Init();                 //< Need setup HAL_GPIO for motor _direction.
  *       MX_TIM6_Init();                 //< Need setup HAL ticker(callback) timer parameters.
  *       HAL_TIM_Base_Start_IT(&htim6);  //< Need start ticker(callback) timer parameters.
  *

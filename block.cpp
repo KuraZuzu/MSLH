@@ -9,15 +9,13 @@
 
 #include "block.h"
 
-// open = true 1
-// close = false 0
 
-void Block::setWall(uint8_t b) {
-    _block_data |= b;
+void Block::setWall(uint8_t wall_data) {
+    _block_data |= wall_data;
 }
 
-bool Block::isOpenedwall(uint8_t t) {
-    return (_block_data & t);
+bool Block::isOpenedWall(uint8_t target_wall) {
+    return (_block_data & target_wall);
 }
 
 void Block::resetWall() {
@@ -38,6 +36,6 @@ bool Block::isSearched() {
 
 Block::Block() {
     _block_data = 0b00000000;
-    walk_cnt = 255;
+    walk_count = 255;
 }
 

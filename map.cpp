@@ -49,7 +49,7 @@ void Map::mapInit() {
 }
 
 void Map::setBlock(Block block, Point<uint8_t> point) {
-    _block[point._x][point._y].walk_cnt=block.walk_cnt;
+    _block[point._x][point._y].walk_count=block.walk_count;
     _block[point._x][point._y].setSearched();
     _block[point._x][point._y].setWall(block.getWall());
 

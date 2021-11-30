@@ -32,8 +32,8 @@ public:
     void setBlock(Block block, Point<uint8_t> point);
 
 /* 歩数情報をセット */
-    void setWalkCount(Point<uint8_t> point, int walk_cnt){
-        _block[point._x][point._y].walk_cnt = walk_cnt;
+    void setWalkCount(Point<uint8_t> point, int walk_count){
+        _block[point._x][point._y].walk_count = walk_count;
     }
 
     Block& at(Point<uint8_t> point);

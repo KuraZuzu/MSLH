@@ -95,7 +95,7 @@ public:
     }
 
 
-    uint8_t direction;
+    uint8_t _direction;
 };
 
 #endif //ZUZUHALFTPPMOD1_

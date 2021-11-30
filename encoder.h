@@ -72,7 +72,7 @@ public:
     /**
      * @note Encoder(___ , ___ , ___ , bool cw);
      *
-     * @param The cw direction corresponds to the forward rotation of your machine.
+     * @param The cw _direction corresponds to the forward rotation of your machine.
      */
     Encoder(TIM_HandleTypeDef &htim_x, int32_t  one_rotation_pulse, bool cw);
 

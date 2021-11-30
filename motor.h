@@ -37,7 +37,7 @@ namespace mslh {
  *      // Abbreviation Microcomputer startup settings.
  *
  *       MX_TIM1_Init();  //< Need setup HAL motor timer parameters.
- *       MX_GPIO_Init();  //< Need setup HAL_GPIO for motor direction.
+ *       MX_GPIO_Init();  //< Need setup HAL_GPIO for motor _direction.
  *
  *       motor.start();   //< Start drive motor
  *
@@ -63,7 +63,7 @@ public:
      *   Motor(___ , ___ , ___, ___,  bool cw);  <br>
      *
      * @param
-     *   bool cw: The direction corresponds
+     *   bool cw: The _direction corresponds
      *   to the forward rotation of your machine.
      */
     Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw);

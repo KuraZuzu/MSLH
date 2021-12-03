@@ -10,11 +10,9 @@
 #include "timer.h"
 
 namespace timer {
-        uint32_t counter_us;
+        volatile uint32_t counter_us;
         TIM_HandleTypeDef *timer_htim_x;
 };
-//uint32_t timer::counter_us;
-//TIM_HandleTypeDef *timer::timer_htim_x;
 
 /**
  * @fn init_timer_setting(TIM)

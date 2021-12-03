@@ -7,18 +7,17 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef ZUZUHALFTPPMOD1_TIMER_H
-#define ZUZUHALFTPPMOD1_TIMER_H
+#ifndef MSLH_TIMER_H
+#define MSLH_TIMER_H
 
 #include "arm_math.h"
 #include "stm32f4xx_hal.h"
 #include "tim.h"
 
-
 namespace timer {
 
-    extern uint32_t counter_us;
-//    extern TIM_HandleTypeDef *timer_htim_x;
+    extern volatile uint32_t counter_us;
+    extern TIM_HandleTypeDef *timer_htim_x;
 
     /*
      * 1us間隔で呼ばれるcallback関数のTIMをセット
@@ -39,4 +38,4 @@ namespace timer {
 
 }
 
-#endif //ZUZUHALFTPPMOD1_TIMER_H
+#endif //MSLH_TIMER_H

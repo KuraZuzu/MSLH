@@ -12,11 +12,10 @@
 mslh::DistanceSensor::DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor)
         : _photo_transistor(photo_transistor)
         , _led_x(led_x)
-        , _led_pin(led_pin)
-        , _calibration_value(0) {
+        , _led_pin(led_pin) {
+
 //    _photo_transistor.start();  //< まだstartしてないから読んだらバグる。
-//    calibration();  //< こちらも同様
-    HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);  //< ledは常に点灯させておくことでコンデンサに給電させない。
+//    HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);  //< ledは常に点灯させておくことでコンデンサに給電させない。
 }
 
 void mslh::DistanceSensor::start() {
@@ -25,36 +24,15 @@ void mslh::DistanceSensor::start() {
 
 uint32_t mslh::DistanceSensor::read(uint32_t charge_time_ms) const {
     //結局PWMがいいのではないか。 by Fさん。
+
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_RESET);;  //< コンデンサ充電開始
-
     HAL_Delay(charge_time_ms); //< 1m秒が時定数 ( 47u[F] + 20[Ω] ) 63.2%充電 1.5m秒くらい欲しいかも？
-    //HAL_Delay()だと正確な時間が保証されるか不明。
-
+    const uint32_t offset_value = _photo_transistor.read();
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);
     HAL_Delay(1);  // < 波形がピークになるのをまつ まだ仮時間
-    uint32_t max_value = 0;
-    uint32_t current_value = _photo_transistor.read();
-    while (max_value < current_value) {
-        max_value = current_value;
-        current_value = _photo_transistor.read();
-    }
 
-    return max_value - _calibration_value;
+    return _photo_transistor.read() - offset_value;
     // ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
-}
-
-void mslh::DistanceSensor::calibration() {
-    HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_RESET);
-    HAL_Delay(1000);  //< Delay for the ADC to stabilize at startup.
-
-    _photo_transistor.start();
-    for (int i = 0; i < 10; ++i) {
-        _calibration_value += _photo_transistor.read();
-    }
-    _calibration_value /= 10;
-
-    HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);
-    HAL_Delay(100);
 }
 
 uint32_t mslh::DistanceSensor::getDistance_mm() {

@@ -31,8 +31,6 @@ public:
      */
     DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor);
 
-    void calibration();
-
     void start();
 
     /**
@@ -49,7 +47,6 @@ private:
     GPIO_TypeDef *_led_x;
     const uint16_t _led_pin;
     AnalogInDMAStream _photo_transistor;
-    uint16_t _calibration_value;  //< 外乱光のオフセット
 };
 
 }  // namespace mslh

@@ -17,24 +17,24 @@
 
 namespace timer {
 
-    extern uint32_t us_counter;
+    extern uint32_t counter_us;
 //    extern TIM_HandleTypeDef *timer_htim_x;
 
     /*
      * 1us間隔で呼ばれるcallback関数のTIMをセット
      **/
-    void init_timer(TIM_HandleTypeDef *htim_x);
+    void initTimer(TIM_HandleTypeDef *htim_x);
 
     /*
      * 1us間隔で呼ばれるように対象のTIMの設定をした上でのみ使用可能
      **/
-    void wait_us(uint32_t time_us);
+    void waitMicroSeconds(uint32_t time_us);
 
     /*
-     * 1usで呼ばれるcallback関数内で呼ぶ
+     * 1us間隔で呼ばれるcallback関数内で呼ぶ
      **/
-    inline void count_us(){
-        us_counter++;
+    inline void countMicroSeconds(){
+        counter_us++;
     }
 
 }

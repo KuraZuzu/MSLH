@@ -9,8 +9,8 @@
  */
 
 
-#ifndef ZUZUHALFTPPMOD1_DIGITAL_OUT_H
-#define ZUZUHALFTPPMOD1_DIGITAL_OUT_H
+#ifndef MSLH_DIGITAL_OUT_H
+#define MSLH_DIGITAL_OUT_H
 
 #include "arm_math.h"
 #include "gpio.h"

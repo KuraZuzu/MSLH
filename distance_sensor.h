@@ -7,8 +7,8 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
-#define ZUZUHALFTPPMOD1_DISTANCE_SENSOR_H
+#ifndef MSLH_DISTANCE_SENSOR_H
+#define MSLH_DISTANCE_SENSOR_H
 
 #include "arm_math.h"
 #include "pwm_out.h"

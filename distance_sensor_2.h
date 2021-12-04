@@ -1,5 +1,5 @@
 /*!
- * @file distance_sensor.h v1.0
+ * @file distance_sensor_2.h v1.0
  * @Copyright © 2021 Kazushi Kurasawa
  * @date 2021.03.03
  *
@@ -22,14 +22,14 @@ namespace mslh {
  *   This is a distance sensor class using Morinaga-type light emitting circuit.  <br>
  *   森永式発光回路を用いた距離センサクラスです．
  */
-class DistanceSensor {
+class DistanceSensor2 {
 
 public:
 
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor);
+    DistanceSensor2(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor);
 
     void start();
 

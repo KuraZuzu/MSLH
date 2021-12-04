@@ -59,15 +59,6 @@ void mslh::PWMOut::stop() const {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 
-void mslh::PWMOut::write(float32_t duty_ratio) {
-    // The reason "+1" of last argument exists is that the duty ratio starts at 0.
-    // (The output is equivalent even at 0).
-    // Aが存在する理由は、Duty比が0から開始されるためです。(0でも出力は等価)
-    // The reason it's not "(_period + 1)" is to avoid overflow.
-    // (_period + 1) でない理由は、オーバーフローを避けるためです。
-    // でも結局65535が入ってきたらオーバーフローする．
-    __HAL_TIM_SET_COMPARE(&_htim_x, _channel, duty_ratio * _period + 1);
-}
 
 void mslh::PWMOut::period(uint32_t period) {
     _period = period;

@@ -1,5 +1,5 @@
 /*!
- * @file distance_sensor.cpp v1.0
+ * @file distance_sensor_2.cpp v1.0
  * @Copyright © 2021 Kazushi Kurasawa
  * @date 2021.03.03
  *
@@ -7,9 +7,9 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#include "distance_sensor.h"
+#include "distance_sensor_2.h"
 
-mslh::DistanceSensor::DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor)
+mslh::DistanceSensor2::DistanceSensor2(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor)
         : _photo_transistor(photo_transistor)
         , _led_x(led_x)
         , _led_pin(led_pin) {
@@ -18,11 +18,11 @@ mslh::DistanceSensor::DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, Anal
 //    HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_SET);  //< ledは常に点灯させておくことでコンデンサに給電させない。
 }
 
-void mslh::DistanceSensor::start() {
+void mslh::DistanceSensor2::start() {
     _photo_transistor.start();
 }
 
-uint32_t mslh::DistanceSensor::read(uint32_t charge_time_ms) const {
+uint32_t mslh::DistanceSensor2::read(uint32_t charge_time_ms) const {
     //結局PWMがいいのではないか。 by Fさん。
 
     HAL_GPIO_WritePin(_led_x, _led_pin, GPIO_PIN_RESET);;  //< コンデンサ充電開始
@@ -35,11 +35,11 @@ uint32_t mslh::DistanceSensor::read(uint32_t charge_time_ms) const {
     // ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
 }
 
-uint32_t mslh::DistanceSensor::getDistance_mm() {
+uint32_t mslh::DistanceSensor2::getDistance_mm() {
     return convert_12bit_to_mm(_photo_transistor.read());
 }
 
-uint32_t mslh::DistanceSensor::convert_12bit_to_mm(uint16_t value) {
+uint32_t mslh::DistanceSensor2::convert_12bit_to_mm(uint16_t value) {
     value = 0; //ここで距離変換の数式わちゃわちゃ。
     return value;
 }

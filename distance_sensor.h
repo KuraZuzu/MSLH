@@ -49,6 +49,7 @@ public:
         _previous_value = 0;
         _offset_value = _min_value;  //< オフセット値は直前の物を使う
         _min_value = UINT32_MAX;
+        _get_flag = false;
     }
 
     void start();

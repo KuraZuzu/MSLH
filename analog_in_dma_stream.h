@@ -102,10 +102,25 @@ public:
      * @details
      *   This function needs to be called after ADC and DMA init_functions are called.  <br>
      *   Example: MX_DMA_Init(), MX_ADC1_Init().  <br>
-     *     <br>
+     *   <br>
      *   ADC と DMA の Init関数 を呼び出した後に実行してください。
      */
     void start();
+
+
+    /**
+     * @fn
+     *   Since this is a DMA-based ADC, stop() function cannot be implemented into this class. <br>
+     *   Stopping the ADC + DMA operation will cause confusion if implemented, since it will stop all the buffers. <br>
+     *   <br>
+     *   DMAを元にしたADCなので、このクラスに stop()関数 は実装出来ません。<br>
+     *   Stopping the ADC + DMA operation will cause confusion if implemented, since it will stop all the buffers.
+     *
+     * @warning
+     *   Never, ever implement this stop() function. <br>
+     *   絶対に、この stop() 関数 は実装しないでください。
+     */
+     // void stop();  //< 絶対に実装するな。
 
     /**
      * @fn Get analog value.

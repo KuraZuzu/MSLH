@@ -29,14 +29,26 @@ public:
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    DistanceSensor(PWMOut led, AnalogInDMAStream photo_transistor);
+    DistanceSensor(PWMOut led, AnalogInDMAStream photo_transistor, TIM_HandleTypeDef &sampling_htim_x);
 
     inline void interruptSamplingValue() {
+        _previous_value = _current_value;
+        _current_value = _photo_transistor.read();
+        if(_current_value < _min_value) {
+            _min_value = _current_value;
+        }
+        if(_current_value < _previous_value) {
+            _value = _previous_value - _offset_value;
+            _get_flag = true;
+        }
 
     }
 
     inline void interruptCallbackResetValue() {
-
+        _current_value = 0;
+        _previous_value = 0;
+        _offset_value = _min_value;  //< オフセット値は直前の物を使う
+        _min_value = UINT32_MAX;
     }
 
     void start();
@@ -53,10 +65,17 @@ private:
 
     uint32_t convert_12bit_to_mm(uint16_t value);
 
-//    TIM_HandleTypeDef &_htim_x;
-//    const uint64_t _channel;
+
     PWMOut _led;
     AnalogInDMAStream _photo_transistor;
+    TIM_HandleTypeDef &_sampling_htim_x;
+    uint32_t _value;  //< 最終的な距離に直す値
+    uint32_t _current_value;  //< _get_flag のための微分する最新の (値現在周期の値)
+    uint32_t _previous_value; //< _get_flag のための微分する１つ前の値 (値現在周期の値)
+    uint32_t _min_value;  //< 最低値 (値現在周期の値)
+    uint32_t _offset_value; //< 1つ前の周期の最低値を記録したもの(オフセットとして使う) (1つ前の周期の値)
+
+    bool _get_flag;
 };
 
 }  // namespace mslh

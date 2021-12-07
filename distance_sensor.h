@@ -44,7 +44,7 @@ public:
 
     }
 
-    inline void interruptCallbackResetValue() {
+    inline void interruptResetValue() {
         _current_value = 0;
         _previous_value = 0;
         _offset_value = _min_value;  //< オフセット値は直前の物を使う

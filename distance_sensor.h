@@ -29,14 +29,18 @@ public:
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    DistanceSensor(GPIO_TypeDef *led_x, uint16_t led_pin, AnalogInDMAStream photo_transistor);
+    DistanceSensor(PWMOut led, AnalogInDMAStream photo_transistor);
 
     void start();
 
+    void stop() {
+        _led.stop();
+//        _photo_transistor.
+    }
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    uint32_t read(uint32_t charge_time_ms = 1) const;
+    uint32_t read() const;
 
 private:
 
@@ -44,8 +48,9 @@ private:
 
     uint32_t convert_12bit_to_mm(uint16_t value);
 
-    GPIO_TypeDef *_led_x;
-    const uint16_t _led_pin;
+//    TIM_HandleTypeDef &_htim_x;
+//    const uint64_t _channel;
+    PWMOut _led;
     AnalogInDMAStream _photo_transistor;
 };
 

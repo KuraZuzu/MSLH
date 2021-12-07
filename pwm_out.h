@@ -64,6 +64,15 @@ public:
      */
     void start() const;
 
+    /**
+     * @fn Start update event based on PWM period.
+     */
+    void startUpdateEvent() const;
+
+    /**
+     * @fn Stop update event based on PWM period.
+     */
+    void stopUpdateEvent() const;
 
     /**
      * @fn Stop output PWM.

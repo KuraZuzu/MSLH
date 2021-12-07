@@ -59,6 +59,13 @@ void mslh::PWMOut::stop() const {
     HAL_TIM_PWM_Stop(&_htim_x, _channel);
 }
 
+void mslh::PWMOut::startUpdateEvent() const {
+    HAL_TIM_Base_Start_IT(&_htim_x);
+}
+
+void mslh::PWMOut::stopUpdateEvent() const {
+    HAL_TIM_Base_Stop_IT(&_htim_x);
+}
 
 void mslh::PWMOut::period(uint32_t period) {
     _period = period;

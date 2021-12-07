@@ -31,16 +31,21 @@ public:
      */
     DistanceSensor(PWMOut led, AnalogInDMAStream photo_transistor);
 
+    inline void interruptSamplingValue() {
+
+    }
+
+    inline void interruptCallbackResetValue() {
+
+    }
+
     void start();
 
-    void stop() {
-        _led.stop();
-//        _photo_transistor.
-    }
     /**
      * @param Charge capacitor (can't set us unit).
      */
     uint32_t read() const;
+
 
 private:
 

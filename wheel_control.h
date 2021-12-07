@@ -22,7 +22,7 @@ namespace mslh {
 /**
  * @warning
  *     For all instances of the generated WheelControl class　
- *     measureSpeed() must be called at explicit intervals such as timer interrupt.
+ *     interruptMeasureSpeed() must be called at explicit intervals such as timer interrupt.
  *
  * Example:
  * @code
@@ -41,7 +41,7 @@ namespace mslh {
  *       // 90M[Hz](APB1) / 36000 = 2500[Hz]
  *       // 2500[Hz] / 25(Period) = 100[Hz]   -> 10[ms]
  *       if(htim == &htim6) {
- *           wheel.measureSpeed();
+ *           wheel.interruptMeasureSpeed();
  *       }
  *
  *
@@ -80,7 +80,7 @@ public:
     /**
      * @fn 呼び出し側のプログラムで，この関数をタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください．
      */
-    inline void measureSpeed() {
+    inline void interruptMeasureSpeed() {
         _encoder.update();
         _speed = _speed_per_pulse * _encoder.getDeltaPulse();
     }

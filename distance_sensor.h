@@ -32,14 +32,17 @@ public:
     DistanceSensor(PWMOut led, AnalogInDMAStream photo_transistor, TIM_HandleTypeDef &sampling_htim_x);
 
     inline void interruptSamplingValue() {
-        _previous_value = _current_value;
-        _current_value = _photo_transistor.read();
-        if(_current_value < _min_value) {
-            _min_value = _current_value;
-        }
-        if( (!_get_flag) && (_current_value < _previous_value) ) {
-            _value = _previous_value - _offset_value;
-            _get_flag = true;
+
+        if(!_get_flag) {
+            _previous_value = _current_value;
+            _current_value = _photo_transistor.read();
+            if (_current_value < _min_value) {
+                _min_value = _current_value;
+            }
+            if (_current_value < _previous_value) {
+                _value = _previous_value - _offset_value;
+                _get_flag = true;
+            }
         }
     }
 

@@ -37,11 +37,10 @@ public:
         if(_current_value < _min_value) {
             _min_value = _current_value;
         }
-        if(_current_value < _previous_value) {
+        if( (!_get_flag) && (_current_value < _previous_value) ) {
             _value = _previous_value - _offset_value;
             _get_flag = true;
         }
-
     }
 
     inline void interruptResetValue() {

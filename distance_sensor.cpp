@@ -23,8 +23,8 @@ mslh::DistanceSensor::DistanceSensor(PWMOut led, AnalogInDMAStream photo_transis
 
 void mslh::DistanceSensor::start() {
     _led.start();
-    _photo_transistor.start();
     _led.startUpdateEvent();
+    _photo_transistor.start();
     HAL_TIM_Base_Start_IT(&_sampling_htim_x);
 }
 

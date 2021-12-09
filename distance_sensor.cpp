@@ -30,7 +30,7 @@ void mslh::DistanceSensor::start() {
 
 
 uint32_t mslh::DistanceSensor::read() const {
-//    while(!_get_flag){} //< 最新の値を持ってくるまで待つ
+    while(!_get_flag){} //< 最新の値を持ってくるまで待つ
     return _value;      //< ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
 }
 

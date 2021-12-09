@@ -31,24 +31,30 @@ public:
      */
     DistanceSensor(PWMOut led, AnalogInDMAStream photo_transistor, TIM_HandleTypeDef &sampling_htim_x);
 
-    inline void interruptSamplingValue() {
-            _previous_value = _current_value;
-            _current_value = _photo_transistor.read();
-            if (_current_value < _min_value) {
-                _min_value = _current_value;
-            }
-            if ( (!_get_flag) ) {  //原因は _current_value < _previous_value
-                _value = _previous_value - _offset_value;
-                _get_flag = true;
-            }
-    }
 
-    inline void interruptResetValue() {
+    /**
+     * @fn LEDのPWM立ち上がりをトリガーとした割り込みで呼ぶ
+     * @warning PWMの"Counter Mode"を"Down"にする必要がある
+     */
+    inline void interruptSamplingMaxValue() {
+        _get_flag = false;
         _current_value = 0;
         _previous_value = 0;
         _offset_value = _min_value;  //< オフセット値は前回の周期の物を使う
         _min_value = UINT32_MAX;
-        _get_flag = false;
+        while (_previous_value < _current_value) {
+            _previous_value = _current_value;
+            _current_value = _photo_transistor.read();
+        }
+        _get_flag = true;
+    }
+
+    /**
+     * @fn _offset の値のために、任意のタイマ割り込みで呼ぶ
+     */
+    inline void interruptSamplingMinValue() {
+        const uint32_t temp_value = _photo_transistor.read();
+        if (temp_value < _min_value) _min_value = temp_value;
     }
 
     void start();
@@ -56,8 +62,11 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    uint32_t read() const;  //なぜか出力がマイナスになる
-
+    uint32_t read() const {
+        while(!_get_flag){} //< 最新の値を持ってくるまで待つ
+        return _previous_value - _offset_value; //< ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
+//        return _photo_transistor.read();
+    }
 
 private:
 

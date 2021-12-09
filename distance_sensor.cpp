@@ -16,8 +16,8 @@ mslh::DistanceSensor::DistanceSensor(PWMOut led, AnalogInDMAStream photo_transis
         , _value(0)
         , _current_value(0)
         , _previous_value(0)
-        , _min_value(UINT32_MAX)
-        , _offset_value(UINT32_MAX)
+        , _min_value(UINT16_MAX)
+        , _offset_value(UINT16_MAX)
         , _get_flag(false) {
 }
 
@@ -29,11 +29,11 @@ void mslh::DistanceSensor::start() {
 }
 
 
-uint32_t mslh::DistanceSensor::getDistance_mm() {
+uint16_t mslh::DistanceSensor::getDistance_mm() {
     return convert_12bit_to_mm(_photo_transistor.read());
 }
 
-uint32_t mslh::DistanceSensor::convert_12bit_to_mm(uint16_t value) {
+uint16_t mslh::DistanceSensor::convert_12bit_to_mm(uint16_t value) {
     value = 0; //ここで距離変換の数式わちゃわちゃ。
     return value;
 }

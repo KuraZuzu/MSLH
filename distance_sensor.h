@@ -42,7 +42,7 @@ public:
         _previous_value = 0;
         _offset_value = _min_value;  //< オフセット値は前回の周期の物を使う
         _min_value = UINT16_MAX;
-        while (_previous_value < _current_value) {
+        while (_previous_value <= _current_value) {
             _previous_value = _current_value;
             _current_value = _photo_transistor.read();
         }
@@ -62,10 +62,9 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    uint16_t read() const {
+    [[nodiscard]] uint16_t read() const {
         while(!_get_flag){} //< 最新の値を持ってくるまで待つ
         return _previous_value - _offset_value; //< ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
-//        return _photo_transistor.read();
     }
 
 private:

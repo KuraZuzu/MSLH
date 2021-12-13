@@ -28,7 +28,6 @@ void mslh::DistanceSensor::start() {
     HAL_TIM_Base_Start_IT(&_sampling_htim_x);
 }
 
-
 uint16_t mslh::DistanceSensor::getDistance_mm() {
     return convert_12bit_to_mm(_photo_transistor.read());
 }

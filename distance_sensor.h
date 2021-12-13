@@ -46,6 +46,13 @@ public:
             _previous_value = _current_value;
             _current_value = _photo_transistor.read();
         }
+        /////////
+//        uint32_t tick_start = HAL_GetTick();
+//        while (1 <= (HAL_GetTick() - tick_start)) {
+//            _previous_value = _current_value;
+//            _current_value = _photo_transistor.read();
+//        }
+        /////////
         _get_flag = true;
     }
 
@@ -62,8 +69,8 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    [[nodiscard]] uint16_t read() const {
-        while(!_get_flag){} //< 最新の値を持ってくるまで待つ
+    uint16_t read() const {
+//        while(!_get_flag){} //< 最新の値を持ってくるまで待つ
         return _previous_value - _offset_value; //< ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
     }
 

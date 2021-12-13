@@ -82,14 +82,10 @@ public:
      */
     inline void interruptMeasureSpeed() {
         _encoder.update();
-        __pulse += _encoder.getDeltaPulse();
-//        _speed = _speed_per_pulse * _encoder.getDeltaPulse();
-//        _speed += static_cast<float32_t>(_encoder.getDeltaPulse()); //delta_puls　おかしい temp
+        _speed = _speed_per_pulse * _encoder.getDeltaPulse();
     }
 
     inline float32_t getSpeed() { return _speed; }
-
-    int32_t test_get_pulse() { return __pulse; }
 
     void start();
 
@@ -99,7 +95,6 @@ public:
 
 
 private:
-    int32_t __pulse;
     inline void controlSpeed(float32_t speed) {
         // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
         const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
@@ -112,7 +107,7 @@ private:
     Encoder _encoder;
     Motor _motor;
     const int32_t _speed_sampling_time;  // milli second [ms]
-    const float32_t _distance_per_pulse; // [mm/pulse]
+    const float32_t _distance_per_pulse; // [mm/pulse] 1パルスにつき進む距離[mm]
     const float32_t _speed_per_pulse;    // callbackされるサンプリングタイムも考慮したパラメータ
 };
 

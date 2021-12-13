@@ -118,7 +118,7 @@ public:
      * @warning 返り値が 64bit値 であることに注意してください．
      * @return Total number of pulses counted so far.
      */
-    inline int64_t getTotalPulse() const { return _total_pulse; }
+    inline int32_t getTotalPulse() const { return _total_pulse; }
 
 
     /**

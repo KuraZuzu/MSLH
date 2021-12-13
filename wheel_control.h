@@ -85,7 +85,7 @@ public:
         _speed = _speed_per_pulse * _encoder.getDeltaPulse();
     }
 
-    inline float32_t getSpeed() { return _speed; }
+    inline float32_t getSpeed() const { return _speed; }
 
     void start();
 

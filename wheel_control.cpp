@@ -33,8 +33,7 @@ void mslh::WheelControl::stop() {
 void mslh::WheelControl::run(float32_t speed_mm_s, float32_t distance_mm) {
 
     const int64_t offset_total_pulse = _encoder.getTotalPulse();  //< 現在のパルス数取得(オフセット)
-    const float32_t distance_pulse = distance_mm / _distance_per_pulse;  //< 目標パルス数算出
-    int32_t current_pulse = 0;  //< これから更新するパルス
+    const int32_t distance_pulse = distance_mm / _distance_per_pulse;  //< 目標パルス数算出
 
     // first default duty ratio. 初速のDuty比. 理想はspeed をおおよそのduty比にする式を入れたい．
     if (speed_mm_s > 0) _duty_ratio = 0.5f;
@@ -43,15 +42,13 @@ void mslh::WheelControl::run(float32_t speed_mm_s, float32_t distance_mm) {
 
     // 指定の距離分のパルスまで処理．(前転と後転で場合分け．もう少し最適化できそう．)
     if (distance_pulse > 0) {
-        while (current_pulse < distance_pulse) {
+        while (_encoder.getTotalPulse() - offset_total_pulse < distance_pulse) {
             controlSpeed(speed_mm_s);
-            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
         }
 
     } else if (distance_pulse < 0) {
-        while (current_pulse > distance_pulse) {
+        while (_encoder.getTotalPulse() - offset_total_pulse > distance_pulse) {
             controlSpeed(speed_mm_s);
-            current_pulse += static_cast<int32_t>(_encoder.getTotalPulse() - offset_total_pulse);
         }
 
         _motor.update(0);

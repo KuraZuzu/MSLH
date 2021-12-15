@@ -89,10 +89,11 @@ public:
 
     // これを指定の距離まで呼び続ける？
     inline void controlSpeed(float32_t speed) {
+        _duty_ratio = 0.5f;
         // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
-        const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
-        _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．どうやらここで0になる模様
-        _motor.update(_duty_ratio);
+//        const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
+//        _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．どうやらここで0になる模様
+        _motor.update(1.0f);
     }
 
     void start();

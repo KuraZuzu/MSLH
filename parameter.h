@@ -37,7 +37,7 @@ namespace mslh {
         constexpr int32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / MES6_x4_PULSE;
 
     // P-parameter for motor source.
-        constexpr float32_t P_MOTOR_SOURCE = 0.5f;
+        constexpr float32_t P_MOTOR_SOURCE = 0.001f;
 
     }  // namespace machine_parameter
 

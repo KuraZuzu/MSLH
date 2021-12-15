@@ -87,20 +87,24 @@ public:
 
     inline float32_t getSpeed() const { return _speed; }
 
+    // これを指定の距離まで呼び続ける？
+    inline void controlSpeed(float32_t speed) {
+        // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
+        const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
+        _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．どうやらここで0になる模様
+        _motor.update(_duty_ratio);
+    }
+
     void start();
 
-    void run(float32_t speed_mm_s, float32_t distance_mm);
+    // そもそも、ここで距離も指定するのはおかしい。
+//    void run(float32_t speed_mm_s, float32_t distance_mm);
 
     void stop();
 
 
+
 private:
-    inline void controlSpeed(float32_t speed) {
-        // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
-        const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
-        _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．
-        _motor.update(_duty_ratio);
-    }
 
     float32_t _duty_ratio;
     float32_t _speed;  //< [mm/s] mm_per_second.

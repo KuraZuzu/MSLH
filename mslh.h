@@ -48,6 +48,9 @@
 #include "encoder.h"
 #include "wheel_control.h"
 #include "gyro_sensor.h"
+#include "wheel_control.h"
+#include "gpio_distance_sensor.h"
+#include "interrupter.h"
 
 using namespace mslh;
 

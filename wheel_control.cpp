@@ -9,7 +9,7 @@
 
 #include "wheel_control.h"
 
-mslh::WheelControl::WheelControl(Motor &motor, Encoder &encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
+mslh::WheelControl::WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
         : _motor(motor)
         , _encoder(encoder)
         , _speed(0)

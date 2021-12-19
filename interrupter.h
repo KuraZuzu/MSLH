@@ -10,29 +10,28 @@
 #ifndef MSLH_INTERRUPTER_H
 #define MSLH_INTERRUPTER_H
 
-#include "vector.h"
+#include "arm_math.h"
 
 namespace mslh {
 
 
-    template<class T>
-    class Interrupter {
+template<class T>
+class Interrupter {
 
-    public:
-        void attach(T *obj, void (T::*func)()) {
-            _obj = obj;
-            _func = func;
-        }
+public:
+    void attach(T *obj, void (T::*func)()) {
+        _obj = obj;
+        _func = func;
+    }
 
-        void run() {
-            (_obj->*_func)();
-        }
+    void run() {
+        (_obj->*_func)();
+    }
 
-    private:
-        T* _obj;
-        void (T::*_func)();
-
-    };
+private:
+    T* _obj;
+    void (T::*_func)();
+};
 
 
 }

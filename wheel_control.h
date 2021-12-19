@@ -75,7 +75,7 @@ public:
     *   wheel_diameter     : milli meter [mm].
     *   speed_sampling_time: milli second [ms].
     */
-    WheelControl(Motor motor, Encoder encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
+    WheelControl(Motor &motor, Encoder &encoder, float32_t wheel_diameter, uint16_t speed_sampling_time);
 
     /**
      * @fn 呼び出し側のプログラムで，この関数をタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください．
@@ -93,7 +93,6 @@ public:
         const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
         _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．どうやらここで0になる模様
         _motor.update(_duty_ratio);
-//        _motor.update(0.1f);
     }
 
     void start();
@@ -108,8 +107,8 @@ private:
 
     float32_t _duty_ratio;
     float32_t _speed;  //< [mm/s] mm_per_second.
-    Encoder _encoder;
-    Motor _motor;
+    Encoder &_encoder;
+    Motor &_motor;
     const int32_t _speed_sampling_time;  // milli second [ms]
     const float32_t _distance_per_pulse; // [mm/pulse] 1パルスにつき進む距離[mm]
     const float32_t _speed_per_pulse;    // callbackされるサンプリングタイムも考慮したパラメータ

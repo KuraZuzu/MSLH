@@ -9,14 +9,14 @@
 
 #include "wheel_control.h"
 
-mslh::WheelControl::WheelControl(Motor &motor, Encoder &encoder, float32_t wheel_diameter, uint16_t speed_sampling_time)
+mslh::WheelControl::WheelControl(Motor &motor, Encoder &encoder, float32_t wheel_diameter, float32_t speed_sampling_time)
         : _motor(motor)
         , _encoder(encoder)
         , _speed(0)
         , _duty_ratio(0.0)
-        , _speed_sampling_time(static_cast<int32_t>(speed_sampling_time))
+        , _speed_sampling_time(speed_sampling_time)
         , _distance_per_pulse(wheel_diameter*PI/static_cast<float32_t>(_encoder.getOneRotationPulse()))
-        , _speed_per_pulse(_distance_per_pulse * 1000 / static_cast<float32_t>(_speed_sampling_time))
+        , _speed_per_pulse(_distance_per_pulse / _speed_sampling_time)
 {
 }
 

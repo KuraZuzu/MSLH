@@ -87,12 +87,14 @@ public:
 
     [[nodiscard]] inline float32_t getSpeed() const { return _speed; }
 
-    // これを指定の距離まで呼び続ける？
+    /**
+     * @fn 指定の座標や距離まで連続で呼び出し続けて速度を調整する
+     */
     inline void controlSpeed(float32_t speed) {
-        // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
-        const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
-        _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_DUTY; // まだ前進中に後退の指示が入ると爆走する．どうやらここで0になる模様
+        const float32_t diff_speed = speed - _speed; // motor に印加する電圧を調整するP制御のための差分．
+        _duty_ratio += diff_speed * _motor_voltage_duty;
         _motor.update(_duty_ratio);
+//        _motor.update(0.08f);
     }
 
     void start();
@@ -110,8 +112,9 @@ private:
     Encoder &_encoder;
     Motor &_motor;
     const float32_t _speed_sampling_time; // second [s]
-    const float32_t _distance_per_pulse;  // [mm/pulse] 1パルスにつき進む距離[mm]
-    const float32_t _speed_per_pulse;     // callbackされるサンプリングタイムも考慮したパラメータ
+    const float32_t _distance_per_pulse;  // [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
+    const float32_t _speed_per_pulse;     // callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
+    const float32_t _motor_voltage_duty;  // motorに印加する電圧の係数を組み込んだP制御パラメータ
 };
 
 }  // namespace mslh

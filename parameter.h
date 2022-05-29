@@ -36,10 +36,8 @@ namespace mslh {
         constexpr float32_t MACHINE_TREAD = 36.2f;  //< (40 - 3.8)
         constexpr int32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / MES6_x4_PULSE;
 
-    // P-parameter for motor source.
-        constexpr float32_t KP_MOTOR_DUTY = 0.1f / 21.205751f;
-        // 分子はduty比率の分解能。例えば、0.001とすれば、duty比率を1000子に分割　
-        // 分母の21・・・は、速度の最低単位なのでクラスに組み込める
+    // P-parameter for motor source voltage.
+        constexpr float32_t KP_MOTOR_VOLTAGE = 0.05f; // [duty比の分解能]例えば、0.001とすれば、duty比率を1000の分解能に分割　
 
     }  // namespace machine_parameter
 

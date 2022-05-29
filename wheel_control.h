@@ -57,7 +57,7 @@ namespace mslh {
  *       HAL_TIM_Base_Start_IT(&htim6);  //< Need start ticker(callback) timer parameters.
  *
  *       test.start(3000, 1000000);      //< Need start motor and encoder.
- *       test.run(1000, 10000);          //< Run (wheel rotation) speed and distance order.
+ *       test.run(500);                  //< Running (wheel rotation) at a specified speed[mm/s].
  *
  *       int32_t wheel_speed = test_wheel.getSpeed();  //< measure wheel speed
  *
@@ -82,16 +82,16 @@ public:
      */
     inline void interruptMeasureSpeed() {
         _encoder.update();
-        _speed = _speed_per_pulse * _encoder.getDeltaPulse();
+        _speed = _speed_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
     }
 
-    inline float32_t getSpeed() const { return _speed; }
+    [[nodiscard]] inline float32_t getSpeed() const { return _speed; }
 
     // これを指定の距離まで呼び続ける？
     inline void controlSpeed(float32_t speed) {
         // 今は仮であり，モータとの電圧特性を考慮した式に変更予定．
         const float32_t diff_speed = speed - _speed;  // motor に印加する電圧を調整するP制御のための差分．
-        _duty_ratio += diff_speed * machine_parameter::P_MOTOR_SOURCE; // まだ前進中に後退の指示が入ると爆走する．どうやらここで0になる模様
+        _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_DUTY; // まだ前進中に後退の指示が入ると爆走する．どうやらここで0になる模様
         _motor.update(_duty_ratio);
     }
 
@@ -106,7 +106,7 @@ public:
 private:
 
     float32_t _duty_ratio;
-    float32_t _speed;  //< [mm/s] mm_per_second.
+    float32_t _speed;  //< [mm/s] mm per second.
     Encoder &_encoder;
     Motor &_motor;
     const float32_t _speed_sampling_time; // second [s]

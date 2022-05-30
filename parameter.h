@@ -37,9 +37,11 @@ namespace mslh {
         constexpr int32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / MES6_x4_PULSE;
 
     // P-parameter for motor source voltage.
-        constexpr float32_t KP_MOTOR_VOLTAGE = 0.05f; // [duty比の分解能]例えば、0.001とすれば、duty比率を1000の分解能に分割　
 
-    }  // namespace machine_parameter
+        // [duty比の分解能]例えば、0.001とすれば、duty比率を1000の分解能に分割　
+        constexpr float32_t KP_MOTOR_VOLTAGE = 0.000665f;  // 3.3[v](最大モータ電圧]) / 5000[mm/s](無負荷時回転数) = 0.000665
+
+    }  // namespace machine_parameter¥
 
 
 }  // namespace mslh

@@ -92,7 +92,8 @@ public:
      */
     inline void controlSpeed(float32_t speed) {
         const float32_t diff_speed = speed - _speed; // motor に印加する電圧を調整するP制御のための差分．
-        _duty_ratio += diff_speed * _motor_voltage_duty;
+//        _duty_ratio += diff_speed * _motor_voltage_duty;
+        _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_VOLTAGE;
         _motor.update(_duty_ratio);
 //        _motor.update(0.08f);
     }

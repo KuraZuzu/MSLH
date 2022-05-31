@@ -83,6 +83,7 @@ public:
     inline void interruptMeasureSpeed() {
         _encoder.update();
         _speed = _speed_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
+        controlSpeed(_target_speed);
     }
 
     [[nodiscard]] inline float32_t getSpeed() const { return _speed; }
@@ -92,10 +93,14 @@ public:
      */
     inline void controlSpeed(float32_t speed) {
         const float32_t diff_speed = speed - _speed; // motor に印加する電圧を調整するP制御のための差分．
-//        _duty_ratio += diff_speed * _motor_voltage_duty;
+//        _duty_ratio += diff_speed * _motor_voltage_duty; モータのオフセット速度は意識しなくても良さそうなのでいらない？
         _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_VOLTAGE;
         _motor.update(_duty_ratio);
 //        _motor.update(0.08f);
+    }
+
+    void setSpeed(float32_t speed) {
+        _target_speed = speed;
     }
 
     void start();
@@ -116,6 +121,7 @@ private:
     const float32_t _distance_per_pulse;  // [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
     const float32_t _speed_per_pulse;     // callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
     const float32_t _motor_voltage_duty;  // motorに印加する電圧の係数を組み込んだP制御パラメータ
+    float32_t _target_speed; // 後付け
 };
 
 }  // namespace mslh

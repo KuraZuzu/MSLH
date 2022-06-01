@@ -29,7 +29,7 @@ namespace mslh {
  *
  *   using namespace mslh;
  *
- *   WheelControl wheel( Motor(htim1, TIM_CHANNEL_1, GPIOC, GPIO_PIN_0, false), Encoder(htim3, 500*4, true), 300, 10);
+ *   WheelControl wheel( Motor(htim1, TIM_CHANNEL_1, GPIOC, GPIO_PIN_0, false), Encoder(htim3, 500*4, true), 300.0f, 10.0f);
  *
  *
  *   // Need ticker for measure speed.
@@ -41,7 +41,7 @@ namespace mslh {
  *       // 90M[Hz](APB1) / 36000 = 2500[Hz]
  *       // 2500[Hz] / 25(Period) = 100[Hz]   -> 10[ms]
  *       if(htim == &htim6) {
- *           wheel.interruptMeasureSpeed();
+ *           wheel.interruptControlWheel();
  *       }
  *
  *
@@ -56,12 +56,10 @@ namespace mslh {
  *       MX_TIM6_Init();                 //< Need setup HAL ticker(callback) timer parameters.
  *       HAL_TIM_Base_Start_IT(&htim6);  //< Need start ticker(callback) timer parameters.
  *
- *       test.start(3000, 1000000);      //< Need start motor and encoder.
- *       test.run(500);                  //< Running (wheel rotation) at a specified speed[mm/s].
- *
+ *       test.start();                                 //< Need start motor and encoder.
+ *       test.setSpeed(500.0f);                        //< Running (wheel rotation) at a specified speed[mm/s].
  *       int32_t wheel_speed = test_wheel.getSpeed();  //< measure wheel speed
- *
- *       test.stop();  //< Stop all work (Encoder values are retained).
+ *       test.stop();                                  //< Stop all work (Encoder values are retained).
  *   }
  * @endcode
  */
@@ -86,8 +84,14 @@ public:
         interruptControlSpeed(_target_speed);
     }
 
+    /**
+     * @fn モータとエンコーダの動作開始．
+     */
     void start();
 
+    /**
+     * @fn モータとエンコーダの動作停止．
+     */
     void stop();
 
     /**

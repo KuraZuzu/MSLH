@@ -13,39 +13,21 @@
 #ifndef MSLH_PARAMETER_H
 #define MSLH_PARAMETER_H
 
-namespace mslh {
+namespace mslh::machine_parameter {
 
+    /** Unit is "pulse" */
+        constexpr int32_t ENCODER_ONE_ROTATION_PULSE = 500 * 4;
 
-/**
- * @brief Set up your machine's parameters
- */
-    namespace machine_parameter {
-
-    // MCU parameters
-        constexpr int32_t SPEED_MEASURE_Hz = 100;  //< Setup frequency for measure speed;
-
-    // Test speed parameters
-        constexpr float32_t ACCEL = 0.05f;
-
-    // Unit is "pulse"
-        constexpr int32_t MES6_x4_PULSE = 500 * 4;
-
-    // Unit is "mm"
-        constexpr int32_t ONE_BLOCK = 90;
+    /** Unit is "mm" */
         constexpr float32_t WHEEL_DIAMETER = 13.5f;
         constexpr float32_t MACHINE_TREAD = 36.2f;  //< (40 - 3.8)
-        constexpr int32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / MES6_x4_PULSE;
+        constexpr int32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / ENCODER_ONE_ROTATION_PULSE;
 
-    // P-parameter for motor source voltage.
+    /** P-parameter for motor source voltage. */
         constexpr float32_t MAX_SPEED = 5000; // [mm/s]
         constexpr float32_t MOTOR_VOLTAGE = 3.3; // [v]
-
-        // [duty比の分解能] 0.001とすれば、duty比率を1000の分解能に分割
         constexpr float32_t KP_MOTOR_VOLTAGE = MOTOR_VOLTAGE/MAX_SPEED/500.0;  // (モータ電圧]) / (無負荷時回転数)
 
-    }  // namespace machine_parameter¥
-
-
-}  // namespace mslh
+    }  // namespace mslh
 
 #endif //MSLH_PARAMETER_H

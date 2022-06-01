@@ -78,50 +78,56 @@ public:
     WheelControl(Motor &motor, Encoder &encoder, float32_t wheel_diameter, float32_t speed_sampling_time);
 
     /**
-     * @fn 呼び出し側のプログラムで，この関数をタイマ割り込み(任意の周期)で計測しないと動作しないので注意してください．
+     * @fn モータの速度計測&制御を行う，speed_sampling_time の間隔で実行
+     * @warning この関数をタイマ割り込み(任意の周期)で計測する
      */
-    inline void interruptMeasureSpeed() {
-        _encoder.update();
-        _speed = _speed_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
-        controlSpeed(_target_speed);
-    }
-
-    [[nodiscard]] inline float32_t getSpeed() const { return _speed; }
-
-    /**
-     * @fn 指定の座標や距離まで連続で呼び出し続けて速度を調整する
-     */
-    inline void controlSpeed(float32_t speed) {
-        const float32_t diff_speed = speed - _speed; // motor に印加する電圧を調整するP制御のための差分．
-//        _duty_ratio += diff_speed * _motor_voltage_duty; モータのオフセット速度は意識しなくても良さそうなのでいらない？
-        _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_VOLTAGE;
-        _motor.update(_duty_ratio);
-//        _motor.update(0.08f);
-    }
-
-    void setSpeed(float32_t speed) {
-        _target_speed = speed;
+    inline void interruptControlWheel() {
+        interruptMeasureSpeed();
+        interruptControlSpeed(_target_speed);
     }
 
     void start();
 
-    // そもそも、ここで距離も指定するのはおかしい。
-//    void run(float32_t speed_mm_s, float32_t distance_mm);
-
     void stop();
+
+    /**
+     * @fn 指定した速度でモータ回転．
+     * @warning 呼び出しは1回で良い．
+     */
+    void setSpeed(float32_t speed);
+
+    [[nodiscard]] float32_t getSpeed() const { return _speed; }
 
 
 private:
+    /**
+     * @fn 速度計測をする．speed_sampling_time の間隔で実行．
+     * @warning この関数をタイマ割り込み(任意の周期)で計測する．
+     */
+    inline void interruptMeasureSpeed() {
+        _encoder.update();
+        _speed = _speed_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
+        interruptControlSpeed(_target_speed);
+    }
+
+    /**
+     * @fn モータの速度制御をする．speed_sampling_time の間隔で実行．
+     * @warning この関数をタイマ割り込み(任意の周期)で計測する．
+     */
+    inline void interruptControlSpeed(float32_t speed) {
+        const float32_t diff_speed = speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
+        _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_VOLTAGE;
+        _motor.update(_duty_ratio);
+    }
 
     float32_t _duty_ratio;
     float32_t _speed;  //< [mm/s] mm per second.
+    float32_t _target_speed; // 目標回転速度
     Encoder &_encoder;
     Motor &_motor;
     const float32_t _speed_sampling_time; // second [s]
     const float32_t _distance_per_pulse;  // [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
     const float32_t _speed_per_pulse;     // callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
-    const float32_t _motor_voltage_duty;  // motorに印加する電圧の係数を組み込んだP制御パラメータ
-    float32_t _target_speed; // 後付け
 };
 
 }  // namespace mslh

@@ -81,7 +81,7 @@ public:
      */
     inline void interruptControlWheel() {
         interruptMeasureSpeed();
-        interruptControlSpeed(_target_speed);
+        interruptControlSpeed();
     }
 
     /**
@@ -111,15 +111,14 @@ private:
     inline void interruptMeasureSpeed() {
         _encoder.update();
         _speed = _speed_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
-        interruptControlSpeed(_target_speed);
     }
 
     /**
      * @fn モータの速度制御をする．speed_sampling_time の間隔で実行．
      * @warning この関数をタイマ割り込み(任意の周期)で計測する．
      */
-    inline void interruptControlSpeed(float32_t speed) {
-        const float32_t diff_speed = speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
+    inline void interruptControlSpeed() {
+        const float32_t diff_speed = _target_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
         _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_VOLTAGE;
         _motor.update(_duty_ratio);
     }

@@ -41,7 +41,7 @@ namespace mslh {
         constexpr float32_t MOTOR_VOLTAGE = 3.3; // [v]
 
         // [duty比の分解能] 0.001とすれば、duty比率を1000の分解能に分割
-        constexpr float32_t KP_MOTOR_VOLTAGE = MAX_SPEED/MOTOR_VOLTAGE/500.0;  // (モータ電圧]) / (無負荷時回転数)
+        constexpr float32_t KP_MOTOR_VOLTAGE = MOTOR_VOLTAGE/MAX_SPEED/500.0;  // (モータ電圧]) / (無負荷時回転数)
 
     }  // namespace machine_parameter¥
 

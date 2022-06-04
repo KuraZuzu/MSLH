@@ -12,7 +12,7 @@ public:
     Position();
     float32_t x;
     float32_t y;
-    float32_t direction_rad;
+    float32_t rad;
 };
 
 class PositionEstimator {

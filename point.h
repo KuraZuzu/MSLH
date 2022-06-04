@@ -12,7 +12,7 @@
 
 #include "defines.h"
 #include "arm_math.h"
-#include <cmath>
+//#include <cmath>
 
 template <typename T>
 struct Point{
@@ -84,12 +84,6 @@ public:
         _x = map_position._x;
         _y = map_position._y;
     }
-//    explicit operator Point<uint8_t>() {
-//        Point<uint8_t> point;
-//        point._x = _x;
-//        point._y = _y;
-//        return point;
-//    }
 
     bool operator == (const MapPosition& position)const {
         return ((_x == position._x) && (_y == position._y));

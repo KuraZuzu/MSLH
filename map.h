@@ -13,6 +13,8 @@
 #include "defines.h"
 #include "point.h"
 
+namespace mslh {
+
 class Map {
 public:
     Map(uint8_t x_size, uint8_t y_size);
@@ -53,5 +55,6 @@ protected:
     Point <uint8_t>_point;
 };
 
+}  // namespace mslh
 
 #endif //MSLH_MAP_H

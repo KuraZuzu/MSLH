@@ -14,6 +14,8 @@
 #include "arm_math.h"
 //#include <cmath>
 
+namespace mslh {
+
 template <typename T>
 struct Point{
 
@@ -95,5 +97,7 @@ public:
 
     uint8_t _direction;
 };
+
+}  // namespace mslh
 
 #endif //MSLH_POINT_H

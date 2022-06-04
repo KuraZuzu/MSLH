@@ -9,7 +9,7 @@
 
 #include "map.h"
 
-Map::Map(uint8_t x_size, uint8_t y_size) {
+mslh::Map::Map(uint8_t x_size, uint8_t y_size) {
 
     _x_size = x_size;
     _y_size = y_size;
@@ -23,7 +23,7 @@ Map::Map(uint8_t x_size, uint8_t y_size) {
 
 }
 
-Map::~Map() {
+mslh::Map::~Map() {
 
     for (int i = 0; i < _y_size; ++i) {
         delete _block[i];
@@ -32,7 +32,7 @@ Map::~Map() {
 }
 
 
-void Map::mapInit() {
+void mslh::Map::mapInit() {
 
     _block[0][0].setWall(EAST_MASK + SOUTH_MASK + WEST_MASK);
     _block[1][0].setWall(WEST_MASK);
@@ -48,7 +48,7 @@ void Map::mapInit() {
     }
 }
 
-void Map::setBlock(Block block, Point<uint8_t> point) {
+void mslh::Map::setBlock(Block block, Point<uint8_t> point) {
     _block[point._x][point._y].walk_count=block.walk_count;
     _block[point._x][point._y].setSearched();
     _block[point._x][point._y].setWall(block.getWall());
@@ -67,7 +67,7 @@ void Map::setBlock(Block block, Point<uint8_t> point) {
     }
 }
 
-Block& Map::at(Point<uint8_t> point) {
+Block& mslh::Map::at(Point<uint8_t> point) {
     return _block[point._x][point._y];
 }
 

@@ -31,47 +31,18 @@ public:
 struct Position : public Point<float32_t>{
 
 public:
-    Position(): _rad(0.0){
-        _x = 0.0;
-        _y = 0.0;
-    }
+    Position();
 
-    Position(const Position& position): Point(position), _rad(position._rad) {
-        _x = position._x;
-        _y = position._y;
-    }
+    Position(const Position& position);
 
-    Position operator - (const Position &position) {
-        Position temp_position;
-        temp_position._x = _x - position._x;
-        temp_position._y = _y - position._y;
-        temp_position._rad = _rad - position._rad;
-        return temp_position;
-    }
+    Position operator - (const Position &position);
 
-    Position operator + (const Position &position) {
-        Position temp_position;
-        temp_position._x = _x + position._x;
-        temp_position._y = _y + position._y;
-        temp_position._rad = _rad + position._rad;
-        return temp_position;
-    }
+    Position operator + (const Position &position);
 
-    Position operator / (const Position& position) {
-        Position temp_position;
-        temp_position._x = _x / position._x;
-        temp_position._y = _y / position._y;
-        temp_position._rad = _rad / position._rad;
-        return temp_position;
-    }
+    Position operator / (const Position& position);
 
-    Position operator * (const Position& position) {
-        Position temp_position;
-        temp_position._x = _x * position._x;
-        temp_position._y = _y * position._y;
-        temp_position._rad = _rad * position._rad;
-        return temp_position;
-    }
+    Position operator * (const Position& position);
+
 
     float32_t _rad;
 };
@@ -82,18 +53,12 @@ struct MapPosition : public Point<uint8_t> {
 public:
     MapPosition():_direction(0.0) {};
 
-    MapPosition(const MapPosition& map_position): Point(map_position), _direction(0.0f) {
-        _x = map_position._x;
-        _y = map_position._y;
-    }
+    MapPosition(const MapPosition& map_position);
 
-    bool operator == (const MapPosition& position)const {
-        return ((_x == position._x) && (_y == position._y));
-    }
+    bool operator == (const MapPosition& position)const;
 
-    bool operator != (const MapPosition& position)const {
-        return !operator == (position);
-    }
+    bool operator != (const MapPosition& position)const;
+
 
     uint8_t _direction;
 };

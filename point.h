@@ -33,7 +33,7 @@ struct Position : public Point<float32_t>{
 public:
     Position();
 
-    Position(const Position& position);
+    Position(const Position &position);
 
     Position operator - (const Position &position);
 

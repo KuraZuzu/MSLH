@@ -51,6 +51,8 @@
 #include "wheel.h"
 #include "gpio_distance_sensor.h"
 #include "interrupter.h"
+#include "point.h"
+#include "parameter.h"
 
 using namespace mslh;
 

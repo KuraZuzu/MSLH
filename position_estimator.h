@@ -7,19 +7,5 @@
 
 #include "arm_math.h"
 
-class Position {
-public:
-    Position();
-    float32_t x;
-    float32_t y;
-    float32_t _rad;
-};
-
-class PositionEstimator {
-public:
-    PositionEstimator();
-
-};
-
 
 #endif //MSLH_POSITIONESTIMATOR_H

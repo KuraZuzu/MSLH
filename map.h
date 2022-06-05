@@ -19,10 +19,10 @@ class Map {
 public:
     Map(uint8_t x_size, uint8_t y_size);
 
-    Map(const Map& map){
-        Map(map._x_size, map._y_size);
-        for (int i = 0; i < _x_size; ++i) {
-            for (int j = 0; j < _y_size; ++j) {
+    Map(const Map& map) {
+        Map(map._x_size, map._y_size); // デフォルトコンストラクタ呼び出して、マップのblockポインタを動的確保
+        for (uint8_t i = 0; i < _x_size; ++i) {
+            for (uint8_t j = 0; j < _y_size; ++j) {
                 _block[i][j] = map._block[i][j];
             }
         }
@@ -30,27 +30,30 @@ public:
 
     ~Map();
 
-/* マップの壁情報とかセット */
+    /**
+     * @fn マップの壁情報とかセット
+     */
     void setBlock(Block block, Point<uint8_t> point);
 
-/* 歩数情報をセット */
-    void setWalkCount(Point<uint8_t> point, int walk_count){
-        _block[point._x][point._y].walk_count = walk_count;
+    /**
+     * @fn 歩数情報をセット
+     */
+    void setWalkCount(Point<uint8_t> point, int16_t walk_count){
+        _block[point._x][point._y].setWalkCount(walk_count);
     }
 
+    /**
+     * @fn 現在地のブロック座標をセット
+     */
     Block& at(Point<uint8_t> point);
-
-    Point<uint8_t> size(){
-        return Point<uint8_t >(_x_size, _y_size);
-    }
 
 
 protected:
     void mapInit();
 
     Block **_block;
-    uint8_t _x_size = 0;
-    uint8_t _y_size = 0;
+    uint8_t _x_size;
+    uint8_t _y_size;
 
     Point <uint8_t>_point;
 };

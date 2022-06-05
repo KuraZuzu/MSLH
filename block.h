@@ -15,13 +15,19 @@
 
 class Block {
 
-private:
-
-    uint8_t _block_data;  /* 0b0000****  <- 下4bitに各方角の壁情報を保存
-                          NESW (North, East, South, West)//  */
-
 public:
     Block();
+
+    /**
+     * @fn センサを参照せずに、マップ情報を元に壁の有無を返す
+     * @return (opened = 1), (not opened = 0)
+     */
+    [[nodiscard]] bool isOpenedWall(uint8_t target_wall) const;
+
+    /**
+     * @fn 壁情報を取得する
+     */
+    [[nodiscard]] uint8_t getWall() const;
 
     /**
      * @fn 壁情報をセットする
@@ -34,17 +40,14 @@ public:
     void resetWall();
 
     /**
-     * @fn センサを参照せずに、マップ情報を元に壁の有無を返す
-     * @return (opened = 1), (not opened = 0)
+     * @fn 対象ブロックがゴール座標までの歩数を返す
      */
-    bool isOpenedWall(uint8_t target_wall);
+    [[nodiscard]] int16_t getWalkCount() const;
 
     /**
-     * @fn 壁情報を取得する
+     * @fn 対象ブロックがゴール座標までの歩数を設定する
      */
-    uint8_t getWall();
-
-    void setSearched();
+    void setWalkCount(int16_t walk_count);
 
     /**
      * @fn 対象ブロックが既に探索済みかを返す
@@ -52,7 +55,19 @@ public:
      */
     bool isSearched();
 
-    int16_t walk_count; //歩数情報
+    /**
+     * @fn 対象ブロックが既に探索済みかのフラグをsetする
+     * @note (searched = 1), (not searched = 0)
+     */
+    void setSearched();
+
+private:
+    /**
+     * @note 0b0000****  <- 下4bitに各方角の壁情報を保存 <br>
+     *       NESW (North, East, South, West)//
+     */
+    uint8_t _block_data;
+    int16_t _walk_count; //歩数情報
 };
 
 

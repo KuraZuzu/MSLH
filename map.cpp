@@ -9,47 +9,35 @@
 
 #include "map.h"
 
-mslh::Map::Map(uint8_t x_size, uint8_t y_size) {
-
-    _x_size = x_size;
-    _y_size = y_size;
+mslh::Map::Map(uint8_t x_size, uint8_t y_size): _x_size(x_size), _y_size(y_size) {
     _block = new Block* [x_size];
-
-    for (int i = 0; i < x_size; ++i) {
-        _block[i] = new Block[y_size];    // for(i < x_size)  で  _block[i] = new Block[y_size] では？
-    }
-
+    for (uint8_t i = 0; i < x_size; ++i) _block[i] = new Block[y_size];
     mapInit();
-
 }
 
 mslh::Map::~Map() {
-
-    for (int i = 0; i < _y_size; ++i) {
-        delete _block[i];
-    }
+    for (int i = 0; i < _y_size; ++i) delete _block[i];
     delete [] _block;
 }
-
 
 void mslh::Map::mapInit() {
 
     _block[0][0].setWall(EAST_MASK + SOUTH_MASK + WEST_MASK);
     _block[1][0].setWall(WEST_MASK);
 
-    for(int i = 0; i < _x_size; i++){
+    for(uint8_t i = 0; i < _x_size; i++){
         _block[_x_size - 1][i].setWall(EAST_MASK);
         _block[0][i].setWall(WEST_MASK);
     }
 
-    for(int i = 0; i < _y_size; i++){
+    for(uint8_t i = 0; i < _y_size; i++){
         _block[i][0].setWall(SOUTH_MASK);
         _block[i][_y_size - 1].setWall(NORTH_MASK);
     }
 }
 
 void mslh::Map::setBlock(Block block, Point<uint8_t> point) {
-    _block[point._x][point._y].walk_count=block.walk_count;
+    _block[point._x][point._y].setWalkCount(block.getWalkCount());
     _block[point._x][point._y].setSearched();
     _block[point._x][point._y].setWall(block.getWall());
 

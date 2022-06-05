@@ -7,9 +7,9 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#include "wheel_control.h"
+#include "wheel.h"
 
-mslh::WheelControl::WheelControl(Motor &motor, Encoder &encoder, float32_t wheel_diameter, float32_t speed_sampling_time)
+mslh::Wheel::Wheel(Motor &motor, Encoder &encoder, float32_t wheel_diameter, float32_t speed_sampling_time)
         : _motor(motor)
         , _encoder(encoder)
         , _speed(0.f)
@@ -21,17 +21,17 @@ mslh::WheelControl::WheelControl(Motor &motor, Encoder &encoder, float32_t wheel
 {
 }
 
-void mslh::WheelControl::start() {
+void mslh::Wheel::start() {
     _encoder.start();
     _motor.start();
     _motor.update(0);
 }
 
-void mslh::WheelControl::stop() {
+void mslh::Wheel::stop() {
     _motor.stop();
     _encoder.stop();
 }
 
-void mslh::WheelControl::setSpeed(float32_t speed) {
+void mslh::Wheel::setSpeed(float32_t speed) {
     _target_speed = speed;
 }

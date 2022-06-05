@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <functional>
-#include "wheel_control.h"
+#include "wheel.h"
 
 namespace mslh {
 

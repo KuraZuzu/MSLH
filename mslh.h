@@ -46,9 +46,9 @@
 #include "buzzer.h"
 #include "motor.h"
 #include "encoder.h"
-#include "wheel_control.h"
+#include "wheel.h"
 #include "gyro_sensor.h"
-#include "wheel_control.h"
+#include "wheel.h"
 #include "gpio_distance_sensor.h"
 #include "interrupter.h"
 

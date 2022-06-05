@@ -21,7 +21,7 @@ namespace mslh {
 
 /**
  * @warning
- *     For all instances of the generated WheelControl class　
+ *     For all instances of the generated Wheel class　
  *     interruptMeasureSpeed() must be called at explicit intervals such as timer interrupt.
  *
  * Example:
@@ -29,7 +29,7 @@ namespace mslh {
  *
  *   using namespace mslh;
  *
- *   WheelControl wheel( Motor(htim1, TIM_CHANNEL_1, GPIOC, GPIO_PIN_0, false), Encoder(htim3, 500*4, true), 300.0f, 10.0f);
+ *   Wheel wheel( Motor(htim1, TIM_CHANNEL_1, GPIOC, GPIO_PIN_0, false), Encoder(htim3, 500*4, true), 300.0f, 10.0f);
  *
  *
  *   // Need ticker for measure speed.
@@ -63,17 +63,17 @@ namespace mslh {
  *   }
  * @endcode
  */
-class WheelControl {
+class Wheel {
 
 public:
     /**
-    * @note WheelControl(___ , ___ , float32_t wheel_diameter, uint16_t speed_sampling_time);
+    * @note Wheel(___ , ___ , float32_t wheel_diameter, uint16_t speed_sampling_time);
     *
     * @param
     *   wheel_diameter     : milli meter [mm].
     *   speed_sampling_time: second [s].
     */
-    WheelControl(Motor &motor, Encoder &encoder, float32_t wheel_diameter, float32_t speed_sampling_time);
+    Wheel(Motor &motor, Encoder &encoder, float32_t wheel_diameter, float32_t speed_sampling_time);
 
     /**
      * @fn モータの速度計測&制御を行う，speed_sampling_time の間隔で実行

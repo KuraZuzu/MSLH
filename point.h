@@ -55,9 +55,9 @@ public:
 
     MapPosition(const MapPosition& map_position);
 
-    bool operator == (const MapPosition& position)const;
+    bool operator == (const MapPosition& position) const;
 
-    bool operator != (const MapPosition& position)const;
+    bool operator != (const MapPosition& position) const;
 
 
     uint8_t _direction;

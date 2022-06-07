@@ -19,6 +19,12 @@ mslh::Position::Position(const mslh::Position &position) : Point(position), _rad
     _y = position._y;
 }
 
+void mslh::Position::reset() {
+    _x = 0.0f;
+    _y = 0.0f;
+    _rad = 0.0f;
+}
+
 mslh::Position mslh::Position::operator-(const mslh::Position &position) {
     Position temp_position;
     temp_position._x = _x - position._x;
@@ -50,6 +56,7 @@ mslh::Position mslh::Position::operator*(const mslh::Position &position) {
     temp_position._rad = _rad * position._rad;
     return temp_position;
 }
+
 
 mslh::MapPosition::MapPosition(const mslh::MapPosition &map_position) : Point(map_position), _direction(0.0f) {
     _x = map_position._x;

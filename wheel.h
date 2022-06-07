@@ -95,6 +95,11 @@ public:
     void stop();
 
     /**
+     * @fn モータとエンコーダ，_speedのリセット．
+     */
+    void reset();
+
+    /**
      * @fn 指定した速度でモータ回転．
      * @warning 呼び出しは1回で良い．
      */

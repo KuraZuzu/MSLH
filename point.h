@@ -35,6 +35,8 @@ public:
 
     Position(const Position &position);
 
+    void reset();
+
     Position operator - (const Position &position);
 
     Position operator + (const Position &position);

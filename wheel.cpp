@@ -32,6 +32,13 @@ void mslh::Wheel::stop() {
     _encoder.stop();
 }
 
+void mslh::Wheel::reset() {
+    _motor.update(0.0f);
+    _speed = 0.0f;
+    _encoder.reset();
+}
+
 void mslh::Wheel::setSpeed(float32_t speed) {
+    _motor.update(speed * machine_parameter::MOTOR_VOLTAGE /machine_parameter::MAX_SPEED);
     _target_speed = speed;
 }

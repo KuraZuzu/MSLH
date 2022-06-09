@@ -16,6 +16,7 @@
 #include "encoder.h"
 #include "parameter.h"
 #include <cmath>
+#include "analog_in_dma_stream.h"
 
 namespace mslh {
 
@@ -73,7 +74,7 @@ public:
     *   wheel_diameter     : milli meter [mm].
     *   speed_sampling_time: second [s].
     */
-    Wheel(Motor &motor, Encoder &encoder, float32_t wheel_diameter, float32_t speed_sampling_time);
+    Wheel(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery, float32_t wheel_diameter, float32_t speed_sampling_time);
 
     /**
      * @fn モータの速度計測&制御を行う，speed_sampling_time の間隔で実行
@@ -99,13 +100,15 @@ public:
      */
     void reset();
 
+    [[nodiscard]] float32_t getSpeed() const { return _speed; }
+
     /**
      * @fn 指定した速度でモータ回転．
      * @warning 呼び出しは1回で良い．
      */
     void setSpeed(float32_t speed);
 
-    [[nodiscard]] float32_t getSpeed() const { return _speed; }
+    void setSpeed(float32_t accel, float32_t speed);
 
 
 private:
@@ -122,17 +125,17 @@ private:
      * @fn モータの速度制御をする．speed_sampling_time の間隔で実行．
      * @warning この関数をタイマ割り込み(任意の周期)で計測する．
      */
-    inline void interruptControlSpeed() {
-        const float32_t diff_speed = _target_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
-        _duty_ratio += diff_speed * machine_parameter::KP_MOTOR_VOLTAGE;
-        _motor.update(_duty_ratio);
-    }
+//    void interruptControlSpeed();
+
+    void interruptControlSpeed();
 
     float32_t _duty_ratio;
+    float32_t _accel;
     float32_t _speed;  //< [mm/s] mm per second.
     float32_t _target_speed; // 目標回転速度
     Encoder &_encoder;
     Motor &_motor;
+    AnalogInDMAStream &_battery;
     const float32_t _speed_sampling_time; // second [s]
     const float32_t _distance_per_pulse;  // [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
     const float32_t _speed_per_pulse;     // callbackされるサンプリングタイムも考慮した値、速度計測の最低単位

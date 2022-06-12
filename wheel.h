@@ -110,6 +110,9 @@ public:
 
     void setSpeed(float32_t accel, float32_t speed);
 
+    void testMotor(float32_t duty_ratio) {
+        _motor.update(duty_ratio);
+    }
 
 private:
     /**
@@ -121,13 +124,15 @@ private:
         _speed = _speed_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
     }
 
+
     /**
      * @fn モータの速度制御をする．speed_sampling_time の間隔で実行．
      * @warning この関数をタイマ割り込み(任意の周期)で計測する．
      */
+    void interruptControlSpeed();
+
 //    void interruptControlSpeed();
 
-    void interruptControlSpeed();
 
     float32_t _duty_ratio;
     float32_t _accel;

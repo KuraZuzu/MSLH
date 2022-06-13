@@ -40,6 +40,8 @@ void mslh::Wheel::reset() {
     _motor.update(0.0f);
     _speed = 0.0f;
     _accel = 0.0f;
+    _ideal_speed = 0.0f;
+    _target_speed = 0.0f;
     _encoder.reset();
 }
 
@@ -60,7 +62,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      *   ②(加速度 < 0) && ((目標速度 - 現在速度) < 0) の際に加速度計算 OK
      *   ①と②を満たさない時，加速度を0として速度のPID制御のみ行う(現在はP制御のみ)
      */
-//    if((_accel * (_target_speed - _speed)) < 0) _accel = 0;
+    if((_accel * (_target_speed - _speed)) < 0) _accel = 0;
 
     //PID制御のための差分算出
     const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
@@ -73,14 +75,11 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      *
      */
     const float32_t wheel_torque = machine_parameter::MASS * (_accel * 0.001f) * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; // *0.5は2つのモータのため
-//    float32_t wheel_torque = 5.5102e-05
     const float32_t motor_torque = wheel_torque * machine_parameter::GEAR_RATIO; //必要モータトルク
     const float32_t current = motor_torque / machine_parameter::K_M; // モータに必要な電流
-    printf("%lf \r\n" , _target_speed);
-
     _ideal_speed = _accel + _speed;
-    const float32_t reverse_voltage = machine_parameter::K_E * (_ideal_speed * 0.01f); // 現在の速度+目標加速度で想定される逆起電力算出
-    _voltage = machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage; // 必要電圧
+    const float32_t reverse_voltage = machine_parameter::K_E * (_ideal_speed * 0.001f / machine_parameter::WHEEL_RADIUS); // 現在の速度+目標加速度で想定される逆起電力算出
+    _voltage += machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage; // 必要電圧
 
     /**
      * @note フィードバック制御
@@ -93,8 +92,8 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
     //const float32_t battery_voltage = 4.0f;
     const float32_t duty_ratio = _voltage / battery_voltage;
 
-//    _motor.update(duty_ratio); // モータに印加
+    _motor.update(duty_ratio); // モータに印加
 
-    // debug
+    // debug.  printf()を呼ぶと、外部でDelay()を呼んだ際に抜けられない。
 //    printf("volt: %6lf   bat: %6lf\r\n" , _voltage, battery_voltage);
 }

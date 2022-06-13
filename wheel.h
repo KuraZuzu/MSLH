@@ -129,6 +129,8 @@ private:
      * @fn モータの速度制御をする．speed_sampling_time の間隔で実行．
      * @note 2自由度制御(フィードフォワード & フィードバック)で構成される．
      * @warning この関数をタイマ割り込み(任意の周期)で計測する．
+     *
+     * なぜか、5000[mm/s]あたりで速度が頭打ちとなる．PIDのゲインが釣り合っていまうタイミングがあるのかも．
      */
     void interruptTwoFreedomDegreeControl();
 

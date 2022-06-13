@@ -82,7 +82,7 @@ public:
      */
     inline void interruptControlWheel() {
         interruptMeasureSpeed();
-        interruptControlSpeed();
+        interruptTwoFreedomDegreeControl();
     }
 
     /**
@@ -127,17 +127,17 @@ private:
 
     /**
      * @fn モータの速度制御をする．speed_sampling_time の間隔で実行．
+     * @note 2自由度制御(フィードフォワード & フィードバック)で構成される．
      * @warning この関数をタイマ割り込み(任意の周期)で計測する．
      */
-    void interruptControlSpeed();
-
-//    void interruptControlSpeed();
+    void interruptTwoFreedomDegreeControl();
 
 
-    float32_t _duty_ratio;
     float32_t _accel;
-    float32_t _speed;  //< [mm/s] mm per second.
-    float32_t _target_speed; // 目標回転速度
+    float32_t _speed;  //< 現在の実速度 [mm/s] (mm per second).
+    float32_t _ideal_speed; // 理想速度(逐次、現在の測定速度に指令加速度を加算している)
+    float32_t _target_speed; // 目標速度
+    float32_t _voltage; // duty比に用いる出力電圧 [0 ~ モータ供給電源電圧] [v]
     Encoder &_encoder;
     Motor &_motor;
     AnalogInDMAStream &_battery;

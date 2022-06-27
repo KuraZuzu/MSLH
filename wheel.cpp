@@ -75,7 +75,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      */
     const float32_t wheel_torque = machine_parameter::MASS * (_accel * 0.001f * _speed_sampling_time) * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; // *0.5は2つのモータのため
     const float32_t motor_torque = wheel_torque * machine_parameter::GEAR_RATIO; //必要モータトルク
-    const float32_t current = motor_torque / machine_parameter::K_M; // モータに必要な電流
+    const float32_t current = motor_torque / machine_parameter::K_T; // モータに必要な電流
     _ideal_speed = _accel * _speed_sampling_time + _speed;
     //_ideal_speed += (_accel * _speed_sampling_time); //理想速度に追従するバージョン(ただし、FB制御の偏差が速度域で変わってしまう)
     const float32_t reverse_voltage = machine_parameter::K_E * (60.0f * _ideal_speed * 0.001f / (PI * machine_parameter::WHEEL_DIAMETER)); // 現在の速度+目標加速度で想定される逆起電力算出
@@ -87,14 +87,14 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      */
     _voltage += _voltage * pid_error; // ここで前回の速度計測からのフィードバック制御をかける(フィードバック自体は前回のものを参考に補正をかける)
 
-    // バッテリ電圧を考慮したduty比算出
+    // [バッテリ電圧を考慮したduty比算出]
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;
     //const float32_t battery_voltage = 4.0f;
     const float32_t duty_ratio = _voltage / battery_voltage;
 
     _motor.update(duty_ratio); // モータに印加
 
-    // debug.  printf()を呼ぶと、外部でDelay()を呼んだ際に、そのDelay()から抜けられない。
+    // [debug用] printf()を呼ぶと、外部でDelay()を呼んだ際に、そのDelay()から抜けられない。
     //printf("volt: %6lf   bat: %6lf\r\n" , _voltage, battery_voltage);
     //printf("torque %6f\r\n" , wheel_torque*100000);
 }

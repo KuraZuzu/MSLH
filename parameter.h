@@ -43,8 +43,9 @@ namespace mslh::machine_parameter {
     /** Motor */
     constexpr float32_t RESISTANCE_MOTOR = 4.5;  //< [Ω]
     constexpr float32_t K_E = 0.000062f;  //< 逆起電力定数（発生電圧定数）[V/rpm]
-    constexpr float32_t K_M = 0.000594f;  //< モータトルク定数[Nm/A]
-//    constexpr float K_M = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
+    constexpr float32_t K_T = 0.000594f;  //< モータトルク定数[Nm/A]
+//    constexpr float K_T = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
+
 
 
 //    /** Unit is "pulse" */

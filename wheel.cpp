@@ -66,7 +66,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
     // PID制御のための差分算出
     const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
-    const float32_t voltage_pid = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける
+    const float32_t pid_error = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける
 
     /**
      * @note フィードフォワード制御
@@ -85,7 +85,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      * @note フィードバック制御
      *   PID制御を実行(現在はP制御のみ)
      */
-    _voltage += _voltage * voltage_pid; // ここで前回の速度計測からのフィードバック制御をかける(フィードバック自体は前回のものを参考に補正をかける)
+    _voltage += _voltage * pid_error; // ここで前回の速度計測からのフィードバック制御をかける(フィードバック自体は前回のものを参考に補正をかける)
 
     // バッテリ電圧を考慮したduty比算出
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;

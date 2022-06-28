@@ -19,8 +19,8 @@ namespace mslh::machine_parameter {
     constexpr float32_t BATTERY_VOLTAGE_RATIO = (1000.0f + 1000.0f) / 1000.0f;
 
     /** Weight */
-    constexpr float32_t WEIGHT = 0.35f * 2; //17.00[g]
-//    constexpr float32_t WEIGHT = 17.00f; //17.00[g]
+//    constexpr float32_t WEIGHT = 0.35f * 2; //17.00[g]
+    constexpr float32_t WEIGHT = 17.00f; //17.00[g]
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
@@ -41,11 +41,13 @@ namespace mslh::machine_parameter {
 //    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数)
 
     /** Motor */
-    constexpr float32_t RESISTANCE_MOTOR = 4.5;  //< [Ω]
+    constexpr float32_t RESISTANCE_MOTOR = 4.5f;  //< [Ω]
     constexpr float32_t K_E = 0.000062f;  //< 逆起電力定数（発生電圧定数）[V/rpm]
     constexpr float32_t K_T = 0.000594f;  //< モータトルク定数[Nm/A]
 //    constexpr float K_T = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
 
+    /** Machine Control */
+    constexpr float32_t KP_MACHINE_CONTROL = 0.1f; //< 直進制御のためのP制御ゲイン
 
 
 //    /** Unit is "pulse" */

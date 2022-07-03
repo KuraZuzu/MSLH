@@ -25,18 +25,14 @@ public:
     : _hspi(hspi)
     , _cs_x(cs_x)
     , _cs_pin(cs_pin) {
+        HAL_SPI_Init(&hspi3);
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
     }
 
     void start() {
     }
 
-    void temp() {  //< 実験中
-        MX_SPI3_Init();
-        MX_DMA_Init();
-        MX_GPIO_Init();
-        HAL_SPI_Init(&hspi3);
-
+    uint16_t temp() {  //< 実験中
 
         uint8_t rx_data[2] = {0x00, 0x00};  //< Reserved for receive data
         rx_data[0] = 0x00;
@@ -49,16 +45,17 @@ public:
         tx_data[1] = data;
 
 
-        while(1) {
-            HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);
 
-            HAL_SPI_TransmitReceive_DMA(&hspi3, (uint8_t*)tx_data, (uint8_t*)rx_data, 2);
-            while (HAL_SPI_GetState(&hspi3) != HAL_SPI_STATE_READY) { }
-            HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
+        HAL_SPI_TransmitReceive_DMA(&hspi3, (uint8_t*)tx_data, (uint8_t*)rx_data, 2);
+        while (HAL_SPI_GetState(&hspi3) != HAL_SPI_STATE_READY) { }
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
 
-            printf("0x%_x\r\n",rx_data);
-            HAL_Delay(10);
-        }
+//        printf("0x%_x\r\n",rx_data);
+        uint16_t return_rx_data = rx_data[0];
+//        return_rx_data <<
+//        return rx_data;
+        return 123;
     }
 
 private:

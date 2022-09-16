@@ -111,21 +111,21 @@ public:
      *    Pulse difference between the latest call to update_encoder()
      *    and the last call to update()
      */
-    [[nodiscard]] inline int32_t getDeltaPulse() const { return _delta_pulse; }  //< 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
+    [[gnu::warn_unused_result]] inline int32_t getDeltaPulse() const { return _delta_pulse; }  //< 最新で呼んだ update_encoder() と前回呼んだ update() 時点でのパルス差分を取得
 
 
     /**
-     * @warning 返り値は 32bit のため 2147483647[mm]=2147[km] まで計算可能 ．足りなければ追加．
+     * @warning 返り値は 32bit のため 2147483647[mm]=2147[km] まで計算可能 ．足りなければ64bitに変更．
      * @return Total number of pulses counted so far.
      */
-    [[nodiscard]] inline int32_t getTotalPulse() const { return _total_pulse; }
+    [[gnu::warn_unused_result]] inline int32_t getTotalPulse() const { return _total_pulse; }
 
 
     /**
      *  @return
      *    Total number of rotations at the abs_time of the latest update() call.
      */
-    [[nodiscard]] inline int32_t getRotationCount() const { return _total_pulse / _one_rotation_pulse; } //< 最新で呼んだ update() 時点での合計回転数を取得
+    [[gnu::warn_unused_result]] inline int32_t getRotationCount() const { return _total_pulse / _one_rotation_pulse; } //< 最新で呼んだ update() 時点での合計回転数を取得
 
 
     /**
@@ -133,14 +133,14 @@ public:
      *   Excess pulses of less than one revolution
      *   at the abs_time of the latest call to update().
      */
-    [[nodiscard]] inline int32_t getSurplusPulse() const { return _total_pulse % _one_rotation_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
+    [[gnu::warn_unused_result]] inline int32_t getSurplusPulse() const { return _total_pulse % _one_rotation_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 
 
     /**
      * @return
      *   Returns a pulse for one rotation of the encoder.
      */
-    [[nodiscard]] inline int32_t getOneRotationPulse() const { return _one_rotation_pulse; }
+    [[gnu::warn_unused_result]] inline int32_t getOneRotationPulse() const { return _one_rotation_pulse; }
 
 private:
 

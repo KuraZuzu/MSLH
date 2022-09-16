@@ -100,9 +100,9 @@ public:
      */
     void reset();
 
-    [[nodiscard]] inline float32_t getSpeed() const { return _speed; }
+    [[gnu::warn_unused_result]] inline float32_t getSpeed() const { return _speed; }
 
-    [[nodiscard]] inline float32_t getAccel() const { return _accel; }
+    [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _accel; }
 
     /**
      * @fn 指定した速度でモータ回転．

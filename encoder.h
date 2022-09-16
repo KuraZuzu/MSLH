@@ -115,7 +115,7 @@ public:
 
 
     /**
-     * @warning 返り値が 64bit値 であることに注意してください．
+     * @warning 返り値は 32bit のため 2147483647[mm]=2147[km] まで計算可能 ．足りなければ追加．
      * @return Total number of pulses counted so far.
      */
     [[nodiscard]] inline int32_t getTotalPulse() const { return _total_pulse; }

@@ -44,7 +44,7 @@ void mslh::Encoder::update() {
     if (!_forward_wise) _delta_pulse *= -1;
 
     /// _total_pulse を更新
-    _total_pulse += static_cast<int64_t>(_delta_pulse);
+    _total_pulse += _delta_pulse;
 }
 
 int32_t mslh::Encoder::getOneRotationPulse() const {

@@ -120,7 +120,7 @@ public:
      *   Never, ever implement this stop() function. <br>
      *   絶対に、この stop() 関数 は実装しないでください。
      */
-     // void stop();  //< 絶対に実装するな。
+    //void stop();  //< 絶対に実装するな。
 
     /**
      * @fn Get analog value.

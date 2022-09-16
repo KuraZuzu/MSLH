@@ -135,7 +135,12 @@ public:
      */
     [[nodiscard]] inline int32_t getSurplusPulse() const { return _total_pulse % _one_rotation_pulse; }  //< 最新で呼んだ update() 時点での１回転未満の余剰パルスを取得
 
-    [[nodiscard]] int32_t getOneRotationPulse() const;
+
+    /**
+     * @return
+     *   Returns a pulse for one rotation of the encoder.
+     */
+    [[nodiscard]] inline int32_t getOneRotationPulse() const { return _one_rotation_pulse; }
 
 private:
 

@@ -70,10 +70,10 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      *   ②(加速度 < 0) && ((目標速度 - 現在速度) < 0) の際に加速度計算 OK
      *   ①と②を満たさない時，加速度を0として速度のPID制御のみ行う(現在はP制御のみ)
      */
-    if((_target_accel * (_target_speed - _speed)) < 0.0f) _target_accel = 0.0f;
+    if((_target_accel * (_target_speed - _speed)) <= 0.0f) _target_accel = 0.0f;
 
     // PID制御のための差分算出
-    const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
+    const float32_t diff_speed = _ideal_speed - _speed; // (現在の理想速度) - (現在の実速度) motor-duty比調整のP制御のための差分．
     const float32_t pid_error = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける
 
     /**

@@ -32,7 +32,7 @@ namespace mslh::machine_parameter {
     constexpr float32_t WHEEL_DIAMETER = 13.5f;
     constexpr float32_t WHEEL_RADIUS = WHEEL_DIAMETER / 2.0f;
     constexpr float32_t MACHINE_TREAD = 36.2f;  //< (40 - 3.8)
-    constexpr int32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / ENCODER_ONE_ROTATION_PULSE;
+    constexpr float32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / ENCODER_ONE_ROTATION_PULSE;
 
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_SPEED = 5000; // [mm/s]

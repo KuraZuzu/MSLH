@@ -143,6 +143,7 @@ private:
     float32_t _old_speed; //< _accel計測のための前回の割り込み時の速度
     float32_t _ideal_speed; // 理想速度(逐次、現在の測定速度に指令加速度を加算している)
     float32_t _target_speed; // 目標速度(指令値)
+    float32_t _ideal_current; // 次のステップの加速度で必要となるモータへの電流値 [A]
     float32_t _voltage; // duty比に用いる出力電圧 [0 ~ モータ供給電源電圧] [v]
     Encoder &_encoder;
     Motor &_motor;

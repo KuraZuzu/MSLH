@@ -78,7 +78,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
     const float32_t current = motor_torque / machine_parameter::K_M; // モータに必要な電流
     _ideal_speed = _accel * _speed_sampling_time + _speed;
     //_ideal_speed += (_accel * _speed_sampling_time); //理想速度に追従するバージョン(ただし、FB制御の偏差が速度域で変わってしまう)
-    const float32_t reverse_voltage = machine_parameter::K_E * (60.0f * _ideal_speed * 0.001f / (PI * machine_parameter::WHEEL_DIAMETER)); // 現在の速度+目標加速度で想定される逆起電力算出
+    const float32_t reverse_voltage = machine_parameter::K_E * (60.0f * _accel * 0.001f * _speed_sampling_time / (PI * machine_parameter::WHEEL_DIAMETER)); // 現在の速度+目標加速度で想定される逆起電力算出
     _voltage += machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage; // 必要電圧
 
     /**

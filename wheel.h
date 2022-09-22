@@ -100,21 +100,17 @@ public:
      */
     void reset();
 
+    /**
+     * @fn 指定した加速度と速度でモータ回転．
+     * @arg (±目標加速度, ±目標速度)
+     * @warning 呼び出しは1回で良い．
+     */
+    void setSpeed(float32_t accel, float32_t speed);
+
     [[gnu::warn_unused_result]] inline float32_t getSpeed() const { return _speed; }
 
     [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _accel; }
 
-    /**
-     * @fn 指定した速度でモータ回転．
-     * @warning 呼び出しは1回で良い．
-     */
-    void setSpeed(float32_t speed);
-
-    void setSpeed(float32_t accel, float32_t speed);
-
-    void testMotor(float32_t duty_ratio) {
-        _motor.update(duty_ratio);
-    }
 
 private:
     /**
@@ -143,7 +139,6 @@ private:
     float32_t _old_speed; //< _accel計測のための前回の割り込み時の速度
     float32_t _ideal_speed; // 理想速度(逐次、現在の測定速度に指令加速度を加算している)
     float32_t _target_speed; // 目標速度(指令値)
-    float32_t _ideal_current; // 次のステップの加速度で必要となるモータへの電流値 [A]
     float32_t _voltage; // duty比に用いる出力電圧 [0 ~ モータ供給電源電圧] [v]
     Encoder &_encoder;
     Motor &_motor;

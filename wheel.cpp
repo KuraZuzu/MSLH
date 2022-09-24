@@ -65,7 +65,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
     // PID制御のための差分算出
     const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
     const float32_t voltage_pid = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける
-
+    _voltage += _voltage * voltage_pid; // ここで前回の速度計測からのフィードバック制御をかける(フィードバック自体は前回のものを参考に補正をかける)
 
     /**
      * @note フィードフォワード制御
@@ -77,13 +77,13 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
     const float32_t current = motor_torque / machine_parameter::K_T; // モータに必要な電流
 
     //ここが原因で動かなかった
-    _ideal_speed = _target_accel * _speed_sampling_time + _speed; //こちらの式だと逆進できる(ただし、前進でも不安定)
-//    _ideal_speed += (_target_accel * _speed_sampling_time); //理想速度に追従するバージョン(前進で安定するが、逆進できない)
+//    _ideal_speed = _target_accel * _speed_sampling_time + _speed; //こちらの式だと逆進できる(ただし、前進でも不安定)
+    _ideal_speed += (_target_accel * _speed_sampling_time); //理想速度に追従するバージョン(前進で安定するが、逆進できない)
 
     const float32_t reverse_voltage = machine_parameter::K_E * (60.0f * _target_accel * 0.001f * _speed_sampling_time / (PI * machine_parameter::WHEEL_DIAMETER)); // 現在の速度+目標加速度で想定される逆起電力算出
     _voltage += (machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage); // 必要電圧
 
-    _voltage += _voltage * voltage_pid; // ここで前回の速度計測からのフィードバック制御をかける(フィードバック自体は前回のものを参考に補正をかける)
+//    _voltage += _voltage * voltage_pid; // 元のFBの位置
 
     // バッテリ電圧を考慮したduty比算出
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;

@@ -88,5 +88,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
     //ここが原因で動かなかった
 //    _ideal_speed = _target_accel * _speed_sampling_time + _speed; //こちらの式だと逆進できる(ただし、前進でも不安定)
-    _ideal_speed += (_target_accel * _speed_sampling_time); //理想速度に追従するバージョン(前進で安定するが、逆進できない)
+    _ideal_speed += (_target_accel * _speed_sampling_time); //理想速度に追従するバージョン(前進で安定するが、こちらは逆進できない)　<=これにしたい
+//    _ideal_speed = (_ideal_speed * _speed_sampling_time) + _ideal_speed; //前進のときにカクカク回転 逆進のときに何故かバク速逆回転 (↑と式同じはずだがなぜ結果が違う)
+//    printf("%f\r\n", _ideal_speed);
 }

@@ -62,10 +62,10 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      */
     if((_target_accel * (_target_speed - _speed)) <= 0.0f) _target_accel = 0.0f;
 
-    // PID制御のための差分算出
-    const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．
-    const float32_t voltage_pid = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける
-    _voltage += _voltage * voltage_pid; // ここで前回の速度計測からのフィードバック制御をかける(フィードバック自体は前回のものを参考に補正をかける)
+    // PID制御のための差分算出 逆進できないバグの原因はここにあった。
+    const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．ここで逆進だと負の値となる
+    const float32_t voltage_p_error = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける ここも逆進だと負の値となる
+    _voltage += _voltage * voltage_p_error; // ここで、負の値に負の値をかけて 正->負->正->負 と繰り返すため、常にタイヤが回転しなかった。
 
     /**
      * @note フィードフォワード制御
@@ -88,6 +88,6 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
     //ここが原因で動かなかった
 //    _ideal_speed = _target_accel * _speed_sampling_time + _speed; //こちらの式だと逆進できる(ただし、前進でも不安定)
-    _ideal_speed += (_target_accel * _speed_sampling_time); //理想速度に追従するバージョン(前進で安定するが、こちらは逆進できない)　<-これにしたい
+    _ideal_speed += (_target_accel * _speed_sampling_time); //理想速度に追従するバージョン(前進で安定するが、こちらは逆進できない)　これは、目標速度への差分が原因だった。
 //    printf("%f\r\n", _ideal_speed);
 }

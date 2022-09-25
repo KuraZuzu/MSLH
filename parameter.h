@@ -38,6 +38,7 @@ namespace mslh::machine_parameter {
     constexpr float32_t MAX_SPEED = 5000; // [mm/s]
     constexpr float32_t MOTOR_VOLTAGE = 3.8f; // [v]
     constexpr float32_t KP_MOTOR_VOLTAGE = 0.0005f;  // (モータ電圧]) / (無負荷時回転数)
+//    constexpr float32_t KP_MOTOR_VOLTAGE = 0.1f;  // (モータ電圧]) / (無負荷時回転数)
 //    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数)
 
     /** Motor */
@@ -47,7 +48,7 @@ namespace mslh::machine_parameter {
 //    constexpr float K_T = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
 
     /** Machine Control */
-    constexpr float32_t KP_MACHINE_CONTROL = 0.0001f; //< 直進制御のためのP制御ゲイン
+    constexpr float32_t KP_MACHINE_CONTROL = 0.001f; //< 直進制御のためのP制御ゲイン
 
 
 //    /** Unit is "pulse" */

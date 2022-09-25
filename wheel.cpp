@@ -62,20 +62,43 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      */
     if((_target_accel * (_target_speed - _speed)) <= 0.0f) _target_accel = 0.0f;
 
-    // PID制御のための差分算出 逆進できないバグの原因はここにあった。
-    const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度) motor-duty比調整のP制御のための差分．ここで逆進だと負の値となる
-    const float32_t voltage_p_error = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける ここも逆進だと負の値となる
-    _voltage += _voltage * voltage_p_error; // ここで、負の値に負の値をかけて 正->負->正->負 と繰り返すため、常にタイヤが回転しなかった。
+
+    /**
+     * @note フィードバック制御
+     *   PID制御を実行(現在はP制御のみ)
+     */
+    const float32_t diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度)　逆進の際は負の値となる
+    const float32_t p_control_error = diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける (逆進の際は負の値となる)
+
+    /**
+     * ①
+     * 実際の目標加速度に対して純粋にPIDの補正値を加算する。
+     * 簡潔な式であり、abs()を使わないために計算も早く、この手法を採用したい。だが、不安定な動作となる(原理的には②と同じだがP制御のパラメータのせいか不安定な加減速)。
+     * @warning
+     * この式の場合、目標速度より遅かった場合と速かった場合にかける補正の値が逆になってしまうという欠点もある。
+     * ・(遅)目標速度よりも遅かった -> その分加速度を加算したいが、指令速度より小さい数値での反映となることが判明しているため、PIDの係数は 1.0 より大きくする必要がある
+     * ・(速)目標速度よりも速かった -> その分加速度を減産したいが、指令速度より大きい数値での反映となることが判明しているため、PIDの係数は 1.0 より小さくする必要がある
+     * そのため、直接電圧値をいじる②のほうが良いのかとも考えられる。
+     */
+    //const float32_t accel = _target_accel + p_control_error; // p_control_error は speed_p_errorという名前にするとよいかも
+
+    /**②
+     * 電圧値 _voltage に直接PIDの補正値を叩き込む方法。
+     * できれば①を採用したいが、うまく行かないので一旦こちらで実装。
+     */
+    _voltage += abs(_voltage) * p_control_error; // PIDの補正値を
+    const float32_t accel = _target_accel; //①の式と同じ形式で計算式に代入したいので、一時的な処理。正式に②をさいようするなら直接 _target_accel の代入に変更。
+
 
     /**
      * @note フィードフォワード制御
      *   加速度から必要な出力電圧を算出する(なぜかPIDのゲインによって特定の速度より上がらなくなる)
      *   必要wheelトルク = (質量) * (加速度) * (直径 [mm -> m]) / (2 [2つのモータのため]);
      */
-    const float32_t wheel_torque = machine_parameter::MASS * (_target_accel * 0.001f * _speed_sampling_time) * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; // *0.5は2つのモータのため
+    const float32_t wheel_torque = machine_parameter::MASS * (accel * 0.001f * _speed_sampling_time) * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; // *0.5は2つのモータのため
     const float32_t motor_torque = wheel_torque * machine_parameter::GEAR_RATIO; //必要モータトルク
     const float32_t current = motor_torque / machine_parameter::K_T; // モータに必要な電流
-    const float32_t reverse_voltage = machine_parameter::K_E * (60.0f * _target_accel * 0.001f * _speed_sampling_time / (PI * machine_parameter::WHEEL_DIAMETER)); // 現在の速度+目標加速度で想定される逆起電力算出
+    const float32_t reverse_voltage = machine_parameter::K_E * (60.0f * accel * 0.001f * _speed_sampling_time / (PI * machine_parameter::WHEEL_DIAMETER)); // 現在の速度+目標加速度で想定される逆起電力算出
     _voltage += (machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage); // 必要電圧
 
 
@@ -83,11 +106,10 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;
     const float32_t duty_ratio = _voltage / battery_voltage;
 
+
     _motor.update(duty_ratio); // モータに印加
 
 
-    //ここが原因で動かなかった
-//    _ideal_speed = _target_accel * _speed_sampling_time + _speed; //こちらの式だと逆進できる(ただし、前進でも不安定)
-    _ideal_speed += (_target_accel * _speed_sampling_time); //理想速度に追従するバージョン(前進で安定するが、こちらは逆進できない)　これは、目標速度への差分が原因だった。
-//    printf("%f\r\n", _ideal_speed);
+    //指定された加速度での次回割り込み時の理想速度算出。次回割り込み時のフィードバック制御で参照する。
+    _ideal_speed += (_target_accel * _speed_sampling_time);
 }

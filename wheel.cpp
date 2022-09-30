@@ -64,17 +64,17 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
 
     /**
-  * @note 目標速度を超えていた場合、加速度を0にする
-  *   ①(加速度 > 0) && ((目標速度 - 現在速度) > 0) の際に加速度有効
-  *   ②(加速度 < 0) && ((目標速度 - 現在速度) < 0) の際に加速度有効
-  *   ①と②を満たさない時，加速度を無効(=0)として速度のPID制御のみ行う(現在はP制御のみ)
-  */
+     * @note 目標速度を超えていた場合、加速度を0にする
+     *   ①(加速度 > 0) && ((目標速度 - 現在速度) > 0) の際に加速度有効
+     *   ②(加速度 < 0) && ((目標速度 - 現在速度) < 0) の際に加速度有効
+     *   ①と②を満たさない時，加速度を無効(=0)として速度のPID制御のみ行う(現在はP制御のみ)
+     */
     if((_target_accel * (_target_speed - _speed)) <= 0.0f) _target_accel = 0.0f;
 
 
-    //指定された加速度での理想速度算出。次回割り込み時のフィードバック制御で参照する。
+    /** 指定された加速度での理想速度算出。次回割り込み時のフィードバック制御で参照する。 */
     _ideal_speed += (_target_accel * _speed_sampling_time);
-    //const float32_t corrected_speed = _ideal_speed + p_control_error; //PIDを足し合わせた速度算出
+    const float32_t corrected_speed = _ideal_speed + p_control_error; //PIDを足し合わせた速度算出
 
     /**
      * @note フィードフォワード制御
@@ -87,15 +87,15 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
     const float32_t motor_torque = wheel_torque / machine_parameter::GEAR_RATIO; //必要モータトルク
     const float32_t current = motor_torque / machine_parameter::K_T; // モータに必要な電流
     // ②
-    const float32_t reverse_voltage = (machine_parameter::K_E * (60.0f * _ideal_speed) * machine_parameter::GEAR_RATIO) / (PI * machine_parameter::WHEEL_DIAMETER); // 目標加速度(+PID補正値)で想定される逆起電力算出
+    const float32_t reverse_voltage = (machine_parameter::K_E * (60.0f * corrected_speed) * machine_parameter::GEAR_RATIO) / (PI * machine_parameter::WHEEL_DIAMETER); // 目標加速度(+PID補正値)で想定される逆起電力算出
     const float32_t voltage = (machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage); // 必要電圧
 
 
-    // バッテリ電圧を考慮したduty比算出
+    /** バッテリ電圧を考慮したduty比算出 */
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;
     const float32_t duty_ratio = voltage / battery_voltage;
 
 
-    // モータに電圧印加
+    /** モータに電圧印加 */
     _motor.update(duty_ratio);
 }

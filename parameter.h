@@ -20,13 +20,14 @@ namespace mslh::machine_parameter {
 
     /** Weight */
     constexpr float32_t WEIGHT = 0.35f * 2; //17.00[g]
-//    constexpr float32_t WEIGHT = 17.00f; //17.00[g]
+//    constexpr float32_t WEIGHT = 0.0f;
+    //    constexpr float32_t WEIGHT = 17.00f; //17.00[g]
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
     /** Unit is "pulse" */
     constexpr int32_t ENCODER_ONE_ROTATION_PULSE = 500 * 4;
-    constexpr float32_t GEAR_RATIO = 9.0f / 39.0f;
+    constexpr float32_t GEAR_RATIO = 39.0f / 9.0f;
 
     /** Unit is "mm" */
     constexpr float32_t WHEEL_DIAMETER = 13.5f;
@@ -36,9 +37,9 @@ namespace mslh::machine_parameter {
 
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_SPEED = 5000; // [mm/s]
-    constexpr float32_t MOTOR_VOLTAGE = 3.8f; // [v]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0005f;  // (モータ電圧]) / (無負荷時回転数)
-//    constexpr float32_t KP_MOTOR_VOLTAGE = 0.1f;  // (モータ電圧]) / (無負荷時回転数)
+//    constexpr float32_t MOTOR_VOLTAGE = 3.8f; // [v]
+    constexpr float32_t KP_MOTOR_VOLTAGE = 20.0f;  // (モータ電圧]) / (無負荷時回転数) absのやつ
+//    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数) 直接速度をPID
 //    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数)
 
     /** Motor */

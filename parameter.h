@@ -15,13 +15,16 @@
 
 namespace mslh::machine_parameter {
 
+    /** Battery Voltage of Motor Source */
+    constexpr float32_t MOTOR_SOURCE_VOLTAGE = 3.3f;
+
     /** Battery Voltage Divider */
     constexpr float32_t BATTERY_VOLTAGE_RATIO = (1000.0f + 1000.0f) / 1000.0f;
 
     /** Weight */
-    constexpr float32_t WEIGHT = 0.35f * 2; //17.00[g]
+//    constexpr float32_t WEIGHT = 0.5f * 2; //17.00[g]
+    constexpr float32_t WEIGHT = 17.00f; //17.00[g]
 //    constexpr float32_t WEIGHT = 0.0f;
-    //    constexpr float32_t WEIGHT = 17.00f; //17.00[g]
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
@@ -38,7 +41,7 @@ namespace mslh::machine_parameter {
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_SPEED = 5000; // [mm/s]
 //    constexpr float32_t MOTOR_VOLTAGE = 3.8f; // [v]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 0.5f;  // (モータ電圧]) / (無負荷時回転数) absのやつ
+    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数) absのやつ
 //    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数) 直接速度をPID
 //    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数)
 

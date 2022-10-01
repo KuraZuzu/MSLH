@@ -92,7 +92,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
 
     /** バッテリ電圧を考慮したduty比算出 */
-    const float32_t battery_voltage = machine_parameter::MOTOR_SOURCE_VOLTAGE * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;
+    const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;
     const float32_t duty_ratio = voltage / battery_voltage;
 
 

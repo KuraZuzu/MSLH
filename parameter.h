@@ -15,9 +15,6 @@
 
 namespace mslh::machine_parameter {
 
-    /** Battery Voltage of Motor Source */
-    constexpr float32_t MOTOR_SOURCE_VOLTAGE = 3.3f;
-
     /** Battery Voltage Divider */
     constexpr float32_t BATTERY_VOLTAGE_RATIO = (1000.0f + 1000.0f) / 1000.0f;
 

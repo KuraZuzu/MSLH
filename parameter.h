@@ -38,7 +38,7 @@ namespace mslh::machine_parameter {
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_SPEED = 5000; // [mm/s]
 //    constexpr float32_t MOTOR_VOLTAGE = 3.8f; // [v]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 2.0f;  // (モータ電圧]) / (無負荷時回転数)
+    constexpr float32_t KP_MOTOR_VOLTAGE = 1.2f;  // (モータ電圧]) / (無負荷時回転数)
 //    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数) 直接速度をPID
 //    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  // (モータ電圧]) / (無負荷時回転数)
 

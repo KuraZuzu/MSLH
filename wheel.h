@@ -109,7 +109,7 @@ public:
 
     [[gnu::warn_unused_result]] inline float32_t getSpeed() const { return _speed; }
 
-    [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _accel; }
+    [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _target_accel; }
 
 
 private:
@@ -134,9 +134,7 @@ private:
 
 
     float32_t _target_accel; //< 目標加速度(指令値)
-    float32_t _accel; // < 現在の計測した実加速度
     float32_t _speed;  //< 現在の計測した実速度 [mm/s] (mm per second).
-    float32_t _old_speed; //< _accel計測のための前回の割り込み時の速度
     float32_t _ideal_speed; // 理想速度(逐次、現在の測定速度に指令加速度を加算している)
     float32_t _target_speed; // 目標速度(指令値)
     float32_t _voltage; // duty比に用いる出力電圧 [0 ~ モータ供給電源電圧] [v]

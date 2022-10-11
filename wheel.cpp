@@ -13,12 +13,10 @@ mslh::Wheel::Wheel(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery, f
         : _motor(motor)
         , _encoder(encoder)
         , _battery(battery)
-        , _accel(0.0f)
         , _target_accel(0.0f)
         , _speed(0.0f)
         , _ideal_speed(0.0)
         , _target_speed(0.0f)
-        , _old_speed(0.0f)
         , _voltage(0.0f)
         , _speed_sampling_time(speed_sampling_time)
         , _distance_per_pulse(wheel_diameter*PI/static_cast<float32_t>(_encoder.getOneRotationPulse()))
@@ -69,12 +67,17 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      *   ②(加速度 < 0) && ((目標速度 - 現在速度) < 0) の際に加速度有効
      *   ①と②を満たさない時，加速度を無効(=0)として速度のPID制御のみ行う(現在はP制御のみ)
      */
-    if((_target_accel * (_target_speed - _speed)) <= 0.0f) _target_accel = 0.0f;
+    if((_target_accel * (_target_speed - _speed)) <= 0.0f) {
+        _target_accel = 0.0f;
+        _ideal_speed = _target_speed;
+    }
 
 
     /** 指定された加速度での理想速度算出。次回割り込み時のフィードバック制御で参照する。 */
     _ideal_speed += (_target_accel * _speed_sampling_time);
+    if(_ideal_speed > _target_speed) _ideal_speed = _target_speed;
     const float32_t corrected_speed = _ideal_speed + p_control_error; //PIDを足し合わせた速度算出
+
 
     /**
      * @note フィードフォワード制御

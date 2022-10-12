@@ -20,19 +20,21 @@ namespace mslh::machine_parameter {
 
     /** Weight */
 //    constexpr float32_t WEIGHT = 0.5f * 2; //17.00[g]
-    constexpr float32_t WEIGHT = 17.0f; //17.00[g]
-//    constexpr float32_t WEIGHT = 0.0f;
+    constexpr float32_t WEIGHT = 500.0f * 2; //つくチャレ空転
+//    constexpr float32_t WEIGHT = 30.0; //つくチャレだいたいの重さ
+    //    constexpr float32_t WEIGHT = 0.0f;
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
     /** Unit is "pulse" */
-    constexpr int32_t ENCODER_ONE_ROTATION_PULSE = 500 * 4;
-    constexpr float32_t GEAR_RATIO = 39.0f / 9.0f;
+//    constexpr int32_t ENCODER_ONE_ROTATION_PULSE = 500 * 4;
+    constexpr int32_t ENCODER_ONE_ROTATION_PULSE = 500 * 6 * 23 * 4;
+    constexpr float32_t GEAR_RATIO = 60.0f / 15.0f;
 
     /** Unit is "mm" */
-    constexpr float32_t WHEEL_DIAMETER = 13.5f;
+    constexpr float32_t WHEEL_DIAMETER = 307.0f;
     constexpr float32_t WHEEL_RADIUS = WHEEL_DIAMETER / 2.0f;
-    constexpr float32_t MACHINE_TREAD = 36.2f;  //< (40 - 3.8)
+    constexpr float32_t MACHINE_TREAD = 620.0f;  //< (40 - 3.8)
     constexpr float32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / ENCODER_ONE_ROTATION_PULSE;
 
     /** P-parameter for motor source voltage */

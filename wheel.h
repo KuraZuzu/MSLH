@@ -30,7 +30,8 @@ namespace mslh {
  *
  *   using namespace mslh;
  *
- *   Wheel wheel( Motor(htim1, TIM_CHANNEL_1, GPIOC, GPIO_PIN_0, false), Encoder(htim3, 500*4, true), 300.0f, 10.0f);
+ *  // This definition is out of main().
+ *   Interrupter<Wheel> wheel_interrupt;
  *
  *
  *   // Need ticker for measure speed.
@@ -42,25 +43,29 @@ namespace mslh {
  *       // 90M[Hz](APB1) / 36000 = 2500[Hz]
  *       // 2500[Hz] / 25(Period) = 100[Hz]   -> 10[ms]
  *       if(htim == &htim6) {
- *           wheel.interruptControlWheel();
+ *           wheel_interrupt.run();
  *       }
  *
  *
  *   int main() {
  *       // Abbreviation Microcomputer startup settings.
- *
- *       int32_t speed;
- *
  *       MX_TIM1_Init();                 //< Need setup HAL motor timer parameters.
  *       MX_TIM3_Init();                 //< Need setup HAL encoder timer parameters.
  *       MX_GPIO_Init();                 //< Need setup HAL_GPIO for motor _direction.
  *       MX_TIM6_Init();                 //< Need setup HAL ticker(callback) timer parameters.
- *       HAL_TIM_Base_Start_IT(&htim6);  //< Need start ticker(callback) timer parameters.
  *
- *       test.start();                                 //< Need start motor and encoder.
- *       test.setSpeed(500.0f);                        //< Running (wheel rotation) at a specified speed[mm/s].
- *       int32_t wheel_speed = test_wheel.getSpeed();  //< measure wheel speed
- *       test.stop();                                  //< Stop all work (Encoder values are retained).
+ *       Motor motor(htim1, TIM_CHANNEL_1, GPIOA,  GPIO_PIN_6, true);
+ *       Encoder encoder(htim4, 500, false);
+ *       AnalogInDMAStream battery(hadc1, 5);
+ *       Wheel wheel(motor, encoder, battery, 13.5f, 0.01f);
+ *
+ *       wheel_interrupt.attach(&wheel, &Wheel::interruptControlWheel);  //< Attach function of interrupt.
+ *
+ *
+ *       wheel.start();                                  //< Need start motor and encoder.
+ *       wheel.setSpeed(500.0f, 100.0f);                 //< Running (wheel rotation) at a specified accel[mm/ss] and speed[mm/s].
+ *       float32_t wheel_speed = test_wheel.getSpeed();  //< measure wheel speed
+ *       wheel.stop()                                    //< Stop all work (Encoder values are retained).
  *   }
  * @endcode
  */

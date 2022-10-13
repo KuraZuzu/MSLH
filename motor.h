@@ -28,7 +28,7 @@ namespace mslh {
  *   // 3 seconds each, and then stopped.
  *
  *   #include "motor.h"
-
+ *
  *   using namepsace mslh;
  *
  *   Motor motor(htim1, TIM_CHANNEL_1, GPIOA, GPIO_PIN_6, true);

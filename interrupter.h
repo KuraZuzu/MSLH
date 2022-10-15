@@ -15,6 +15,37 @@
 namespace mslh {
 
 
+/**
+ * @brief
+ *     This class stores an arbitrary function pointer and runs it at any given time.
+ *     As an example of use, arbitrary instances can be passed to other functions without having to declare them globally.
+ *
+ * Example:
+ * @code
+ *   using namespace mslh;
+ *
+ *
+ *   Interrupter<Test> interrupter;
+ *
+ *   Class Developer {
+ *   public:
+ *      console() { std::cout << "hoge"; }
+ *   }
+ *
+ *   Class Publisher {
+ *   public:
+ *      call() { interrupter.run(); }
+ *   }
+ *
+ *   int main() {
+ *       Developer dev;
+ *       interrupter.attach(&dev, &Developer::console);  //< ① Store any function.
+ *       Publisher pub;
+ *       pub.call(); //< ② Run function that stored by ①. (console() is ran.)
+ *   }
+ *
+ * @endcode
+ */
 template<class T>
 class Interrupter {
 

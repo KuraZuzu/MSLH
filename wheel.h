@@ -30,7 +30,7 @@ namespace mslh {
  *
  *   using namespace mslh;
  *
- *  // This definition is out of main().
+ * 　 // This definition is out of main().
  *   Interrupter<Wheel> wheel_interrupt;
  *
  *

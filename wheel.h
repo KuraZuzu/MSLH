@@ -138,17 +138,19 @@ private:
     void interruptTwoFreedomDegreeControl();
 
 
-    float32_t _target_accel; //< 目標加速度(指令値)
-    float32_t _speed;  //< 現在の計測した実速度 [mm/s] (mm per second).
-    float32_t _ideal_speed; // 理想速度(逐次、現在の測定速度に指令加速度を加算している)
-    float32_t _target_speed; // 目標速度(指令値)
-    float32_t _voltage; // duty比に用いる出力電圧 [0 ~ モータ供給電源電圧] [v]
+    float32_t _target_accel;   //< 目標加速度(指令値)
+    float32_t _speed;          //< 現在の計測した実速度 [mm/s] (mm per second).
+    float32_t _ideal_speed;    //< 理想速度(逐次、現在の測定速度に指令加速度を加算している)
+    float32_t _target_speed;   //< 目標速度(指令値)
+    float32_t _diff_speed;     //< PID制御のための速度偏差
+    float32_t _old_diff_speed; //< ID制御のための前回の速度偏差
+    float32_t _integral_speed; //< I制御のための速度偏差積分
     Encoder &_encoder;
     Motor &_motor;
     AnalogInDMAStream &_battery;
-    const float32_t _speed_sampling_time; // second [s]
-    const float32_t _distance_per_pulse;  // [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
-    const float32_t _speed_per_pulse;     // callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
+    const float32_t _speed_sampling_time; //< second [s]
+    const float32_t _distance_per_pulse;  //< [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
+    const float32_t _speed_per_pulse;     //< callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
 };
 
 }  // namespace mslh

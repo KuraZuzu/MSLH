@@ -37,7 +37,7 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    inline uint16_t read(const uint32_t charge_time_ms=1);
+    uint16_t read(const uint32_t charge_time_ms=1);
 
 
 private:

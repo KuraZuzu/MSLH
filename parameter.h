@@ -9,6 +9,7 @@
 
 #include "defines.h"
 #include "arm_math.h"
+#include <functional>
 
 #ifndef MSLH_PARAMETER_H
 #define MSLH_PARAMETER_H
@@ -21,7 +22,6 @@ namespace mslh::machine_parameter {
     /** Weight */
 //    constexpr float32_t WEIGHT = 0.5f * 2; //17.00[g]
     constexpr float32_t WEIGHT = 17.0f; //17.00[g]
-//    constexpr float32_t WEIGHT = 0.0f;
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
@@ -50,6 +50,14 @@ namespace mslh::machine_parameter {
 
     /** Machine Control */
     constexpr float32_t KP_MACHINE_CONTROL = 0.001f; //< 直進制御のためのP制御ゲイン
+
+    /** Distance Sensor */
+    uint16_t convertApproximateDistance(u_int16_t sensor_value) {
+        return sensor_value;
+    }
+    uint16_t (*f)(uint16_t);
+    std::function<uint16_t(uint16_t)> convert_func = convertApproximateDistance;
+//    f = &convertApproximateDistance;
 
 
 //    /** Unit is "pulse" */

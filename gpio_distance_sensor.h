@@ -14,6 +14,7 @@
 #include "pwm_out.h"
 #include "analog_in_dma_stream.h"
 #include "digital_out.h"
+#include <functional>
 
 namespace mslh {
 
@@ -29,18 +30,22 @@ public:
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    GPIODistanceSensor(DigitalOut led, AnalogInDMAStream photo_transistor);
-
+    GPIODistanceSensor(DigitalOut led, AnalogInDMAStream photo_transistor, std::function<uint16_t(uint16_t)> approximate_func);
 
     void start();
 
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    uint16_t read(const uint32_t charge_time_ms=1);
+    uint16_t read(uint32_t charge_time_ms = 1);
 
 
 private:
+
+    uint16_t convertApproximateDistance(uint16_t sensor_value) {
+        return sensor_value * 2;
+    }
+
 
     DigitalOut _led;
     AnalogInDMAStream _photo_transistor;

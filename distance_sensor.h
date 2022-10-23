@@ -74,6 +74,11 @@ public:
         return _previous_value - _offset_value; //< ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
     }
 
+    bool isOpenedLeftWall() {}
+    bool isOpenedFrontWall() {}
+    bool isOpenedRightWall() {}
+
+
 private:
 
     uint16_t getDistance_mm();

@@ -9,7 +9,7 @@
 
 #include "point.h"
 
-mslh::Position::Position() : _rad(0.0){
+mslh::Position::Position() : _rad(0.0f){
     _x = 0.0;
     _y = 0.0;
 }

@@ -28,22 +28,22 @@ public:
     /**
      * @fn x,y,rad を連続の値としてdouble型でセットする
      */
-    void set_position(double_t x, double_t y, double_t rad);
+    void setPosition(float32_t x, float32_t y, float32_t rad);
 
     /**
      * @fn x,y,rad を連続の値としてdouble型で取得する
      */
-    Position get_position();
+    Position getPosition();
 
     /**
      * @fnx,y,rad をブロック単位で取得する
      */
-    MapPosition get_map_position(); //マップ上のどこのブロックにいるか
+    MapPosition getMapPosition(); //マップ上のどこのブロックにいるか
 
     /**
      * @fn マップ情報をアップデート
      */
-    void update_map(Map &_map);
+    void updateMap(Map &_map);
 
 
 private:

@@ -14,10 +14,7 @@ mslh::DistanceSensor::DistanceSensor(PWMOut led, AnalogInDMAStream photo_transis
         , _photo_transistor(photo_transistor)
         , _sampling_htim_x(sampling_htim_x)
         , _value(0)
-        , _current_value(0)
-        , _previous_value(0)
-        , _min_value(UINT16_MAX)
-        , _offset_value(UINT16_MAX)
+        , _offset_value(0)
         , _get_flag(false) {
 }
 

@@ -37,29 +37,13 @@ public:
     /**
      * @param Charge capacitor (can't set us unit).
      */
-    inline uint16_t read(const uint32_t charge_time_ms=1) {
-        _led = 0;
-        const uint16_t offset_value = _photo_transistor.read();
-        HAL_Delay(charge_time_ms);
-        uint16_t peak_value = 0;
-        uint32_t tick_start = HAL_GetTick();
-        _led = 1;
-        while( (HAL_GetTick() - tick_start) < 1 ) {
-            const uint16_t temp_value = _photo_transistor.read();
-            if(peak_value < temp_value) peak_value = temp_value;
-        }
-        return peak_value - offset_value;
-    }
+    inline uint16_t read(const uint32_t charge_time_ms=1);
+
 
 private:
 
-    uint16_t getDistance_mm();
-
-    uint16_t convert_12bit_to_mm(uint16_t value);
-
     DigitalOut _led;
     AnalogInDMAStream _photo_transistor;
-
 };
 
 }  // namespace mslh

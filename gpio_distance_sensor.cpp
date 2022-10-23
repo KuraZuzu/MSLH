@@ -18,11 +18,15 @@ void mslh::GPIODistanceSensor::start() {
     _photo_transistor.start();
 }
 
-uint16_t mslh::GPIODistanceSensor::getDistance_mm() {
-    return convert_12bit_to_mm(_photo_transistor.read());
-}
-
-uint16_t mslh::GPIODistanceSensor::convert_12bit_to_mm(uint16_t value) {
-    value = 0; //ここで距離変換の数式わちゃわちゃ。
-    return value;
+uint16_t mslh::GPIODistanceSensor::read(const uint32_t charge_time_ms) {
+    _led.write(0);
+    uint16_t peak_value = 0;
+    uint32_t tick_start = HAL_GetTick();
+    const uint16_t offset_value = _photo_transistor.read();
+    _led.write(1);
+    while( (HAL_GetTick() - tick_start) < charge_time_ms ) {
+        const uint16_t temp_value = _photo_transistor.read();
+        if(peak_value < temp_value) peak_value = temp_value;
+    }
+    return (peak_value - offset_value);
 }

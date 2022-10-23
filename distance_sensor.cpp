@@ -14,22 +14,12 @@ mslh::DistanceSensor::DistanceSensor(PWMOut led, AnalogInDMAStream photo_transis
         , _photo_transistor(photo_transistor)
         , _sampling_htim_x(sampling_htim_x)
         , _value(0)
-        , _offset_value(0)
-        , _get_flag(false) {
+        , _offset_value(0) {
 }
 
 void mslh::DistanceSensor::start() {
     _led.start();
-    _led.startUpdateEvent();
+//    _led.startUpdateEvent();
     _photo_transistor.start();
     HAL_TIM_Base_Start_IT(&_sampling_htim_x);
-}
-
-uint16_t mslh::DistanceSensor::getDistance_mm() {
-    return convert_12bit_to_mm(_photo_transistor.read());
-}
-
-uint16_t mslh::DistanceSensor::convert_12bit_to_mm(uint16_t value) {
-    value = 0; //ここで距離変換の数式わちゃわちゃ。
-    return value;
 }

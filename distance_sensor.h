@@ -36,11 +36,11 @@ public:
      * @fn LEDのPWM立ち上がりをトリガーとした割り込みで呼ぶ
      * @warning P
      */
-    inline void interruptSamplingMaxValue() {
+    inline void interruptSamplingValue() {
         uint16_t temp_value = 0;
         _offset_value = read();
         const uint32_t tick_start = HAL_GetTick();
-        while (1 <= (HAL_GetTick() - tick_start)) {  // HAL_GetTick() は1ms単位
+        while ((HAL_GetTick() - tick_start) < 1) {  // HAL_GetTick() は1ms単位
             temp_value = _photo_transistor.read();
             if(_value < temp_value) _value = temp_value;
         }
@@ -52,6 +52,7 @@ public:
      * @param Charge capacitor (can't set us unit).
      */
     uint16_t read() const {
+
         return _value - _offset_value; //< ここで一旦値を保存して getDistance_mm を呼ぶのがいいかも。
     }
 
@@ -62,18 +63,11 @@ public:
 
 private:
 
-    uint16_t getDistance_mm();
-
-    uint16_t convert_12bit_to_mm(uint16_t value);
-
-
     PWMOut _led;
     AnalogInDMAStream _photo_transistor;
     TIM_HandleTypeDef &_sampling_htim_x;
     uint16_t _value;          //< 現在のセンサー値
     uint16_t _offset_value;   //< 1つ前の周期の最低値を記録したもの(オフセットとして使う) (1つ前の周期の値)
-
-    bool _get_flag;
 };
 
 }  // namespace mslh

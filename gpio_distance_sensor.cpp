@@ -9,8 +9,9 @@
 
 #include "gpio_distance_sensor.h"
 
+
 mslh::GPIODistanceSensor::GPIODistanceSensor(DigitalOut led, AnalogInDMAStream photo_transistor, std::function<uint16_t(uint16_t)> approximate_func)
-        : _led(led), _photo_transistor(photo_transistor) {
+        : _led(led), _photo_transistor(photo_transistor), _approximate_func(approximate_func) {
 }
 
 void mslh::GPIODistanceSensor::start() {
@@ -19,7 +20,7 @@ void mslh::GPIODistanceSensor::start() {
 
 uint16_t mslh::GPIODistanceSensor::read(const uint32_t charge_time_ms) {
     uint32_t tick_start;
-    uint16_t peak_value = 0;
+    uint16_t peak_value = 0, temp_value = 0;
 
     //LEDを消灯してコンデンサにチャージ開始
     _led.write(0);
@@ -32,9 +33,9 @@ uint16_t mslh::GPIODistanceSensor::read(const uint32_t charge_time_ms) {
     _led.write(1);
     tick_start = HAL_GetTick();
     while((HAL_GetTick() - tick_start) < 1) {  //< 波形がピークになるのを待つもっと短くていいのかも
-        const uint16_t temp_value = _photo_transistor.read();  //< ピーク値取得
+        temp_value = _photo_transistor.read();  //< ピーク値取得
         if(peak_value < temp_value) peak_value = temp_value;
     }
 
-    return convertApproximateDistance(peak_value - offset_value);
+    return peak_value - offset_value;
 }

@@ -34,21 +34,25 @@ public:
 
     void start();
 
+    uint16_t getTestRawValue(uint32_t charge_time_ms = 1) {
+        return read(charge_time_ms);
+    }
+
+    uint16_t getDistance(uint32_t charge_time_ms = 1) {
+        return _approximate_func(read(charge_time_ms));
+    }
+
+private:
+
     /**
      * @param Charge capacitor (can't set us unit).
      */
     uint16_t read(uint32_t charge_time_ms = 1);
 
 
-private:
-
-    uint16_t convertApproximateDistance(uint16_t sensor_value) {
-        return sensor_value * 2;
-    }
-
-
     DigitalOut _led;
     AnalogInDMAStream _photo_transistor;
+    std::function<uint16_t(uint16_t)> _approximate_func;
 };
 
 }  // namespace mslh

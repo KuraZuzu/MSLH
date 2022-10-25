@@ -52,12 +52,19 @@ namespace mslh::machine_parameter {
     constexpr float32_t KP_MACHINE_CONTROL = 0.001f; //< 直進制御のためのP制御ゲイン
 
     /** Distance Sensor */
-    uint16_t convertApproximateDistance(u_int16_t sensor_value) {
-        return sensor_value;
-    }
-    uint16_t (*f)(uint16_t);
-    std::function<uint16_t(uint16_t)> convert_func = convertApproximateDistance;
-//    f = &convertApproximateDistance;
+    uint16_t convertDistanceLF(u_int16_t sensor_value);
+    const std::function<uint16_t(uint16_t)> convert_lf_func = convertDistanceLF;
+    uint16_t convertDistanceLS(u_int16_t sensor_value);
+    const std::function<uint16_t(uint16_t)> convert_ls_func = convertDistanceLS;
+    uint16_t convertDistanceRS(u_int16_t sensor_value);
+    const std::function<uint16_t(uint16_t)> convert_rs_func = convertDistanceRS;
+    uint16_t convertDistanceRF(u_int16_t sensor_value);
+    const std::function<uint16_t(uint16_t)> convert_rf_func = convertDistanceRF;
+
+//    uint16_t convertDistanceLF(u_int16_t sensor_value) {
+//        return sensor_value;
+//    }
+//    f = &convertDistanceLF;
 
 
 //    /** Unit is "pulse" */

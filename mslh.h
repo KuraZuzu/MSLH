@@ -38,6 +38,7 @@
 #ifndef MSLH_MSLH_H
 #define MSLH_MSLH_H
 
+#include "parameter.h"
 #include "analog_in_dma_stream.h"
 #include "distance_sensor.h"
 #include "digital_out.h"
@@ -52,7 +53,9 @@
 #include "gpio_distance_sensor.h"
 #include "interrupter.h"
 #include "point.h"
-#include "parameter.h"
+#include "map.h"
+#include "position_estimator.h"
+
 
 using namespace mslh;
 

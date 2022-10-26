@@ -14,6 +14,7 @@
 #include "pwm_out.h"
 #include "analog_in_dma_stream.h"
 #include "digital_out.h"
+#include <functional>
 
 namespace mslh {
 
@@ -29,37 +30,29 @@ public:
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    GPIODistanceSensor(DigitalOut led, AnalogInDMAStream photo_transistor);
-
+    GPIODistanceSensor(DigitalOut led, AnalogInDMAStream photo_transistor, std::function<uint16_t(uint16_t)> approximate_func);
 
     void start();
 
-    /**
-     * @param Charge capacitor (can't set us unit).
-     */
-    inline uint16_t read(const uint32_t charge_time_ms=1) {
-        _led = 0;
-        const uint16_t offset_value = _photo_transistor.read();
-        HAL_Delay(charge_time_ms);
-        uint16_t peak_value = 0;
-        uint32_t tick_start = HAL_GetTick();
-        _led = 1;
-        while( (HAL_GetTick() - tick_start) < 1 ) {
-            const uint16_t temp_value = _photo_transistor.read();
-            if(peak_value < temp_value) peak_value = temp_value;
-        }
-        return peak_value - offset_value;
+    uint16_t getTestRawValue(uint32_t charge_time_ms = 1) {
+        return read(charge_time_ms);
+    }
+
+    uint16_t getDistance(uint32_t charge_time_ms = 1) {
+        return _approximate_func(read(charge_time_ms));
     }
 
 private:
 
-    uint16_t getDistance_mm();
+    /**
+     * @param Charge capacitor (can't set us unit).
+     */
+    uint16_t read(uint32_t charge_time_ms = 1);
 
-    uint16_t convert_12bit_to_mm(uint16_t value);
 
     DigitalOut _led;
     AnalogInDMAStream _photo_transistor;
-
+    std::function<uint16_t(uint16_t)> _approximate_func;
 };
 
 }  // namespace mslh

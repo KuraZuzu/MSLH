@@ -22,12 +22,12 @@ public:
      * @fn センサを参照せずに、マップ情報を元に壁の有無を返す
      * @return (opened = 1), (not opened = 0)
      */
-    [[nodiscard]] bool isOpenedWall(uint8_t target_wall) const;
+    [[gnu::warn_unused_result]] bool isOpenedWall(uint8_t target_wall) const;
 
     /**
      * @fn 壁情報を取得する
      */
-    [[nodiscard]] uint8_t getWall() const;
+    [[gnu::warn_unused_result]] uint8_t getWall() const;
 
     /**
      * @fn 壁情報をセットする
@@ -42,7 +42,7 @@ public:
     /**
      * @fn 対象ブロックがゴール座標までの歩数を返す
      */
-    [[nodiscard]] int16_t getWalkCount() const;
+    [[gnu::warn_unused_result]] int16_t getWalkCount() const;
 
     /**
      * @fn 対象ブロックがゴール座標までの歩数を設定する

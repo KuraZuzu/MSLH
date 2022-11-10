@@ -27,7 +27,7 @@
  *
  *   int main() {
  *      // Abbreviation Microcomputer startup settings
- //
+ *
  *       MX_TIM1_Init();  //< Need setup HAL Timer parameters.
  *
  *       pwm_out.start()  //< Start PWM output.

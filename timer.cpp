@@ -15,20 +15,26 @@ namespace timer {
 };
 
 /**
- * @fn init_timer_setting(TIM)
+ * @fn start_timer_setting(TIM)
  */
-void timer::initTimer(TIM_HandleTypeDef *htim_x) {
+void timer::startTimer(TIM_HandleTypeDef *htim_x) {
     timer_htim_x = htim_x;
     HAL_TIM_Base_Start_IT(timer_htim_x);
+}
+
+/**
+ * @fn stop_timer_setting(TIM)
+ */
+void timer::stopTimer(TIM_HandleTypeDef *htim_x) {
+    timer_htim_x = htim_x;
+    HAL_TIM_Base_Stop_IT(timer_htim_x);
 }
 
 /**
  * @fn timer wait function.
  */
 void timer::waitMicroSeconds(uint32_t time_us) {
-    counter_us = 0;
-    HAL_TIM_Base_Start_IT(timer_htim_x);
-    while (counter_us < time_us) {
+    const uint32_t count = counter_us;
+    while ((counter_us - count) < time_us) {
     }
-    HAL_TIM_Base_Stop_IT(timer_htim_x);
 }

@@ -61,7 +61,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      */
     _old_diff_speed = _diff_speed;
     _diff_speed = _ideal_speed - _speed; // (目標速度) - (現在速度)　逆進の際は負の値となる
-    _integral_speed += (_diff_speed + _old_diff_speed) * 0.5f * _speed_sampling_time; // I制御のための積分 (台形として面積積分)
+    _integral_speed += (_diff_speed + _old_diff_speed) * 0.5f * _speed_sampling_time; // _diff_speed + _old_diff_speed じゃない？P制御を妨げる感じで// I制御のための積分 (台形として面積積分)
     const float32_t p_error = _diff_speed * machine_parameter::KP_MOTOR_VOLTAGE; // ゲインをかける (逆進の際は負の値となる)
     const float32_t i_error = _integral_speed * machine_parameter::KI_MOTOR_VOLTAGE; // ゲインをかける (逆進の際は負の値となる)
     const float32_t d_error = (_diff_speed - _old_diff_speed) / _speed_sampling_time * machine_parameter::KD_MOTOR_VOLTAGE ; // ゲインをかける (逆進の際は負の値となる)

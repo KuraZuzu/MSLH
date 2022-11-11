@@ -34,7 +34,7 @@ void timer::stopTimer(TIM_HandleTypeDef *htim_x) {
  * @fn timer wait function.
  */
 void timer::waitMicroSeconds(uint32_t time_us) {
-    const uint32_t count = counter_us;
-    while ((counter_us - count) < time_us) {
+    const uint32_t init_count = counter_us;
+    while ((counter_us - init_count) < time_us) {
     }
 }

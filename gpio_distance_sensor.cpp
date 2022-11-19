@@ -20,22 +20,26 @@ void mslh::GPIODistanceSensor::start() {
 
 uint16_t mslh::GPIODistanceSensor::read(const uint32_t charge_time_ms) {
     uint32_t tick_start;
-    uint16_t peak_value = 0, temp_value = 0;
+    uint16_t peak_value = 0;
+    uint16_t temp_value = 0;
 
     //LEDを消灯してコンデンサにチャージ開始
     _led.write(0);
     tick_start = HAL_GetTick();
     while((HAL_GetTick() - tick_start) < charge_time_ms) {  //< コンデンサが充電されるのを待つ(時間は要検討)
     }
-    const uint16_t offset_value = _photo_transistor.read();  //< オフセット値取得
+//    const uint16_t offset_value = _photo_transistor.read();  //< オフセット値取得
+    const uint16_t offset_value = 0;
 
     //LEDを点灯して計測開始
     _led.write(1);
     tick_start = HAL_GetTick();
-    while((HAL_GetTick() - tick_start) < 1) {  //< 波形がピークになるのを待つもっと短くていいのかも
+    while((HAL_GetTick() - tick_start) < 2) {  //< 波形がピークになるのを待つもっと短くていいのかも
         temp_value = _photo_transistor.read();  //< ピーク値取得
         if(peak_value < temp_value) peak_value = temp_value;
     }
+    _led.write(0);
+
 
     return peak_value - offset_value;
 }

@@ -34,12 +34,16 @@ public:
 
     void start();
 
-    uint16_t getTestRawValue(uint32_t charge_time_ms = 1) {
-        return read(charge_time_ms);
+    float32_t getTestRawValue() {
+        return convertVoltage(read());
     }
 
-    uint16_t getDistance(uint32_t charge_time_ms = 1) {
-        return _approximate_func(read(charge_time_ms));
+    uint16_t getDistance() {
+        return _approximate_func(read());
+    }
+
+    float32_t convertVoltage(uint16_t adc_value) {
+        return 3.3f / 4095.0f * static_cast<float32_t>(adc_value);
     }
 
 private:

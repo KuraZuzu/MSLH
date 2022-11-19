@@ -14,6 +14,8 @@
 #include "stm32f4xx_hal.h"
 #include "tim.h"
 
+namespace mslh {
+
 /**
  * @brief
  *   1[us]単位で時間を計測して遅延処理と任意のタイミングで時間取得を行う
@@ -34,29 +36,27 @@
  *   だとしたらTIM2の設定は "Prescaler = 90-1" となる  (90[MHz] / 90 = 1[us])．
  *   "Prescaler = 90-1" としているのは，0の値も１分周器となるため，90回だと "90 - 1 = 89" とする必要があるため．
  */
-namespace mslh {
+class Timer {
 
-    class Timer {
+public:
+    Timer(TIM_HandleTypeDef &timer_htim_n) : _timer_htim_n(timer_htim_n) {}
 
-    public:
-        Timer(TIM_HandleTypeDef &timer_htim_n) : _timer_htim_n(timer_htim_n) {}
+    inline void start() { HAL_TIM_Base_Start(&_timer_htim_n);}
 
-        inline void start() { HAL_TIM_Base_Start(&_timer_htim_n);}
+    inline void stop() { HAL_TIM_Base_Stop(&_timer_htim_n); }
 
-        inline void stop() { HAL_TIM_Base_Stop(&_timer_htim_n); }
+    inline uint32_t getTime() const { return _timer_htim_n.Instance->CNT; }
 
-        inline uint32_t getTime() const { return _timer_htim_n.Instance->CNT; }
-
-        inline void waitMicroSeconds(uint32_t micro_seconds) const {
-            const uint32_t offset_time = _timer_htim_n.Instance->CNT;
-            while (_timer_htim_n.Instance->CNT - offset_time < micro_seconds) {}
-        }
+    inline void waitMicroSeconds(uint32_t micro_seconds) const {
+        const uint32_t offset_time = _timer_htim_n.Instance->CNT;
+        while (_timer_htim_n.Instance->CNT - offset_time < micro_seconds) {}
+    }
 
 
-    private:
-        TIM_HandleTypeDef &_timer_htim_n;
+private:
+    TIM_HandleTypeDef &_timer_htim_n;
 
-    };
+};
 
 }
 

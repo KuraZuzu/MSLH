@@ -14,6 +14,7 @@
 #include "pwm_out.h"
 #include "analog_in_dma_stream.h"
 #include "digital_out.h"
+#include "timer.h"
 
 namespace mslh {
 

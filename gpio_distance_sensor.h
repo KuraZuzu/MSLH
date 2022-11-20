@@ -39,6 +39,8 @@ public:
 
     inline uint16_t getTestRawValue(uint32_t charge_time_us) { return read(charge_time_us); }
 
+    inline float32_t getVoltage(const uint32_t charge_time_us) { return 3.3f * static_cast<float32_t>(read(charge_time_us)) / 0x0FFF; }
+
 
 private:
 
@@ -47,11 +49,11 @@ private:
      */
     uint16_t read(uint32_t charge_time_us);
 
-    inline float32_t getVoltage(const uint32_t charge_time_us) { return 3.3f / 4095.0f * static_cast<float32_t>(read(charge_time_us)); }
 
     DigitalOut _led;
     AnalogInDMAStream _photo_transistor;
     Timer _timer;
+    uint32_t _charge_start_time;
     std::function<uint16_t(uint16_t)> _approximate_func;
 };
 

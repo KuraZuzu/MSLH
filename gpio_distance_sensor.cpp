@@ -44,6 +44,6 @@ uint16_t mslh::GPIODistanceSensor::read(const uint32_t charge_time_us) {
     _charge_start_time = _timer.getTime();
 
 //    return peak_value - offset_value;
-//    return peak_value;
-    return offset_value;
+    return peak_value;
+//    return offset_value;
 }

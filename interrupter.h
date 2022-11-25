@@ -34,7 +34,7 @@ namespace mslh {
  *
  *   Class Publisher {
  *   public:
- *      call() { interrupter.run(); }
+ *      call() { interrupter.runSpecifiedDistance(); }
  *   }
  *
  *   int main() {

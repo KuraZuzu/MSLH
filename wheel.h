@@ -43,7 +43,7 @@ namespace mslh {
  *       // 90M[Hz](APB1) / 36000 = 2500[Hz]
  *       // 2500[Hz] / 25(Period) = 100[Hz]   -> 10[ms]
  *       if(htim == &htim6) {
- *           wheel_interrupt.run();
+ *           wheel_interrupt.runSpecifiedDistance();
  *       }
  *
  *

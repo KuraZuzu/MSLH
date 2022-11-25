@@ -52,14 +52,14 @@ namespace mslh::machine_parameter {
     constexpr float32_t KP_MACHINE_CONTROL = 0.001f; //< 直進制御のためのP制御ゲイン
 
     /** Distance Sensor */
-    float32_t convertDistanceLF(u_int16_t sensor_value);
-    const std::function<uint16_t(uint16_t)> convert_lf_func = convertDistanceLF;
-    float32_t convertDistanceLS(u_int16_t sensor_value);
-    const std::function<uint16_t(uint16_t)> convert_ls_func = convertDistanceLS;
-    float32_t convertDistanceRS(u_int16_t sensor_value);
-    const std::function<uint16_t(uint16_t)> convert_rs_func = convertDistanceRS;
-    float32_t convertDistanceRF(u_int16_t sensor_value);
-    const std::function<uint16_t(uint16_t)> convert_rf_func = convertDistanceRF;
+    float32_t convertDistanceLF(uint16_t sensor_value);
+    const std::function<float32_t (uint16_t)> convert_lf_func = convertDistanceLF;
+    float32_t convertDistanceLS(uint16_t sensor_value);
+    const std::function<float32_t (uint16_t)> convert_ls_func = convertDistanceLS;
+    float32_t convertDistanceRS(uint16_t sensor_value);
+    const std::function<float32_t (uint16_t)> convert_rs_func = convertDistanceRS;
+    float32_t convertDistanceRF(uint16_t sensor_value);
+    const std::function<float32_t (uint16_t)> convert_rf_func = convertDistanceRF;
 
 //    uint16_t convertDistanceLF(u_int16_t sensor_value) {
 //        return sensor_value;

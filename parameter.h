@@ -52,19 +52,27 @@ namespace mslh::machine_parameter {
     constexpr float32_t KP_MACHINE_CONTROL = 0.001f; //< 直進制御のためのP制御ゲイン
 
     /** Distance Sensor */
-    uint16_t convertDistanceLF(u_int16_t sensor_value);
+    float32_t convertDistanceLF(u_int16_t sensor_value);
     const std::function<uint16_t(uint16_t)> convert_lf_func = convertDistanceLF;
-    uint16_t convertDistanceLS(u_int16_t sensor_value);
+    float32_t convertDistanceLS(u_int16_t sensor_value);
     const std::function<uint16_t(uint16_t)> convert_ls_func = convertDistanceLS;
-    uint16_t convertDistanceRS(u_int16_t sensor_value);
+    float32_t convertDistanceRS(u_int16_t sensor_value);
     const std::function<uint16_t(uint16_t)> convert_rs_func = convertDistanceRS;
-    uint16_t convertDistanceRF(u_int16_t sensor_value);
+    float32_t convertDistanceRF(u_int16_t sensor_value);
     const std::function<uint16_t(uint16_t)> convert_rf_func = convertDistanceRF;
 
 //    uint16_t convertDistanceLF(u_int16_t sensor_value) {
 //        return sensor_value;
 //    }
 //    f = &convertDistanceLF;
+
+    constexpr float32_t ONE_BLOCK_DISTANCE = 90.0f;
+    constexpr float32_t HALF_BLOCK_DISTANCE = ONE_BLOCK_DISTANCE / 2.0f;
+    constexpr float32_t TURN_90_DEG_DISTANCE = MACHINE_TREAD * PI / 4.0f;
+    constexpr float32_t TURN_180_DEG_DISTANCE = TURN_90_DEG_DISTANCE * 2.0f;
+
+    constexpr uint32_t OPEN_FRONT_WALL_THRESHOLD = 80; //< あとから数値入れる [mm] 仮ぎめ
+    constexpr uint32_t OPEN_SIDE_WALL_THRESHOLD = 30; //< あとから数値入れる [mm] 仮ぎめ
 
 
 //    /** Unit is "pulse" */

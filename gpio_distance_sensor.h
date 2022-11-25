@@ -31,11 +31,11 @@ public:
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    GPIODistanceSensor(DigitalOut led, AnalogInDMAStream photo_transistor, Timer timer, std::function<uint16_t(uint16_t)> approximate_func);
+    GPIODistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor, Timer timer, std::function<float32_t (uint16_t)> approximate_func);
 
     void start();
 
-    inline uint16_t getDistance(uint32_t charge_time_us) { return _approximate_func(read(charge_time_us)); }
+    inline float32_t getDistance(uint32_t charge_time_us) { return _approximate_func(read(charge_time_us)); }
 
     inline uint16_t getTestRawValue(uint32_t charge_time_us) { return read(charge_time_us); }
 
@@ -54,7 +54,7 @@ private:
     AnalogInDMAStream _photo_transistor;
     Timer _timer;
     uint32_t _charge_start_time;
-    std::function<uint16_t(uint16_t)> _approximate_func;
+    std::function<float32_t (uint16_t)> _approximate_func;
 };
 
 }  // namespace mslh

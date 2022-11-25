@@ -9,12 +9,14 @@
 
 #include "gpio_distance_sensor.h"
 
+#include <utility>
 
-mslh::GPIODistanceSensor::GPIODistanceSensor(DigitalOut led, AnalogInDMAStream photo_transistor, Timer timer, std::function<uint16_t(uint16_t)> approximate_func)
+
+mslh::GPIODistanceSensor::GPIODistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor, Timer timer, std::function<float32_t (uint16_t)> approximate_func)
         : _led(led), _photo_transistor(photo_transistor)
         , _timer(timer)
         , _charge_start_time(0)
-        , _approximate_func(approximate_func) {
+        , _approximate_func(std::move(approximate_func)) {
 }
 
 void mslh::GPIODistanceSensor::start() {

@@ -53,6 +53,13 @@ void mslh::Wheel::setSpeed(float32_t accel, float32_t speed) {
     _target_speed = speed;
 }
 
+
+void mslh::Wheel::stopForce() {
+    _motor.update(0.0f);
+    setSpeed(0.0f, 0.0f);
+}
+
+
 void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
     /**

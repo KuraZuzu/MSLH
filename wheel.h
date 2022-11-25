@@ -112,6 +112,8 @@ public:
      */
     void setSpeed(float32_t accel, float32_t speed);
 
+    void stopForce();
+
     [[gnu::warn_unused_result]] inline float32_t getSpeed() const { return _speed; }
 
     [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _target_accel; }

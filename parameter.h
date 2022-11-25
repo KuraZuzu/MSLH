@@ -68,11 +68,12 @@ namespace mslh::machine_parameter {
 
     constexpr float32_t ONE_BLOCK_DISTANCE = 90.0f;
     constexpr float32_t HALF_BLOCK_DISTANCE = ONE_BLOCK_DISTANCE / 2.0f;
+    constexpr float32_t START_BLOCK_DISTANCE = 22.71f;
     constexpr float32_t TURN_90_DEG_DISTANCE = MACHINE_TREAD * PI / 4.0f;
     constexpr float32_t TURN_180_DEG_DISTANCE = TURN_90_DEG_DISTANCE * 2.0f;
 
-    constexpr uint32_t OPEN_FRONT_WALL_THRESHOLD = 80; //< あとから数値入れる [mm] 仮ぎめ
-    constexpr uint32_t OPEN_SIDE_WALL_THRESHOLD = 30; //< あとから数値入れる [mm] 仮ぎめ
+    constexpr float32_t OPEN_FRONT_WALL_THRESHOLD = 80.0f; //< あとから数値入れる [mm] 仮ぎめ
+    constexpr float32_t OPEN_SIDE_WALL_THRESHOLD = 30.0f; //< あとから数値入れる [mm] 仮ぎめ
 
 
 //    /** Unit is "pulse" */

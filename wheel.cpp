@@ -89,7 +89,7 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
     /** 指定された加速度での理想速度算出。次回割り込み時のフィードバック制御で参照する。 */
     _ideal_speed += (_target_accel * _speed_sampling_time);
-    if (_ideal_speed > _target_speed) _ideal_speed = _target_speed;
+//    if (_ideal_speed > _target_speed) _ideal_speed = _target_speed; //ここが減速の時にすぐ入って速度0となる
     const float32_t corrected_speed = _ideal_speed + p_error + i_error + d_error; //PIDを足し合わせた速度算出
 
 

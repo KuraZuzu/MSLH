@@ -20,8 +20,8 @@ namespace mslh::machine_parameter {
     constexpr float32_t BATTERY_VOLTAGE_RATIO = (1000.0f + 1000.0f) / 1000.0f;
 
     /** Weight */
-//    constexpr float32_t WEIGHT = 0.5f * 2; //17.00[g]
-    constexpr float32_t WEIGHT = 17.0f; //17.00[g]
+    constexpr float32_t WEIGHT = 0.5f * 2; //17.00[g]
+//    constexpr float32_t WEIGHT = 17.0f; //17.00[g]
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 

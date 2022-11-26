@@ -81,10 +81,11 @@ void mslh::Wheel::interruptTwoFreedomDegreeControl() {
      *   ②(加速度 < 0) && ((目標速度 - 現在速度) < 0) の際に加速度有効
      *   ①と②を満たさない時，加速度を無効(=0)として速度のPID制御のみ行う(現在はP制御のみ)
      */
-    if ((_target_accel * (_target_speed - _speed)) <= 0.0f) {
-        _target_accel = 0.0f;
-        _ideal_speed = _target_speed;
-    }
+     // ここの処理がおかしくて減速処理にバグがありそう
+//    if ((_target_accel * (_target_speed - _speed)) <= 0.0f) { //ここの処理がおかしい？
+//        _target_accel = 0.0f;
+//        _ideal_speed = _target_speed;
+//    }
 
 
     /** 指定された加速度での理想速度算出。次回割り込み時のフィードバック制御で参照する。 */

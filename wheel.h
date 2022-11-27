@@ -101,6 +101,11 @@ public:
     void stop();
 
     /**
+     * @fn モータとエンコーダの動作停止．
+     */
+    void orderSpeedMomentarily();
+
+    /**
      * @fn モータとエンコーダ，_speedのリセット．
      */
     void reset();
@@ -111,8 +116,6 @@ public:
      * @warning 呼び出しは1回で良い．
      */
     void setSpeed(float32_t accel, float32_t speed);
-
-    void stopForce();
 
     [[gnu::warn_unused_result]] inline float32_t getSpeed() const { return _speed; }
 
@@ -153,6 +156,7 @@ private:
     const float32_t _speed_sampling_time; //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
     const float32_t _speed_per_pulse;     //< callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
+    bool _complete_set_speed_flag;         //< setSpeed()内でaccelとspeed両方完了しているかのフラグ
 };
 
 }  // namespace mslh

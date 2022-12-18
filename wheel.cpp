@@ -75,7 +75,7 @@ void mslh::Wheel::orderSpeedMomentarily() {
 
 void mslh::Wheel::interruptTwoFreedomDegreeControl() {
 
-    if(_complete_set_speed_flag) {
+    if(_complete_set_speed_flag) {  //加速度と速度が両方入力される間に割り込みが発生することを防ぐ
 
         /**
          * @note フィードバック制御

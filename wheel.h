@@ -150,6 +150,8 @@ private:
     float32_t _diff_speed;     //< PID制御のための速度偏差
     float32_t _old_diff_speed; //< ID制御のための前回の速度偏差
     float32_t _integral_speed; //< I制御のための速度偏差積分
+    float32_t _non_liner_range_speed; //< 曲線加速を行う速度域
+    float32_t _init_speed; //< setSpeed()をした時点での速度
     Encoder &_encoder;
     Motor &_motor;
     AnalogInDMAStream &_battery;

@@ -58,5 +58,3 @@ void mslh::Map::setBlock(Block block, Point<uint8_t> point) {
 Block& mslh::Map::at(Point<uint8_t> point) {
     return _block[point._x][point._y];
 }
-
-

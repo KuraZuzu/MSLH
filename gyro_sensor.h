@@ -18,14 +18,14 @@
 
 namespace mslh {
 
-class GyroSensor {
+class GyroSensorICM42688P {
 
 public:
-    GyroSensor(SPI_HandleTypeDef &hspi, GPIO_TypeDef *cs_x, uint16_t cs_pin)
+    GyroSensorICM42688P(SPI_HandleTypeDef &hspi, GPIO_TypeDef *cs_x, uint16_t cs_pin)
     : _hspi(hspi)
     , _cs_x(cs_x)
     , _cs_pin(cs_pin) {
-        HAL_SPI_Init(&hspi3);
+        HAL_SPI_Init(&hspi);
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
     }
 

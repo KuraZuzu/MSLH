@@ -7,14 +7,15 @@
  * see https://opensource.org/licenses/MIT
  */
 
+#ifndef MSLH_GYRO_SENSOR_H
+#define MSLH_GYRO_SENSOR_H
+
 #include "arm_math.h"
 #include "spi.h"
 #include "dma.h"
 #include "digital_out.h"
 #include "stdio.h"
 
-#ifndef MSLH_GYRO_SENSOR_H
-#define MSLH_GYRO_SENSOR_H
 
 namespace mslh {
 
@@ -25,38 +26,33 @@ public:
     : _hspi(hspi)
     , _cs_x(cs_x)
     , _cs_pin(cs_pin) {
-        HAL_SPI_Init(&hspi);
-        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
+        // HAL_SPI_Init(&hspi);
+        // HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
     }
 
-    void start() {
+    void init() {
+        HAL_SPI_Init(&_hspi);
     }
 
-    uint16_t temp() {  //< 実験中
 
+
+    uint8_t read(void) {
+
+        const uint8_t mode = 0b10000000;  //< read:1, write:0
+        const uint8_t reg = 117;   //< Input Hello::0x75 return(0x12)
+        const uint8_t data = 0x00;  //< No data for reading (Dummy data)
+        uint8_t tx_data[2] = {(mode|reg), data};
         uint8_t rx_data[2] = {0x00, 0x00};  //< Reserved for receive data
-        rx_data[0] = 0x00;
-        rx_data[1] = 0x00;
-
-        uint8_t reg = 0x75;   //< Input Hello::0x75 return(0x12)
-        uint8_t data = 0x00;  //< No data for reading (Dummy data)
-        uint8_t tx_data[2];
-        tx_data[0] = 0x80 | reg;
-        tx_data[1] = data;
-
 
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);
-
-        HAL_SPI_TransmitReceive_DMA(&hspi3, (uint8_t*)tx_data, (uint8_t*)rx_data, 2);
-        while (HAL_SPI_GetState(&hspi3) != HAL_SPI_STATE_READY) { }
+        HAL_SPI_TransmitReceive_DMA(&_hspi, (uint8_t*)tx_data, (uint8_t*)rx_data, sizeof(tx_data));
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
+        const uint16_t return_rx_data = rx_data[0];
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET); // SS/CS pin is made HIGH
 
-//        printf("0x%_x\r\n",rx_data);
-        uint16_t return_rx_data = rx_data[0];
-//        return_rx_data <<
-//        return rx_data;
-        return 123;
+        return rx_data[1];  // 受け取るのは2バイト目のデータだけ
     }
+
 
 private:
     SPI_HandleTypeDef &_hspi;

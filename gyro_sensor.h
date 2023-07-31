@@ -26,29 +26,25 @@ public:
     : _hspi(hspi)
     , _cs_x(cs_x)
     , _cs_pin(cs_pin) {
-        // HAL_SPI_Init(&hspi);
-        // HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
     }
 
     void init() {
         HAL_SPI_Init(&_hspi);
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
     }
 
 
+    uint8_t getWhoAmI() {
+        const uint8_t mode_rw = 0b10000000;  //< read:1, write:0
+        const uint8_t reg = 0x75;   //< Input who_am_i:    0x return: 0x47
 
-    uint8_t read(void) {
+        uint8_t tx_data[2];
+        tx_data[0] = mode_rw | reg;
+        tx_data[1] = 0x00;  //< Dummy data
+        uint8_t rx_data[2] = {0x00, 0x00};
 
-        const uint8_t mode = 0b10000000;  //< read:1, write:0
-        const uint8_t reg = 117;   //< Input Hello::0x75 return(0x12)
-        const uint8_t data = 0x00;  //< No data for reading (Dummy data)
-        uint8_t tx_data[2] = {(mode|reg), data};
-        uint8_t rx_data[2] = {0x00, 0x00};  //< Reserved for receive data
-
-        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);
-        HAL_SPI_TransmitReceive_DMA(&_hspi, (uint8_t*)tx_data, (uint8_t*)rx_data, sizeof(tx_data));
-        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
-        const uint16_t return_rx_data = rx_data[0];
-        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET); // SS/CS pin is made HIGH
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);  // SS/CS pin : LOW
+        HAL_SPI_TransmitReceive_DMA(&_hspi, (uint8_t*)tx_data, (uint8_t*)rx_data, 2);
 
         return rx_data[1];  // 受け取るのは2バイト目のデータだけ
     }

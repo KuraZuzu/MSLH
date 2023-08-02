@@ -34,26 +34,40 @@ public:
     }
 
     uint8_t getWhoAmI() {
+        const uint8_t address = 0x75;   //< Input who_am_i: 0x75, return: 0x47
+        return read(address);  // 受け取るのは2バイト目のデータだけ
+    }
 
-        const uint16_t data_size = 2;
+    void setConfig() {
+    }
 
-        const uint8_t mode_rw = 0b10000000;  //< read:1, write:0
-        const uint8_t reg = 0x75;   //< Input who_am_i:    0x return: 0x47
+private:
+    uint8_t read(const uint8_t address) {
 
-        uint8_t tx_data[data_size];
-        tx_data[0] = mode_rw | reg;
-        tx_data[1] = 0x00;  //< Dummy data
-        uint8_t rx_data[data_size] = {0x00, 0x00};
+        constexpr uint16_t size = 2;
+        const uint8_t read_mode = 0b10000000;  //< (read:1, write:0)
+        const uint8_t tx_data[size] = {static_cast<uint8_t>(read_mode | address), 0x00};
+        uint8_t rx_data[size] = {0x00, 0x00};
 
-        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);  // SS/CS pin : LOW
-        HAL_SPI_TransmitReceive(&_hspi, (uint8_t*)tx_data, (uint8_t*)rx_data, data_size, 100);
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);  // CS pin: LOW
+        HAL_SPI_TransmitReceive(&_hspi, (uint8_t*)tx_data, (uint8_t*)rx_data, size, 100);
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
 
-        return rx_data[1];  // 受け取るのは2バイト目のデータだけ
+        return rx_data[1];  //< データは2バイト目に格納される
+    }
+
+    void write(const uint8_t address, const uint8_t data) {
+
+        constexpr uint16_t size = 2;
+        // const uint8_t write_mode = 0b00000000;  //< (read:1, write:0)
+        const uint8_t tx_data[size] = {address, data};
+
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);  // CS pin: LOW
+        HAL_SPI_Transmit(&_hspi, (uint8_t*)tx_data, size, 100);
+        HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
     }
 
 
-private:
     SPI_HandleTypeDef &_hspi;
     GPIO_TypeDef *_cs_x;
     const uint16_t _cs_pin;

@@ -25,7 +25,8 @@ public:
     GyroSensorICM42688P(SPI_HandleTypeDef &hspi, GPIO_TypeDef *cs_x, uint16_t cs_pin)
     : _hspi(hspi)
     , _cs_x(cs_x)
-    , _cs_pin(cs_pin) {
+    , _cs_pin(cs_pin)
+    , _accel_range(2.0f) {
     }
 
     void init() {
@@ -39,17 +40,39 @@ public:
         return read(address);  // 受け取るのは2バイト目のデータだけ
     }
 
+    float32_t getAccelX() {
+        // return (float32_t)(( (int32_t)(getRawAccelX() - (65535/2)) )/ 65535.0f) * 2.0f;
+
+        return (_accel_range* static_cast<float32_t>(getRawAccelX()) / static_cast<float32_t>(INT16_MAX));
+        // return static_cast<int16_t>(getRawAccelX());
+    }
+
+    float32_t getAccelY() {
+        // return (float32_t)(( (int32_t)(getRawAccelY() - (65535/2)) )/ 65535.0f) * 2.0f;
+        return (_accel_range * static_cast<float32_t>(getRawAccelY()) / static_cast<float32_t>(INT16_MAX));
+        // return static_cast<int16_t>(getRawAccelY());
+    }
+
     float32_t getAccelZ() {
-        // return (2000.0f * 9.8f * static_cast<float32_t>(getRawAccelZ() / UINT16_MAX));
-        return static_cast<float32_t>(getRawAccelZ());
+        // return (float32_t)(( (int32_t)(getRawAccelZ() - (65535/2)) )/ 65535.0f) * 2.0f;
+        return (_accel_range * static_cast<float32_t>(getRawAccelZ()) / static_cast<float32_t>(INT16_MAX));
+        // return static_cast<int16_t>(getRawAccelZ());
     }
 
-    uint16_t getRawAccelZ() {
+    int16_t getRawAccelX() {
         // 0x23: upper Byte,  0x24: lower Byte
-        // return read2B(0x23, 0x24, 3);
-        return (read(0x23) << 8) + read(0x24);
+        return static_cast<int16_t>(((read(0x1F) << 8) | read(0x20)));
     }
 
+    int16_t getRawAccelY() {
+        // 0x23: upper Byte,  0x24: lower Byte
+        return static_cast<int16_t>(read(0x21) << 8) | read(0x22);
+    }
+
+    int16_t getRawAccelZ() {
+        // 0x23: upper Byte,  0x24: lower Byte
+        return static_cast<int16_t>((read(0x23) << 8) | read(0x24));
+    }
 private:
     uint8_t read(const uint8_t address) {
 
@@ -117,6 +140,8 @@ private:
     SPI_HandleTypeDef &_hspi;
     GPIO_TypeDef *_cs_x;
     const uint16_t _cs_pin;
+    float32_t _accel_range;  // default: 2.0f
+    float32_t _gyro_range;
 };
 
 }  // namespace mslh

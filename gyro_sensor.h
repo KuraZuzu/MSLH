@@ -41,38 +41,17 @@ public:
     }
 
     float32_t getAccelX() {
-        // return (float32_t)(( (int32_t)(getRawAccelX() - (65535/2)) )/ 65535.0f) * 2.0f;
-
         return (_accel_range* static_cast<float32_t>(getRawAccelX()) / static_cast<float32_t>(INT16_MAX));
-        // return static_cast<int16_t>(getRawAccelX());
     }
 
     float32_t getAccelY() {
-        // return (float32_t)(( (int32_t)(getRawAccelY() - (65535/2)) )/ 65535.0f) * 2.0f;
         return (_accel_range * static_cast<float32_t>(getRawAccelY()) / static_cast<float32_t>(INT16_MAX));
-        // return static_cast<int16_t>(getRawAccelY());
     }
 
     float32_t getAccelZ() {
-        // return (float32_t)(( (int32_t)(getRawAccelZ() - (65535/2)) )/ 65535.0f) * 2.0f;
         return (_accel_range * static_cast<float32_t>(getRawAccelZ()) / static_cast<float32_t>(INT16_MAX));
-        // return static_cast<int16_t>(getRawAccelZ());
     }
 
-    int16_t getRawAccelX() {
-        // 0x23: upper Byte,  0x24: lower Byte
-        return static_cast<int16_t>(((read(0x1F) << 8) | read(0x20)));
-    }
-
-    int16_t getRawAccelY() {
-        // 0x23: upper Byte,  0x24: lower Byte
-        return static_cast<int16_t>(read(0x21) << 8) | read(0x22);
-    }
-
-    int16_t getRawAccelZ() {
-        // 0x23: upper Byte,  0x24: lower Byte
-        return static_cast<int16_t>((read(0x23) << 8) | read(0x24));
-    }
 private:
     uint8_t read(const uint8_t address) {
 
@@ -113,6 +92,21 @@ private:
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);  // CS pin: LOW
         HAL_SPI_Transmit(&_hspi, (uint8_t*)tx_data, size, 100);
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);  // CS pin: HIGH
+    }
+
+    int16_t getRawAccelX() {
+        // 0x23: upper Byte,  0x24: lower Byte
+        return static_cast<int16_t>(((read(0x1F) << 8) | read(0x20)));
+    }
+
+    int16_t getRawAccelY() {
+        // 0x23: upper Byte,  0x24: lower Byte
+        return static_cast<int16_t>(read(0x21) << 8) | read(0x22);
+    }
+
+    int16_t getRawAccelZ() {
+        // 0x23: upper Byte,  0x24: lower Byte
+        return static_cast<int16_t>((read(0x23) << 8) | read(0x24));
     }
 
     void setConfigs() {

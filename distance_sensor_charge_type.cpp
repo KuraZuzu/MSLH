@@ -12,21 +12,21 @@
 #include <utility>
 
 
-mslh::GPIODistanceSensor::GPIODistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor, Timer timer, std::function<float32_t (uint16_t)> approximate_func)
+mslh::DistanceSensorChargeType::DistanceSensorChargeType(const DigitalOut& led, AnalogInDMAStream photo_transistor, Timer timer, std::function<float32_t (uint16_t)> approximate_func)
         : _led(led), _photo_transistor(photo_transistor)
         , _timer(timer)
         , _charge_start_time(0)
         , _approximate_func(std::move(approximate_func)) {
 }
 
-void mslh::GPIODistanceSensor::start() {
+void mslh::DistanceSensorChargeType::start() {
     _photo_transistor.start();
     _timer.start();
     _led.write(0);
     _charge_start_time = _timer.getTime();
 }
 
-uint16_t mslh::GPIODistanceSensor::read(const uint32_t charge_time_us) {
+uint16_t mslh::DistanceSensorChargeType::read(const uint32_t charge_time_us) {
 
     uint16_t peak_value = 0;
     uint16_t temp_value = 0;

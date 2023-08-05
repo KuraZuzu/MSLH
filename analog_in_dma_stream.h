@@ -111,7 +111,7 @@ public:
      *   <br>
      *   ADC と DMA の Init関数 を呼び出した後に実行してください。
      */
-    void start();
+    void init();
 
 
     /**

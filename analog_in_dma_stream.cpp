@@ -17,7 +17,7 @@ mslh::AnalogInDMAStream::AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t ran
         : _hadc(hadc), _rank(rank-1), _adc_x(0) {
 }
 
-void mslh::AnalogInDMAStream::start() {
+void mslh::AnalogInDMAStream::init() {
 
     if(_hadc.Instance == ADC1) _adc_x = 0;  //< ADC1だが，0からのインデックスなので (1-1 = 0)．
     else if(_hadc.Instance == ADC2) _adc_x = 1;  //< 2-1 = 0

@@ -17,7 +17,7 @@ mslh::DistanceSensor::DistanceSensor(const DigitalOut& led, AnalogInDMAStream ph
 }
 
 void mslh::DistanceSensor::start() {
-    _photo_transistor.start();
+    _photo_transistor.init();
 }
 
 uint16_t mslh::DistanceSensor::read(const uint32_t charge_time_us) {

@@ -20,8 +20,8 @@ mslh::DistanceSensor::DistanceSensor(const DigitalOut& led, AnalogInDMAStream ph
 }
 
 void mslh::DistanceSensor::start() {
-    _photo_transistor.start();
-    _timer.start();
+    _photo_transistor.init();
+    _timer.init();
     _led.write(0);
     _charge_start_time = _timer.getTime();
 }

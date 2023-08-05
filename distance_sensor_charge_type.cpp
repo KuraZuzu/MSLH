@@ -19,7 +19,7 @@ mslh::DistanceSensor::DistanceSensor(const DigitalOut& led, AnalogInDMAStream ph
         , _approximate_func(std::move(approximate_func)) {
 }
 
-void mslh::DistanceSensor::start() {
+void mslh::DistanceSensor::init() {
     _photo_transistor.init();
     _timer.init();
     _led.write(0);

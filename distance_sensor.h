@@ -32,7 +32,7 @@ public:
      */
     DistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor);
 
-    void start();
+    void init();
 
     inline float32_t getDistance(uint32_t charge_time_us) { return _approximate_func(read(charge_time_us)); }
 

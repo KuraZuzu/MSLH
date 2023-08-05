@@ -40,6 +40,7 @@
 
 #include "parameter.h"
 #include "analog_in_dma_stream.h"
+#include "distance_sensor.h"
 #include "distance_sensor_charge_type.h"
 #include "digital_out.h"
 #include "bus3_out.h"

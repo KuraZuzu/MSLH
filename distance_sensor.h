@@ -7,14 +7,13 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef MSLH_DISTANCE_SENSOR_CHARGE_TYPE_H
-#define MSLH_DISTANCE_SENSOR_CHARGE_TYPE_H
+#ifndef MSLH_DISTANCE_SENSOR_H
+#define MSLH_DISTANCE_SENSOR_H
 
 #include "arm_math.h"
 #include "pwm_out.h"
 #include "analog_in_dma_stream.h"
 #include "digital_out.h"
-#include "timer.h"
 #include <functional>
 
 namespace mslh {
@@ -31,7 +30,7 @@ public:
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    DistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor, Timer timer, std::function<float32_t (uint16_t)> approximate_func);
+    DistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor);
 
     void start();
 
@@ -52,11 +51,9 @@ private:
 
     DigitalOut _led;
     AnalogInDMAStream _photo_transistor;
-    Timer _timer;
-    uint32_t _charge_start_time;
     std::function<float32_t (uint16_t)> _approximate_func;
 };
 
 }  // namespace mslh
 
-#endif //MSLH_DISTANCE_SENSOR_CHARGE_TYPE_H
+#endif //MSLH_DISTANCE_SENSOR_H

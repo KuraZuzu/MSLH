@@ -7,8 +7,8 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef MSLH_GPIO_DISTANCE_SENSOR_H
-#define MSLH_GPIO_DISTANCE_SENSOR_H
+#ifndef MSLH_DISTANCE_SENSOR_CHARGE_TYPE_H
+#define MSLH_DISTANCE_SENSOR_CHARGE_TYPE_H
 
 #include "arm_math.h"
 #include "pwm_out.h"
@@ -24,14 +24,14 @@ namespace mslh {
  *   This is a distance sensor class using Morinaga-type light emitting circuit.  <br>
  *   森永式発光回路を用いた距離センサクラスです．
  */
-class GPIODistanceSensor {
+class DistanceSensorChargeType {
 
 public:
 
     /**
      * @param photo_transistor is Photo-Transistor adc handler.
      */
-    GPIODistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor, Timer timer, std::function<float32_t (uint16_t)> approximate_func);
+    DistanceSensorChargeType(const DigitalOut& led, AnalogInDMAStream photo_transistor, Timer timer, std::function<float32_t (uint16_t)> approximate_func);
 
     void start();
 
@@ -59,4 +59,4 @@ private:
 
 }  // namespace mslh
 
-#endif //MSLH_GPIO_DISTANCE_SENSOR_H
+#endif //MSLH_DISTANCE_SENSOR_CHARGE_TYPE_H

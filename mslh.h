@@ -40,7 +40,7 @@
 
 #include "parameter.h"
 #include "analog_in_dma_stream.h"
-#include "distance_sensor.h"
+#include "distance_sensor_charge_type.h"
 #include "digital_out.h"
 #include "bus3_out.h"
 #include "pwm_out.h"
@@ -50,7 +50,6 @@
 #include "wheel.h"
 #include "gyro_sensor.h"
 #include "wheel.h"
-#include "gpio_distance_sensor.h"
 #include "interrupter.h"
 #include "point.h"
 #include "map.h"

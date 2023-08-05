@@ -7,7 +7,7 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#include "gpio_distance_sensor.h"
+#include "distance_sensor_charge_type.h"
 
 #include <utility>
 

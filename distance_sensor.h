@@ -35,16 +35,13 @@ public:
 
     // inline float32_t getDistance(uint32_t charge_time_us) { return _approximate_func(read()); }
 
-    inline uint16_t getTestRawValue(uint32_t charge_time_us) { return read(); }
+    inline uint16_t getTestRawValue() { return read(); }
 
-    inline float32_t getVoltage(const uint32_t charge_time_us) { return 3.3f * static_cast<float32_t>(read()) / 0x0FFF; }
+    inline float32_t getVoltage() { return 3.3f * static_cast<float32_t>(read()) / 0x0FFF; }
 
 
 private:
 
-    /**
-     * @param Charge capacitor (can't set us unit).
-     */
     uint16_t read();
 
 

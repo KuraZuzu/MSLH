@@ -8,21 +8,22 @@
  */
 
 #include "distance_sensor.h"
-
 #include <utility>
 
 
-mslh::DistanceSensor::DistanceSensor(const DigitalOut& led, AnalogInDMAStream photo_transistor)
-        : _led(led), _photo_transistor(photo_transistor) {
-}
+mslh::DistanceSensor::DistanceSensor(DigitalOut &led, AnalogInDMAStream &photo_transistor)
+: _led(led), _photo_transistor(photo_transistor) {}
+
 
 void mslh::DistanceSensor::init() {
+    _led.write(0);
     _photo_transistor.init();
 }
 
-uint16_t mslh::DistanceSensor::read(const uint32_t charge_time_us) {
-
-    uint16_t peak_value = 0;
-    uint16_t temp_value = 0;
-    return temp_value;
+uint16_t mslh::DistanceSensor::read() {
+    const uint16_t offset_value = _photo_transistor.read();
+    _led.write(1);
+    const uint16_t peak_value = _photo_transistor.read();
+    _led.write(0);
+    return (peak_value - offset_value);
  }

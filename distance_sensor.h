@@ -35,7 +35,7 @@ public:
 
     // inline float32_t getDistance(uint32_t charge_time_us) { return _approximate_func(read()); }
 
-    inline uint16_t getTestRawValue() { return read(); }
+    // inline uint16_t getTestRawValue() { return read(); }
 
     inline float32_t getTestVoltage() { return 3.3f * static_cast<float32_t>(_photo_transistor.read()) / 0x0FFF; }
 

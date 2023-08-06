@@ -12,8 +12,8 @@
 
 
 mslh::DistanceSensor::DistanceSensor(DigitalOut &led, AnalogInDMAStream &photo_transistor)
-: _led(led), _photo_transistor(photo_transistor) {}
-
+: _led(led), _photo_transistor(photo_transistor) {
+}
 
 void mslh::DistanceSensor::init() {
     _led.write(0);

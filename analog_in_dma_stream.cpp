@@ -27,7 +27,10 @@ void mslh::AnalogInDMAStream::init() {
     if (!_active_flag[_adc_x]) {
         _adc_value[_adc_x] = new uint16_t[_hadc.Init.NbrOfConversion];
         for (uint32_t i = 0; i < _hadc.Init.NbrOfConversion; ++i) _adc_value[_adc_x][i] = 0;
-        HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc_value[_adc_x], _hadc.Init.NbrOfConversion);
+        // エラーハンドラを投げるように変更（読み取れない時はココが原因のことがあるようだ（未解決））
+        if(HAL_ADC_Start_DMA(&_hadc, (uint32_t*)_adc_value[_adc_x], _hadc.Init.NbrOfConversion) != HAL_OK) {
+            Error_Handler();
+        }
 
         _active_flag[_adc_x] = true;
     }

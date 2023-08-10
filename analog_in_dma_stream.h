@@ -97,6 +97,13 @@ public:
      */
     AnalogInDMAStream(ADC_HandleTypeDef &hadc, uint32_t rank);
 
+    // センサ複数を同一のクラスにまとめる際の方法提案（この方法だとデストラクタでメモリ開放できる）
+    // AnalogInDMAStream(ADC_HandleTypeDef &hadc, Args... args): _hadc(hadc) {
+    //     std::tuple<Args...> tmp_args(args...);
+    //     const uint16_t arg_count = sizeof...(args);
+    //     _adc_value = new uint16_t[arg_count];
+    // };
+
     /**
      * @fn
      *   init ADC measurement.  <br>

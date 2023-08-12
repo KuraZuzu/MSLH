@@ -58,17 +58,23 @@ public:
 
     void update() {
 
+        // LED消灯
+        for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(0);
+
         // オフセットの値を取得
         uint16_t offset_values[_sensor_num];
-        for(uint16_t &offset : &offset_values) {
+        for(uint16_t &offset : offset_values) {
             HAL_ADC_Start(&_hadc);
             HAL_ADC_PollForConversion(&_hadc, 1);
             offset = HAL_ADC_GetValue(&_hadc);
         }
 
+        // LED点灯
+        for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(1);
+
         // ピークの値を取得
         uint16_t peak_values[_sensor_num];
-        for(uint16_t &peak : &peak_values) {
+        for(uint16_t &peak : peak_values) {
             HAL_ADC_Start(&_hadc);
             HAL_ADC_PollForConversion(&_hadc, 1);
             peak = HAL_ADC_GetValue(&_hadc);

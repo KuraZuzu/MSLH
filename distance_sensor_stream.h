@@ -31,14 +31,10 @@ public:
         return _adc_value;
     }
 
-    inline void write(uint16_t adc_value) {
-        _adc_value = adc_value;
-    }
-
 private:
     DigitalOut _led;
     uint16_t _adc_value;
-    friend class DistanceSensorStream;
+    template<typename... DistanceSensors> friend class DistanceSensorStream;
 };
 
 /**
@@ -48,47 +44,46 @@ private:
 *   ・１つのセンサにつきrank2つぶんを連続で設定してください
 *   ・センサ１、センサ２、センサ３を設定する場合
 */
-template<typename... DistanceSensorArgs>
+template<typename... DistanceSensors>
 class DistanceSensorStream {
 
 public:
 
-    DistanceSensorStream(ADC_HandleTypeDef &hadc, DistanceSensorArgs... distance_sensor_args)
-    : _hadc(hadc) {
-        std::tuple<DistanceSensorArgs...> tmp_args_tuple(distance_sensor_args...);
-        // _arg_num = sizeof...(distance_sensor_args);  // 引数の数を得る
-        saveDistanceSensors(tmp_args_tuple);
-    }
-
-    template<std::size_t index = 0, typename... Args>
-    typename std::enable_if<index == sizeof...(Args), void>::type
-    saveDistanceSensors(const std::tuple<Args...>&) {
-        // インデックスがタプルのサイズと同じになったら何もしない
-    }
-
-    template<std::size_t index = 0, typename... Args>
-    typename std::enable_if<index < sizeof...(Args), void>::type
-    saveDistanceSensors(const std::tuple<Args...>& tuple) {
-        _distance_sensor.push_back(std::get<index>(tuple));  // メンバ変数に格納する
-        saveDistanceSensors<index + 1>(tuple);  // 再帰的に次の要素に移動
+    DistanceSensorStream(ADC_HandleTypeDef &hadc, DistanceSensors&... distance_sensors)
+    : _hadc(hadc), _sensor_num(0) {
+        (void)std::initializer_list<int>{(_distance_sensor.push_back(std::ref(distance_sensors)), 0)...};
+        _sensor_num = _distance_sensor.size();  // 距離センサのサイズを取得
     }
 
 
     void update() {
-        for (size_t i = 0; i < _distance_sensor.size(); i++) {
+
+        // オフセットの値を取得
+        uint16_t offset_values[_sensor_num];
+        for(uint16_t &offset : &offset_values) {
             HAL_ADC_Start(&_hadc);
             HAL_ADC_PollForConversion(&_hadc, 1);
-            _distance_sensor[i].get()._adc_value = HAL_ADC_GetValue(&_hadc);
+            offset = HAL_ADC_GetValue(&_hadc);
         }
 
+        // ピークの値を取得
+        uint16_t peak_values[_sensor_num];
+        for(uint16_t &peak : &peak_values) {
+            HAL_ADC_Start(&_hadc);
+            HAL_ADC_PollForConversion(&_hadc, 1);
+            peak = HAL_ADC_GetValue(&_hadc);
+        }
+
+        for (size_t i = 0; i < _sensor_num; i++) {
+            _distance_sensor[i].get()._adc_value = peak_values[i] - offset_values[i];
+        }
     }
 
 private:
 
     ADC_HandleTypeDef &_hadc;
-    // std::vector<DistanceSensor> _distance_sensor;
     std::vector<std::reference_wrapper<DistanceSensor>> _distance_sensor;
-    // size_t _arg_num;
+    size_t _sensor_num;
 };
 
 

@@ -12,7 +12,6 @@
 
 #include "arm_math.h"
 #include "spi.h"
-#include "dma.h"
 #include "digital_out.h"
 #include "stdio.h"
 

@@ -53,6 +53,7 @@ public:
     : _hadc(hadc), _sensor_num(0) {
         (void)std::initializer_list<int>{(_distance_sensor.push_back(std::ref(distance_sensors)), 0)...};
         _sensor_num = _distance_sensor.size();  // 距離センサのサイズを取得
+        // while (1) printf("[sensor num]: %d\r\n", _sensor_num);  //debug
     }
 
 
@@ -62,22 +63,32 @@ public:
         for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(0);
 
         // オフセットの値を取得
+        int tmp_dubg = 0;
         uint16_t offset_values[_sensor_num];
         for(uint16_t &offset : offset_values) {
             HAL_ADC_Start(&_hadc);
-            HAL_ADC_PollForConversion(&_hadc, 1);
+            if(HAL_ADC_PollForConversion(&_hadc, 1) != HAL_OK) Error_Handler();
             offset = HAL_ADC_GetValue(&_hadc);
+
+            printf("offset[%d]: %f\r\n", tmp_dubg, offset);
+            tmp_dubg++;
+            HAL_Delay(1000);
         }
 
         // LED点灯
         for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(1);
 
         // ピークの値を取得
+        tmp_dubg = 0;
         uint16_t peak_values[_sensor_num];
         for(uint16_t &peak : peak_values) {
             HAL_ADC_Start(&_hadc);
-            HAL_ADC_PollForConversion(&_hadc, 1);
+            if(HAL_ADC_PollForConversion(&_hadc, 1) != HAL_OK) Error_Handler();
             peak = HAL_ADC_GetValue(&_hadc);
+
+            printf("peak[%d]: %f \r\n", tmp_dubg, peak);
+            tmp_dubg++;
+            HAL_Delay(1000);
         }
 
         for (size_t i = 0; i < _sensor_num; i++) {

@@ -50,7 +50,6 @@ public:
 private:
     DigitalOut _led;
     uint16_t _adc_value;
-    // template<typename... DistanceSensors> friend class DistanceSensorStream;
     friend class DistanceSensorStream;
 };
 
@@ -71,37 +70,25 @@ public:
 
         // LED OFF
         for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(0);
-        HAL_Delay(10);
 
-        // get offset value
-        int tmp_debug = 0;  //debug
+        // sampling offset value
         uint16_t offset_values[_sensor_num];
         for(uint16_t &offset : offset_values) {
             HAL_ADC_Start(&_hadc);
             if(HAL_ADC_PollForConversion(&_hadc, 1) != HAL_OK) Error_Handler();
             offset = HAL_ADC_GetValue(&_hadc);
-
-            // debug
-            printf("offset[%d]: %d\r\n", tmp_debug, offset);
-            tmp_debug++;
-            HAL_Delay(1000);
         }
 
         // LED ON
         for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(1);
-        HAL_Delay(10);
+        HAL_Delay(1);  // 波形の立ち上がりを待つ("200[ns]"程度だが仮として"1[ms]"としている)
 
-        // get peak value
-        tmp_debug = 0;  // debug
+        // sampling peak value
         uint16_t peak_values[_sensor_num];
         for(uint16_t &peak : peak_values) {
             HAL_ADC_Start(&_hadc);
             if(HAL_ADC_PollForConversion(&_hadc, 1) != HAL_OK) Error_Handler();
             peak = HAL_ADC_GetValue(&_hadc);
-
-            printf("peak[%d]: %d \r\n", tmp_debug, peak);
-            tmp_debug++;  // debug
-            HAL_Delay(1000);
         }
 
         for (size_t i = 0; i < _sensor_num; i++) {

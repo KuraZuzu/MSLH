@@ -11,6 +11,21 @@
 #ifndef MSLH_DISTANCE_SENSOR_STREAM_H
 #define MSLH_DISTANCE_SENSOR_STREAM_H
 
+/**
+ * @warning
+ *   STM32CubeMXでのADC設定必須項目
+ *     Resolution                          : 12 bits (15 ADC Clock cycles)
+ *     Data Alignment:                     : Right alignment
+ *   　Scan Conversion Mode                : Enable
+ *     Continuous Conversion Mode          : Disable
+ *     Discontinuous Conversion Mode       : Enable
+ *     Number Of Discontinuous Conversions : 1 (センサの数ではく"1"固定)
+ *     DMA Continuous Requests             : Disable
+ *     End Of Conversion Selection         : EOC flag at the end of single channel conversion
+ *     Number Of Conversion                : 仕様する距離センサの数（"Rank"では変換するセンサの数だけ設定する）
+ */
+
+
 #include <iostream>
 #include <vector>
 #include <tuple>
@@ -21,6 +36,7 @@
 
 
 namespace mslh {
+
 
 class DistanceSensor {
 
@@ -34,60 +50,57 @@ public:
 private:
     DigitalOut _led;
     uint16_t _adc_value;
-    template<typename... DistanceSensors> friend class DistanceSensorStream;
+    // template<typename... DistanceSensors> friend class DistanceSensorStream;
+    friend class DistanceSensorStream;
 };
 
-/**
-* @warning
-*   DistanceSensorのrankは以下のように設定してください
-*   ・１つのチャネルのセンサのみを引数に与えてください
-*   ・１つのセンサにつきrank2つぶんを連続で設定してください
-*   ・センサ１、センサ２、センサ３を設定する場合
-*/
-template<typename... DistanceSensors>
+
 class DistanceSensorStream {
 
 public:
 
+    template<typename... DistanceSensors>
     DistanceSensorStream(ADC_HandleTypeDef &hadc, DistanceSensors&... distance_sensors)
     : _hadc(hadc), _sensor_num(0) {
         (void)std::initializer_list<int>{(_distance_sensor.push_back(std::ref(distance_sensors)), 0)...};
-        _sensor_num = _distance_sensor.size();  // 距離センサのサイズを取得
-        // while (1) printf("[sensor num]: %d\r\n", _sensor_num);  //debug
+        _sensor_num = _distance_sensor.size();  // get distance_sensor num
     }
 
 
     void update() {
 
-        // LED消灯
+        // LED OFF
         for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(0);
+        HAL_Delay(10);
 
-        // オフセットの値を取得
-        int tmp_dubg = 0;
+        // get offset value
+        int tmp_debug = 0;  //debug
         uint16_t offset_values[_sensor_num];
         for(uint16_t &offset : offset_values) {
             HAL_ADC_Start(&_hadc);
             if(HAL_ADC_PollForConversion(&_hadc, 1) != HAL_OK) Error_Handler();
             offset = HAL_ADC_GetValue(&_hadc);
 
-            printf("offset[%d]: %f\r\n", tmp_dubg, offset);
-            tmp_dubg++;
+            // debug
+            printf("offset[%d]: %d\r\n", tmp_debug, offset);
+            tmp_debug++;
             HAL_Delay(1000);
         }
 
-        // LED点灯
+        // LED ON
         for(DistanceSensor &distance_sensor : _distance_sensor) distance_sensor._led.write(1);
+        HAL_Delay(10);
 
-        // ピークの値を取得
-        tmp_dubg = 0;
+        // get peak value
+        tmp_debug = 0;  // debug
         uint16_t peak_values[_sensor_num];
         for(uint16_t &peak : peak_values) {
             HAL_ADC_Start(&_hadc);
             if(HAL_ADC_PollForConversion(&_hadc, 1) != HAL_OK) Error_Handler();
             peak = HAL_ADC_GetValue(&_hadc);
 
-            printf("peak[%d]: %f \r\n", tmp_dubg, peak);
-            tmp_dubg++;
+            printf("peak[%d]: %d \r\n", tmp_debug, peak);
+            tmp_debug++;  // debug
             HAL_Delay(1000);
         }
 

@@ -7,8 +7,8 @@
 * see https://opensource.org/licenses/MIT
 */
 
-#ifndef MSLH_WHEEL_CONTROL_H
-#define MSLH_WHEEL_CONTROL_H
+#ifndef MSLH_WHEEL_CONTROLER_H
+#define MSLH_WHEEL_CONTROLER_H
 
 #include "arm_math.h"
 #include "defines.h"
@@ -69,7 +69,7 @@ namespace mslh {
  *   }
  * @endcode
  */
-class Wheel {
+class WheelController {
 
 public:
     /**
@@ -79,14 +79,14 @@ public:
     *   wheel_diameter     : milli meter [mm].
     *   speed_sampling_time: second [s].
     */
-    Wheel(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery, float32_t wheel_diameter, float32_t speed_sampling_time);
+    WheelController(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery, float32_t wheel_diameter, float32_t speed_sampling_time);
 
     /**
      * @fn モータの速度計測&制御を行う，speed_sampling_time の間隔で実行
      * @warning この関数をタイマ割り込み(任意の周期)で計測する
      */
     inline void interruptControlWheel() {
-        interruptMeasureSpeed();
+        interruptMeasureVelocity();
         interruptTwoFreedomDegreeControl();
     }
 
@@ -103,7 +103,7 @@ public:
     /**
      * @fn モータとエンコーダの動作停止．
      */
-    void orderSpeedMomentarily();
+    void orderVelocityMomentarily();
 
     /**
      * @fn モータとエンコーダ，_speedのリセット．
@@ -115,9 +115,9 @@ public:
      * @arg (±目標加速度, ±目標速度)
      * @warning 呼び出しは1回で良い．
      */
-    void setSpeed(float32_t accel, float32_t speed);
+    void setVelocity(float32_t accel, float32_t velocity);
 
-    [[gnu::warn_unused_result]] inline float32_t getSpeed() const { return _speed; }
+    [[gnu::warn_unused_result]] inline float32_t getVelocity() const { return _velocity; }
 
     [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _target_accel; }
 
@@ -127,9 +127,9 @@ private:
      * @fn 速度計測をする．speed_sampling_time の間隔で実行．
      * @warning この関数をタイマ割り込み(任意の周期)で計測する．
      */
-    inline void interruptMeasureSpeed() {
+    inline void interruptMeasureVelocity() {
         _encoder.update();
-        _speed = _speed_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
+        _velocity = _velocity_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
     }
 
 
@@ -144,23 +144,23 @@ private:
 
 
     float32_t _target_accel;   //< 目標加速度(指令値)
-    float32_t _speed;          //< 現在の計測した実速度 [mm/s] (mm per second).
-    float32_t _ideal_speed;    //< 理想速度(逐次、現在の測定速度に指令加速度を加算している)
-    float32_t _target_speed;   //< 目標速度(指令値)
-    float32_t _diff_speed;     //< PID制御のための速度偏差
-    float32_t _old_diff_speed; //< ID制御のための前回の速度偏差
-    float32_t _integral_speed; //< I制御のための速度偏差積分
-    float32_t _non_liner_range_speed; //< 曲線加速を行う速度域
-    float32_t _init_speed; //< setSpeed()をした時点での速度
+    float32_t _velocity;          //< 現在の計測した実速度 [mm/s] (mm per second).
+    float32_t _ideal_velocity;    //< 理想速度(逐次、現在の測定速度に指令加速度を加算している)
+    float32_t _target_velocity;   //< 目標速度(指令値)
+    float32_t _diff_velocity;     //< PID制御のための速度偏差
+    float32_t _old_diff_velocity; //< ID制御のための前回の速度偏差
+    float32_t _integral_velocity; //< I制御のための速度偏差積分
+    float32_t _non_liner_range_velocity; //< 曲線加速を行う速度域
+    float32_t _init_velocity; //< setSpeed()をした時点での速度
     Encoder &_encoder;
     Motor &_motor;
-    AnalogInDMAStream &_battery;
-    const float32_t _speed_sampling_time; //< second [s]
+    // AnalogInDMAStream &_battery;
+    const float32_t _sampling_time; //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
-    const float32_t _speed_per_pulse;     //< callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
-    bool _complete_set_speed_flag;         //< setSpeed()内でaccelとspeed両方完了しているかのフラグ
+    const float32_t _velocity_per_pulse;     //< callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
+    bool _complete_set_velocity_flag;         //< setSpeed()内でaccelとspeed両方完了しているかのフラグ
 };
 
 }  // namespace mslh
 
-#endif //MSLH_WHEEL_CONTROL_H
+#endif //MSLH_WHEEL_CONTROLLER_H

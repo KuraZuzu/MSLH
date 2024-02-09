@@ -14,9 +14,9 @@
 #include "defines.h"
 #include "motor.h"
 #include "encoder.h"
+#include "analog_in.h"
 #include "parameter.h"
 #include <cmath>
-#include "analog_in_dma_stream.h"
 
 namespace mslh {
 
@@ -79,7 +79,8 @@ public:
     *   wheel_diameter     : milli meter [mm].
     *   speed_sampling_time: second [s].
     */
-    WheelController(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery, float32_t wheel_diameter, float32_t speed_sampling_time);
+    WheelController(Motor &motor, Encoder &encoder, AnalogIn &battery, AnalogInUpdater &battery_updater, float32_t wheel_diameter, float32_t sampling_time);
+
 
     /**
      * @fn モータの速度計測&制御を行う，speed_sampling_time の間隔で実行
@@ -87,7 +88,7 @@ public:
      */
     inline void interruptControlWheel() {
         interruptMeasureVelocity();
-        interruptTwoFreedomDegreeControl();
+        interrupt2DoFControll();
     }
 
     /**
@@ -121,6 +122,9 @@ public:
 
     [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _target_accel; }
 
+    void debugConsole() {
+        printf("[ENCODER]%5d,  MOTOR is FW now!", _encoder.getTotalPulse());
+    }
 
 private:
     /**
@@ -140,26 +144,24 @@ private:
      *
      * なぜか、5000[mm/s]あたりで速度が頭打ちとなる．PIDのゲインが釣り合っていまうタイミングがあるのかも．
      */
-    void interruptTwoFreedomDegreeControl();
+    void interrupt2DoFControll();
 
 
-    float32_t _target_accel;   //< 目標加速度(指令値)
+    float32_t _target_accel;      //< 目標加速度(指令値)
     float32_t _velocity;          //< 現在の計測した実速度 [mm/s] (mm per second).
     float32_t _ideal_velocity;    //< 理想速度(逐次、現在の測定速度に指令加速度を加算している)
     float32_t _target_velocity;   //< 目標速度(指令値)
-    float32_t _diff_velocity;     //< PID制御のための速度偏差
-    float32_t _old_diff_velocity; //< ID制御のための前回の速度偏差
-    float32_t _integral_velocity; //< I制御のための速度偏差積分
-    float32_t _non_liner_range_velocity; //< 曲線加速を行う速度域
-    float32_t _init_velocity; //< setSpeed()をした時点での速度
+    float32_t _integral_diff_velocity; //< I制御のための速度偏差積分
+    float32_t _init_velocity; //< setVelocity()をした時点での速度
     Encoder &_encoder;
     Motor &_motor;
-    // AnalogInDMAStream &_battery;
+    AnalogIn &_battery;
+    AnalogInUpdater &_battery_updater;
     const float32_t _sampling_time; //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
     const float32_t _velocity_per_pulse;     //< callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
-    bool _complete_set_velocity_flag;         //< setSpeed()内でaccelとspeed両方完了しているかのフラグ
-};
+
+};  // class WheelController
 
 }  // namespace mslh
 

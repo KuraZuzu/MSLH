@@ -80,6 +80,7 @@ private:
     GPIO_TypeDef *_gpio_x;
     const uint16_t _gpio_pin;
     int32_t _pinstate;
+    friend class DigitalBusOut;
 };
 
 }  // namespace mslh

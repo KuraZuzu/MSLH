@@ -36,15 +36,15 @@ namespace mslh::machine_parameter {
     constexpr float32_t DISTANCE_PER_PULSE = WHEEL_DIAMETER * PI / ENCODER_ONE_ROTATION_PULSE;
 
     /** P-parameter for motor source voltage */
-    constexpr float32_t MAX_SPEED = 1000; // [mm/s]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 0.4f;  //< P制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t MAX_VELOCITY = 1000; // [mm/s]
+    constexpr float32_t KP_MOTOR_VOLTAGE = 0.1f;  //< P制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KI_MOTOR_VOLTAGE = 0.0f;  //< I制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KD_MOTOR_VOLTAGE = 0.0f;  //< D制御ゲイン(単一のwheel回転制御) 0.00001
 
     /** Motor */
-    constexpr float32_t RESISTANCE_MOTOR = 4.5f;  //< [Ω]
-    constexpr float32_t K_E = 0.000062f;  //< 逆起電力定数（発生電圧定数）[V/rpm]
-    constexpr float32_t K_T = 0.000594f;  //< モータトルク定数[Nm/A]
+    constexpr float32_t RESISTANCE_MOTOR = 1.07;  //< [Ω]
+    constexpr float32_t K_E = 0.000207f;  //< 逆起電力定数（発生電圧定数）[V/rpm]
+    constexpr float32_t K_T = 0.00198f;  //< モータトルク定数[Nm/A]
     //constexpr float32_t K_T = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
 
     /** Machine Control */

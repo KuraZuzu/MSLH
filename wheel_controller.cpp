@@ -9,16 +9,16 @@
 
 #include "wheel_controller.h"
 
-mslh::WheelController::WheelController(Motor &motor, Encoder &encoder, AnalogIn &battery, AnalogInUpdater &battery_updater, float32_t wheel_diameter, float32_t sampling_time)
+mslh::WheelController::WheelController(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery, float32_t wheel_diameter, float32_t sampling_time)
     : _motor(motor)
     , _encoder(encoder)
     , _battery(battery)
-    , _battery_updater(battery_updater)
     , _target_accel(0.0f)
     , _velocity(0.0f)
     , _ideal_velocity(0.0f)
     , _target_velocity(0.0f)
     , _integral_diff_velocity(0.0f)
+    , _duty_ratio(0.0f)
     , _sampling_time(sampling_time)
     , _distance_per_pulse(wheel_diameter * PI / static_cast<float32_t>(_encoder.getOneRotationPulse()))
     , _velocity_per_pulse(_distance_per_pulse / _sampling_time)
@@ -26,9 +26,10 @@ mslh::WheelController::WheelController(Motor &motor, Encoder &encoder, AnalogIn 
 
 void mslh::WheelController::start()
 {
+    _battery.init();  // ここがHAL_TIM_BASE_INITより先に動いていないとバッテリ計測でinfになって止まる。
     _encoder.start();
     _motor.start();
-    _motor.update(0);
+    _motor.update(0.0f);
     _encoder.reset();
 }
 
@@ -98,10 +99,9 @@ void mslh::WheelController::interrupt2DoFControll()
     const float32_t voltage = (machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage);                                                                          // 必要電圧
 
     /** バッテリ電圧を考慮したduty比算出 */
-    _battery_updater.update();
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;
-    const float32_t duty_ratio = voltage / battery_voltage;
+    if(battery_voltage > 0.0f) _duty_ratio = voltage / battery_voltage;
 
     /** モータに電圧印加 */
-    _motor.update(duty_ratio);
+    _motor.update(_duty_ratio);
 }

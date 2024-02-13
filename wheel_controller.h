@@ -14,7 +14,7 @@
 #include "defines.h"
 #include "motor.h"
 #include "encoder.h"
-#include "analog_in.h"
+#include "analog_in_dma_stream.h"
 #include "parameter.h"
 #include <cmath>
 
@@ -79,7 +79,7 @@ public:
     *   wheel_diameter     : milli meter [mm].
     *   speed_sampling_time: second [s].
     */
-    WheelController(Motor &motor, Encoder &encoder, AnalogIn &battery, AnalogInUpdater &battery_updater, float32_t wheel_diameter, float32_t sampling_time);
+    WheelController(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery, float32_t wheel_diameter, float32_t sampling_time);
 
 
     /**
@@ -153,10 +153,10 @@ private:
     float32_t _target_velocity;   //< 目標速度(指令値)
     float32_t _integral_diff_velocity; //< I制御のための速度偏差積分
     float32_t _init_velocity; //< setVelocity()をした時点での速度
+    float32_t _duty_ratio;
     Encoder &_encoder;
     Motor &_motor;
-    AnalogIn &_battery;
-    AnalogInUpdater &_battery_updater;
+    AnalogInDMAStream &_battery;
     const float32_t _sampling_time; //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
     const float32_t _velocity_per_pulse;     //< callbackされるサンプリングタイムも考慮した値、速度計測の最低単位

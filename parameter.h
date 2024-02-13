@@ -26,7 +26,7 @@ namespace mslh::machine_parameter {
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
     /** Unit is "pulse" */
-    constexpr float32_t GEAR_RATIO = 45.0f / 12.0f;
+    constexpr float32_t GEAR_RATIO = 42.0f / 13.0f;
     constexpr int32_t ENCODER_ONE_ROTATION_PULSE = 4096 * 4 * GEAR_RATIO;
 
     /** Unit is "mm" */

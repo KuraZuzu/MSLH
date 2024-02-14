@@ -15,6 +15,7 @@ mslh::WheelController::WheelController(Motor &motor, Encoder &encoder, AnalogInD
     , _battery(battery)
     , _target_accel(0.0f)
     , _velocity(0.0f)
+    , _init_velocity(0.0f)
     , _ideal_velocity(0.0f)
     , _target_velocity(0.0f)
     , _integral_diff_velocity(0.0f)

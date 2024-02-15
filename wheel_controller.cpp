@@ -47,6 +47,9 @@ void mslh::WheelController::reset()
     _target_accel = 0.0f;
     _ideal_velocity = 0.0f;
     _target_velocity = 0.0f;
+    _integral_diff_velocity = 0.0f;
+    _init_velocity = 0.0f;
+    _duty_ratio = 0.0f;
     _encoder.reset();
 }
 
@@ -59,8 +62,8 @@ void mslh::WheelController::orderVelocityMomentarily()
 void mslh::WheelController::setVelocity(float32_t accel, float32_t velocity)
 {
     _target_accel = accel;
-    _target_velocity = velocity;
     _init_velocity = _velocity;
+    _target_velocity = velocity;
 }
 
 void mslh::WheelController::interrupt2DoFControll()
@@ -76,14 +79,20 @@ void mslh::WheelController::interrupt2DoFControll()
     const float32_t p_error = diff_velocity * machine_parameter::KP_MOTOR_VOLTAGE;           // ゲインをかける (逆進の際は負の値となる)
     const float32_t i_error = _integral_diff_velocity * machine_parameter::KI_MOTOR_VOLTAGE; // ゲインをかける (逆進の際は負の値となる)
 
-    // 加速度が目標を超えていた場合に理想速度の更新はしない（正負の両方に対応）
-    if ((_target_velocity * (_target_velocity - _velocity)) > 0)
-    {
-        _ideal_velocity += (_target_accel * _sampling_time); // 指定された加速度での理想速度算出
+    // 現在速度が目標を超えていた場合に加速度を"0"にして次フレームでの理想速度に加算されないようにする（正負の両方に対応）
+    // これは先にMeasureSpeedを呼び出さないといけないと思う
+    float32_t accel = _target_accel;
+    if(_target_velocity - _init_velocity > 0) {
+        if(_target_velocity <= _velocity) accel = 0;
+
+    } else {
+        if(_target_velocity >= _velocity) accel = 0;
     }
 
+    _ideal_velocity += (accel * _sampling_time); // 指定された加速度での理想速度算出
+
     // PIDをモータ印加電圧に反映
-    const float32_t corrected_velocity = _ideal_velocity + p_error + i_error; //
+    const float32_t corrected_velocity = _ideal_velocity + p_error + i_error;  // これ前進と逆進で逆起電力変わっちゃうのでは？いや、PWMを-から+で扱ってるからいいのか？
 
     /**
      * @note フィードフォワード制御
@@ -92,7 +101,7 @@ void mslh::WheelController::interrupt2DoFControll()
      *   ② 定速度Wheel電圧 = Ke(逆起電力定数[V/rpm]) * (PIDを考慮したモータ回転数 [mm/s -> rpm]  ギア比も考慮)
      */
     // ① 加速Wheelトルク
-    const float32_t wheel_torque = machine_parameter::MASS * _target_accel * 0.001f * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; //  *0.001f は[mm]->[m]変換  *0.5f は2つのモータのため
+    const float32_t wheel_torque = machine_parameter::MASS * accel * 0.001f * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; //  *0.001f は[mm]->[m]変換  *0.5f は2つのモータのため
     const float32_t motor_torque = wheel_torque / machine_parameter::GEAR_RATIO;                                                         // 必要モータトルク
     const float32_t current = motor_torque / machine_parameter::K_T;                                                                     // モータに必要な電流
     // ② 定速度Wheel電圧
@@ -102,6 +111,7 @@ void mslh::WheelController::interrupt2DoFControll()
     /** バッテリ電圧を考慮したduty比算出 */
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;
     if(battery_voltage > 0.0f) _duty_ratio = voltage / battery_voltage;
+    else _duty_ratio = 0.0f;
 
     /** モータに電圧印加 */
     _motor.update(_duty_ratio);

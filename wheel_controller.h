@@ -126,6 +126,12 @@ public:
         printf("[ENCODER]%5d,  MOTOR is FW now!", _encoder.getTotalPulse());
     }
 
+    void debugParams() {
+        printf("target_accel: %f\r\n", _target_accel);
+        printf("init_v: %f\r\n", _init_velocity);
+        printf("target_v: %f\r\n", _target_velocity);
+    }
+
 private:
     /**
      * @fn 速度計測をする．speed_sampling_time の間隔で実行．

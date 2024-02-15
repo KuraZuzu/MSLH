@@ -21,7 +21,8 @@ namespace mslh::machine_parameter {
 
     /** Weight */
 //    constexpr float32_t WEIGHT = 0.5f * 2; //タイヤ空転実験用
-    constexpr float32_t WEIGHT = 131.65f; //17.00[g]
+    // constexpr float32_t WEIGHT = 131.65f; // 131.65[g]
+    constexpr float32_t WEIGHT = 10.0f; // 131.65[g]
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
@@ -37,7 +38,7 @@ namespace mslh::machine_parameter {
 
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_VELOCITY = 1000; // [mm/s]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 0.1f;  //< P制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  //< P制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KI_MOTOR_VOLTAGE = 0.0f;  //< I制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KD_MOTOR_VOLTAGE = 0.0f;  //< D制御ゲイン(単一のwheel回転制御) 0.00001
 

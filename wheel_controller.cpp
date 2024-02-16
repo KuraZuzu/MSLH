@@ -91,6 +91,7 @@ void mslh::WheelController::interrupt2DoFControll()
 
     // PIDをモータ印加電圧に反映
     const float32_t corrected_velocity = _ideal_velocity + p_error + i_error;
+
     /**
      * @note フィードフォワード制御
      *   加速度から必要な出力電圧を算出する(なぜかPIDのゲインによって特定の速度より上がらなくなる)
@@ -100,11 +101,12 @@ void mslh::WheelController::interrupt2DoFControll()
     // ① 加速Wheelトルク
     const float32_t wheel_torque = machine_parameter::MASS * _target_accel * 0.001f * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; //  *0.001f は[mm]->[m]変換  *0.5f は2つのモータのため
     const float32_t motor_torque = wheel_torque / machine_parameter::GEAR_RATIO;                                                         // 必要モータトルク
-    const float32_t current = motor_torque / machine_parameter::K_T;                                                                     // モータに必要な電流
+    float32_t current = 0.0f;
+    if(machine_parameter::FEED_FORWARD_FLAG) current = motor_torque / machine_parameter::K_T;  // モータに必要な電流
 
     // ② 定速度Wheel電圧
     const float32_t reverse_voltage = (machine_parameter::K_E * (60.0f * corrected_velocity) * machine_parameter::GEAR_RATIO) / (PI * machine_parameter::WHEEL_DIAMETER); // 分子の速度の単位を[mm]のままなのは、分母のタイヤ径も[mm]のため
-    const float32_t voltage = (machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage);                                                                          // 必要電圧
+    const float32_t voltage = (machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage);  // 必要電圧
 
     /** バッテリ電圧を考慮したduty比算出 */
     const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * machine_parameter::BATTERY_VOLTAGE_RATIO;

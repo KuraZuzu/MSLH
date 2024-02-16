@@ -20,9 +20,9 @@ namespace mslh::machine_parameter {
     constexpr float32_t BATTERY_VOLTAGE_RATIO = (1000.0f + 2000.0f) / 1000.0f;
 
     /** Weight */
-//    constexpr float32_t WEIGHT = 0.5f * 2; //タイヤ空転実験用
-    // constexpr float32_t WEIGHT = 131.65f; // 131.65[g]
-    constexpr float32_t WEIGHT = 10.0f; // 131.65[g]
+    // constexpr float32_t WEIGHT = 0.5f * 2; //タイヤ空転実験用
+    constexpr float32_t WEIGHT = 131.65f; // 131.65[g]
+    // constexpr float32_t WEIGHT = 10.0f; // 131.65[g]
     constexpr float32_t GRAVITY = 9.8f;
     constexpr float32_t MASS = WEIGHT / GRAVITY;
 
@@ -38,8 +38,8 @@ namespace mslh::machine_parameter {
 
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_VELOCITY = 1000; // [mm/s]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 0.15f;  //< P制御ゲイン(単一のwheel回転制御)
-    constexpr float32_t KI_MOTOR_VOLTAGE = 0.15f;  //< I制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KP_MOTOR_VOLTAGE = 0.2f;  //< P制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KI_MOTOR_VOLTAGE = 0.2f;  //< I制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KD_MOTOR_VOLTAGE = 0.0f;  //< D制御ゲイン(単一のwheel回転制御) 0.00001
 
     /** Motor */
@@ -60,6 +60,12 @@ namespace mslh::machine_parameter {
 
     constexpr float32_t OPEN_FRONT_WALL_THRESHOLD = 80.0f; //< あとから数値入れる [mm] 仮ぎめ
     constexpr float32_t OPEN_SIDE_WALL_THRESHOLD = 30.0f; //< あとから数値入れる [mm] 仮ぎめ
+
+    /** Running */
+    constexpr float32_t MIN_SPEED = 20.0f;
+
+    /** Wheel Controle */
+    constexpr bool FEED_FORWARD_FLAG = false;
 
 }  // namespace mslh
 

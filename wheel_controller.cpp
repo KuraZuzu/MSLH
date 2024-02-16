@@ -82,11 +82,17 @@ void mslh::WheelController::interrupt2DoFControll()
     // 現在速度が目標を超えていた場合に加速度を"0"にして次フレームでの理想速度に加算されないようにする（正負の両方に対応）
     // これは先にMeasureSpeedを呼び出さないといけないと思う
     float32_t accel = _target_accel;
-    if(_target_velocity - _init_velocity > 0) {
-        if(_target_velocity <= _velocity) accel = 0;
+    if(_target_velocity - _init_velocity >= 0) {
+        if(_target_velocity <= _velocity) {
+            accel = 0;
+            _ideal_velocity = _target_velocity;
+        }
 
     } else {
-        if(_target_velocity >= _velocity) accel = 0;
+        if(_target_velocity >= _velocity) {
+            accel = 0;
+            _ideal_velocity = _target_velocity;
+        }
     }
 
     _ideal_velocity += (accel * _sampling_time); // 指定された加速度での理想速度算出
@@ -104,6 +110,7 @@ void mslh::WheelController::interrupt2DoFControll()
     const float32_t wheel_torque = machine_parameter::MASS * accel * 0.001f * (machine_parameter::WHEEL_RADIUS * 0.001f) * 0.5f; //  *0.001f は[mm]->[m]変換  *0.5f は2つのモータのため
     const float32_t motor_torque = wheel_torque / machine_parameter::GEAR_RATIO;                                                         // 必要モータトルク
     const float32_t current = motor_torque / machine_parameter::K_T;                                                                     // モータに必要な電流
+
     // ② 定速度Wheel電圧
     const float32_t reverse_voltage = (machine_parameter::K_E * (60.0f * corrected_velocity) * machine_parameter::GEAR_RATIO) / (PI * machine_parameter::WHEEL_DIAMETER); // 分子の速度の単位を[mm]のままなのは、分母のタイヤ径も[mm]のため
     const float32_t voltage = (machine_parameter::RESISTANCE_MOTOR * current + reverse_voltage);                                                                          // 必要電圧
@@ -113,6 +120,6 @@ void mslh::WheelController::interrupt2DoFControll()
     if(battery_voltage > 0.0f) _duty_ratio = voltage / battery_voltage;
     else _duty_ratio = 0.0f;
 
-    /** モータに電圧印加 */
+    // /** モータに電圧印加 */
     _motor.update(_duty_ratio);
 }

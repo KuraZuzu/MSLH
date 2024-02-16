@@ -38,8 +38,8 @@ namespace mslh::machine_parameter {
 
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_VELOCITY = 1000; // [mm/s]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 0.0f;  //< P制御ゲイン(単一のwheel回転制御)
-    constexpr float32_t KI_MOTOR_VOLTAGE = 0.0f;  //< I制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KP_MOTOR_VOLTAGE = 0.2f;  //< P制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KI_MOTOR_VOLTAGE = 0.2f;  //< I制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KD_MOTOR_VOLTAGE = 0.0f;  //< D制御ゲイン(単一のwheel回転制御) 0.00001
 
     /** Motor */

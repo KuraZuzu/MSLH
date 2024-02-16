@@ -38,8 +38,8 @@ namespace mslh::machine_parameter {
 
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_VELOCITY = 1000; // [mm/s]
-    constexpr float32_t KP_MOTOR_VOLTAGE = 0.2f;  //< P制御ゲイン(単一のwheel回転制御)
-    constexpr float32_t KI_MOTOR_VOLTAGE = 0.2f;  //< I制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KP_MOTOR_VOLTAGE = 0.15f;  //< P制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KI_MOTOR_VOLTAGE = 0.15f;  //< I制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KD_MOTOR_VOLTAGE = 0.0f;  //< D制御ゲイン(単一のwheel回転制御) 0.00001
 
     /** Motor */
@@ -51,7 +51,8 @@ namespace mslh::machine_parameter {
     /** Machine Control */
     constexpr float32_t KP_MACHINE_CONTROL = 0.001f; //< 直進制御のためのP制御ゲイン
 
-    /** Static */    constexpr float32_t ONE_BLOCK_DISTANCE = 90.0f;
+    /** Static */
+    constexpr float32_t ONE_BLOCK_DISTANCE = 90.0f;
     constexpr float32_t HALF_BLOCK_DISTANCE = ONE_BLOCK_DISTANCE / 2.0f;
     constexpr float32_t START_BLOCK_DISTANCE = 22.71f;
     constexpr float32_t TURN_90_DEG_DISTANCE = MACHINE_TREAD * PI / 4.0f;

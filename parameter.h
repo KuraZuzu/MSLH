@@ -39,7 +39,7 @@ namespace mslh::machine_parameter {
     /** P-parameter for motor source voltage */
     constexpr float32_t MAX_VELOCITY = 1000; // [mm/s]
     constexpr float32_t KP_MOTOR_VOLTAGE = 0.2f;  //< P制御ゲイン(単一のwheel回転制御)
-    constexpr float32_t KI_MOTOR_VOLTAGE = 0.2f;  //< I制御ゲイン(単一のwheel回転制御)
+    constexpr float32_t KI_MOTOR_VOLTAGE = 0.6f;  //< I制御ゲイン(単一のwheel回転制御)
     constexpr float32_t KD_MOTOR_VOLTAGE = 0.0f;  //< D制御ゲイン(単一のwheel回転制御) 0.00001
 
     /** Motor */
@@ -49,7 +49,7 @@ namespace mslh::machine_parameter {
     //constexpr float32_t K_T = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
 
     /** Machine Control */
-    constexpr float32_t KP_STRAIGHT_CONTROL = 0.1f; //< 直進制御のためのP制御ゲイン
+    constexpr float32_t KP_STRAIGHT_CONTROL = 0.0f; //< 直進制御のためのP制御ゲイン
 
     // 直進壁制御用のセンサ値
     constexpr uint16_t LS_CENTER_VALUE = 207;  // 中央にロボットを置いたときに左壁センサ値
@@ -62,9 +62,9 @@ namespace mslh::machine_parameter {
     constexpr uint16_t RF_TH_VALUE = 170;  // 前壁右側の有無判定の閾値
 
     /** Static */
-    constexpr float32_t ONE_BLOCK_DISTANCE = 90.0f;
+    constexpr float32_t ONE_BLOCK_DISTANCE = 180.0f;
     constexpr float32_t HALF_BLOCK_DISTANCE = ONE_BLOCK_DISTANCE / 2.0f;
-    constexpr float32_t START_BLOCK_DISTANCE = 22.71f;
+    // constexpr float32_t START_BLOCK_DISTANCE = 22.71f;
     constexpr float32_t TURN_90_DEG_DISTANCE = MACHINE_TREAD * PI / 4.0f;
     constexpr float32_t TURN_180_DEG_DISTANCE = TURN_90_DEG_DISTANCE * 2.0f;
 
@@ -72,7 +72,7 @@ namespace mslh::machine_parameter {
     constexpr float32_t OPEN_SIDE_WALL_THRESHOLD = 30.0f; //< あとから数値入れる [mm] 仮ぎめ
 
     /** Running */
-    constexpr float32_t MIN_SPEED = 20.0f;
+    constexpr float32_t MIN_SPEED = 100.0f;
 
     /** Wheel Controle */
     constexpr bool FEED_FORWARD_FLAG = false;

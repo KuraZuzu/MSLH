@@ -134,6 +134,10 @@ public:
         printf("target_v: %f\r\n", _target_velocity);
     }
 
+    void addCorrectionVelocity(float32_t correction_velocity) {
+        _correction_velocity += correction_velocity;
+    }
+
 private:
     /**
      * @fn 速度計測をする．speed_sampling_time の間隔で実行．
@@ -168,6 +172,7 @@ private:
     const float32_t _sampling_time; //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse] 1パルスにつき進む距離[mm]、距離計測の最低単位
     const float32_t _velocity_per_pulse;     //< callbackされるサンプリングタイムも考慮した値、速度計測の最低単位
+    float32_t _correction_velocity;
 
 };  // class WheelController
 

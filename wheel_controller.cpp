@@ -23,6 +23,7 @@ mslh::WheelController::WheelController(Motor &motor, Encoder &encoder, AnalogInD
     , _sampling_time(sampling_time)
     , _distance_per_pulse(wheel_diameter * PI / static_cast<float32_t>(_encoder.getOneRotationPulse()))
     , _velocity_per_pulse(_distance_per_pulse / _sampling_time)
+    , _correction_velocity(0.0f)
     {}
 
 void mslh::WheelController::start()
@@ -90,7 +91,8 @@ void mslh::WheelController::interrupt2DoFControll()
     _ideal_velocity += (_target_accel * _sampling_time);
 
     // PIDをモータ印加電圧に反映
-    const float32_t corrected_velocity = _ideal_velocity + p_error + i_error;
+    const float32_t corrected_velocity = _ideal_velocity + p_error + i_error + _correction_velocity;
+    _correction_velocity = 0.0f;
     // ここのcorrected_veocityに直接アクセスできる関数を実装して、publicにする。一時的に
 
 

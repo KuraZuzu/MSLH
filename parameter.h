@@ -49,17 +49,17 @@ namespace mslh::machine_parameter {
     //constexpr float32_t K_T = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
 
     /** Machine Control */
-    constexpr float32_t KP_STRAIGHT_CONTROL = 0.0005f; //< 直進制御のためのP制御ゲイン
+    constexpr float32_t KP_STRAIGHT_CONTROL = 10.0f; //< 直進制御のためのP制御ゲイン
 
     // 直進壁制御用のセンサ値
-    constexpr uint16_t LS_CENTER_VALUE = 207;  // 中央にロボットを置いたときに左壁センサ値
-    constexpr uint16_t RS_CENTER_VALUE = 362;  // 中央にロボットを置いたときに右壁センサ値
+    constexpr uint16_t LS_CENTER_VALUE = 207;  // 中央にロボットを置いたときに左壁センサ値  207(会場)
+    constexpr uint16_t RS_CENTER_VALUE = 362;  // 中央にロボットを置いたときに右壁センサ値  362
 
     // 壁有無判定の閾センサ値
-    constexpr uint16_t LS_TH_VALUE = 240;  // 左壁の有無判定の閾値
-    constexpr uint16_t RS_TH_VALUE = 152;  // 右壁の有無判定の閾値
-    constexpr uint16_t LF_TH_VALUE = 138;  // 前壁左側の有無判定の閾値
-    constexpr uint16_t RF_TH_VALUE = 170;  // 前壁右側の有無判定の閾値
+    constexpr uint16_t LS_TH_VALUE = 112;  // 左壁の有無判定の閾値  240(会場)
+    constexpr uint16_t RS_TH_VALUE = 400;  // 右壁の有無判定の閾値  152
+    constexpr uint16_t LF_TH_VALUE = 138;  // 前壁左側の有無判定の閾値  138
+    constexpr uint16_t RF_TH_VALUE = 170;  // 前壁右側の有無判定の閾値  178
 
     /** Static */
     constexpr float32_t ONE_BLOCK_DISTANCE = 180.0f;

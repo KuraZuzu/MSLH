@@ -56,8 +56,8 @@ namespace mslh::machine_parameter {
     constexpr uint16_t RS_CENTER_VALUE = 362;  // 中央にロボットを置いたときに右壁センサ値  362
 
     // 壁有無判定の閾センサ値
-    constexpr uint16_t LS_TH_VALUE = 112;  // 左壁の有無判定の閾値  240(会場)
-    constexpr uint16_t RS_TH_VALUE = 400;  // 右壁の有無判定の閾値  152
+    constexpr uint16_t LS_TH_VALUE = 240;  // 左壁の有無判定の閾値  240(会場)
+    constexpr uint16_t RS_TH_VALUE = 152;  // 右壁の有無判定の閾値  152
     constexpr uint16_t LF_TH_VALUE = 138;  // 前壁左側の有無判定の閾値  138
     constexpr uint16_t RF_TH_VALUE = 170;  // 前壁右側の有無判定の閾値  178
 
@@ -67,9 +67,6 @@ namespace mslh::machine_parameter {
     // constexpr float32_t START_BLOCK_DISTANCE = 22.71f;
     constexpr float32_t TURN_90_DEG_DISTANCE = MACHINE_TREAD * PI / 4.0f;
     constexpr float32_t TURN_180_DEG_DISTANCE = TURN_90_DEG_DISTANCE * 2.0f;
-
-    constexpr float32_t OPEN_FRONT_WALL_THRESHOLD = 80.0f; //< あとから数値入れる [mm] 仮ぎめ
-    constexpr float32_t OPEN_SIDE_WALL_THRESHOLD = 30.0f; //< あとから数値入れる [mm] 仮ぎめ
 
     /** Running */
     constexpr float32_t MIN_SPEED = 100.0f;

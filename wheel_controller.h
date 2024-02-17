@@ -120,7 +120,9 @@ public:
 
     [[gnu::warn_unused_result]] inline float32_t getVelocity() const { return _velocity; }
 
-    [[gnu::warn_unused_result]] inline float32_t getAccel() const { return _target_accel; }
+    // [[gnu::warn_unused_result]] inline float32_t getTargetAccel() const { return _target_accel; }
+
+    // [[gnu::warn_unused_result]] inline float32_t getTargetVelocity() const { return _target_velocity; }
 
     void debugConsole() {
         printf("[ENCODER]%5d,  MOTOR is FW now!", _encoder.getTotalPulse());

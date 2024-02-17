@@ -49,7 +49,7 @@ namespace mslh::machine_parameter {
     //constexpr float32_t K_T = K_E * 60.0f / (2.0f * PI);  //< モータトルク定数[Nm/A]
 
     /** Machine Control */
-    constexpr float32_t KP_STRAIGHT_CONTROL = 0.0f; //< 直進制御のためのP制御ゲイン
+    constexpr float32_t KP_STRAIGHT_CONTROL = 0.0005f; //< 直進制御のためのP制御ゲイン
 
     // 直進壁制御用のセンサ値
     constexpr uint16_t LS_CENTER_VALUE = 207;  // 中央にロボットを置いたときに左壁センサ値
@@ -76,7 +76,7 @@ namespace mslh::machine_parameter {
 
     /** Wheel Controle */
     constexpr bool FEED_FORWARD_FLAG = false;
-
+    static bool wall_feedback_flag = false;;
 }  // namespace mslh
 
 #endif //MSLH_PARAMETER_H

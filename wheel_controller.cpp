@@ -91,6 +91,8 @@ void mslh::WheelController::interrupt2DoFControll()
 
     // PIDをモータ印加電圧に反映
     const float32_t corrected_velocity = _ideal_velocity + p_error + i_error;
+    // ここのcorrected_veocityに直接アクセスできる関数を実装して、publicにする。一時的に
+
 
     /**
      * @note フィードフォワード制御

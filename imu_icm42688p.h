@@ -13,7 +13,6 @@
 #include "arm_math.h"
 #include "spi.h"
 #include "digital_out.h"
-#include "stdio.h"
 
 
 namespace mslh {
@@ -40,15 +39,21 @@ public:
     }
 
     float32_t getAccelX() {
-        return (_accel_range* static_cast<float32_t>(getRawAccelX()) / static_cast<float32_t>(INT16_MAX));
+        // 0x23: upper Byte,  0x24: lower Byte
+        const int16_t raw_accel_x = static_cast<int16_t>(((read(0x1F) << 8) | read(0x20)));
+        return (_accel_range* static_cast<float32_t>(raw_accel_x) / static_cast<float32_t>(INT16_MAX));
     }
 
     float32_t getAccelY() {
-        return (_accel_range * static_cast<float32_t>(getRawAccelY()) / static_cast<float32_t>(INT16_MAX));
+        // 0x23: upper Byte,  0x24: lower Byte
+        const int16_t raw_accel_y =  static_cast<int16_t>((read(0x21) << 8) | read(0x22));
+        return (_accel_range * static_cast<float32_t>(raw_accel_y) / static_cast<float32_t>(INT16_MAX));
     }
 
     float32_t getAccelZ() {
-        return (_accel_range * static_cast<float32_t>(getRawAccelZ()) / static_cast<float32_t>(INT16_MAX));
+        // 0x23: upper Byte,  0x24: lower Byte
+        int16_t raw_accel_z = static_cast<int16_t>((read(0x23) << 8) | read(0x24));
+        return (_accel_range * static_cast<float32_t>(raw_accel_z) / static_cast<float32_t>(INT16_MAX));
     }
 
 private:
@@ -93,21 +98,6 @@ private:
         HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);  // CS pin: HIGH
     }
 
-    int16_t getRawAccelX() {
-        // 0x23: upper Byte,  0x24: lower Byte
-        return static_cast<int16_t>(((read(0x1F) << 8) | read(0x20)));
-    }
-
-    int16_t getRawAccelY() {
-        // 0x23: upper Byte,  0x24: lower Byte
-        return static_cast<int16_t>(read(0x21) << 8) | read(0x22);
-    }
-
-    int16_t getRawAccelZ() {
-        // 0x23: upper Byte,  0x24: lower Byte
-        return static_cast<int16_t>((read(0x23) << 8) | read(0x24));
-    }
-
     void setConfigs() {
         HAL_Delay(10);
         setPowerManage();
@@ -129,6 +119,7 @@ private:
         constexpr uint8_t accel_conf_data = 0b00011111;  // range:2[g], rate:1k[Hz]
         write(accel_conf_addr, accel_conf_data);
     }
+
 
     SPI_HandleTypeDef &_hspi;
     GPIO_TypeDef *_cs_x;

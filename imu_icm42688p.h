@@ -18,10 +18,10 @@
 
 namespace mslh {
 
-class GyroSensorICM42688P {
+class IMUICM42688P {
 
 public:
-    GyroSensorICM42688P(SPI_HandleTypeDef &hspi, GPIO_TypeDef *cs_x, uint16_t cs_pin)
+    IMUICM42688P(SPI_HandleTypeDef &hspi, GPIO_TypeDef *cs_x, uint16_t cs_pin)
     : _hspi(hspi)
     , _cs_x(cs_x)
     , _cs_pin(cs_pin)
@@ -134,7 +134,7 @@ private:
     GPIO_TypeDef *_cs_x;
     const uint16_t _cs_pin;
     float32_t _accel_range;  // default: 2.0f
-    float32_t _gyro_range;
+    float32_t _imu_range;
 };
 
 }  // namespace mslh

@@ -7,8 +7,8 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#ifndef MSLH_GYRO_SENSOR_H
-#define MSLH_GYRO_SENSOR_H
+#ifndef MSLH_IMU_H
+#define MSLH_IMU_H
 
 #include "arm_math.h"
 #include "spi.h"
@@ -130,4 +130,4 @@ private:
 
 }  // namespace mslh
 
-#endif //MSLH_GYRO_SENSOR_H
+#endif //MSLH_IMU_H

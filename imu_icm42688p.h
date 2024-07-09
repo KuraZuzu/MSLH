@@ -25,7 +25,7 @@ public:
     , _cs_pin(cs_pin)
     , _accel_range(2.0f)
     , _gyro_range(1000.0f)
-    , _gyro_yaw_offset(0.0f) {
+    , _gyro_z_offset(0.0f) {
     }
 
     void init() {
@@ -37,8 +37,8 @@ public:
     /* ジャイロの零点ドリフト補正 */
     void calibrate() {
         float32_t tmp_value = 0;
-        for (int i = 0; i < 100; i++) tmp_value += getAngularYaw();
-        _gyro_yaw_offset = tmp_value / 100.0f;
+        for (int i = 0; i < 100; i++) tmp_value += getAngularVelocityZ();
+        _gyro_z_offset = tmp_value / 100.0f;
     }
 
     uint8_t getWhoAmI() {
@@ -46,11 +46,11 @@ public:
         return read(address);  // 受け取るのは2バイト目のデータだけ
     }
 
-    float32_t getAngularYaw() {
+    float32_t getAngularVelocityZ() {
         // 0x29: upper Byte,  0x2A: lower Byte
         const int16_t raw_angular_z = static_cast<int16_t>(((read(0x29) << 8) | read(0x2A)));
-        const float32_t _gyro_yaw = (_gyro_range* static_cast<float32_t>(raw_angular_z) / static_cast<float32_t>(INT16_MAX));
-        return _gyro_yaw - _gyro_yaw_offset;
+        return (_gyro_range* static_cast<float32_t>(raw_angular_z) / static_cast<float32_t>(INT16_MAX));
+        // return _gyro_z - _gyro_z_offset;
     }
 
     float32_t getAccelX() {
@@ -150,7 +150,7 @@ private:
     const uint16_t _cs_pin;
     float32_t _accel_range;  // default: 2.0f
     float32_t _gyro_range;
-    float32_t _gyro_yaw_offset;
+    float32_t _gyro_z_offset;
 };
 
 }  // namespace mslh

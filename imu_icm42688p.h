@@ -24,8 +24,8 @@ public:
     , _cs_x(cs_x)
     , _cs_pin(cs_pin)
     , _accel_range(2.0f)
-    , _gyro_range(1000.0f)
-    , _gyro_z_offset(0.0f) {
+    , _gyro_range(2000.0f)
+    ,  _raw_angular_velocity_z_offset(0) {
     }
 
     void init() {
@@ -36,9 +36,10 @@ public:
 
     /* ジャイロの零点ドリフト補正 */
     void calibrate() {
-        float32_t tmp_value = 0;
-        for (int i = 0; i < 100; i++) tmp_value += getAngularVelocityZ();
-        _gyro_z_offset = tmp_value / 100.0f;
+        HAL_Delay(3000);
+        int32_t tmp_value = 0;
+        for (int i = 0; i < 1000; i++) tmp_value += static_cast<int32_t>(static_cast<int16_t>(((read(0x29) << 8) | read(0x2A))));
+        _raw_angular_velocity_z_offset = tmp_value / 1000;
     }
 
     uint8_t getWhoAmI() {
@@ -48,9 +49,8 @@ public:
 
     float32_t getAngularVelocityZ() {
         // 0x29: upper Byte,  0x2A: lower Byte
-        const int16_t raw_angular_z = static_cast<int16_t>(((read(0x29) << 8) | read(0x2A)));
-        return (_gyro_range* static_cast<float32_t>(raw_angular_z) / static_cast<float32_t>(INT16_MAX));
-        // return _gyro_z - _gyro_z_offset;
+        const int16_t raw_angular_velocity_z = static_cast<int16_t>(((read(0x29) << 8) | read(0x2A)));
+        return (_gyro_range* static_cast<float32_t>(raw_angular_velocity_z - _raw_angular_velocity_z_offset) / static_cast<float32_t>(INT16_MAX));
     }
 
     float32_t getAccelX() {
@@ -86,22 +86,6 @@ private:
         return rx_data[1];  //< データは2バイト目に格納される
     }
 
-    // バースト読み取りテスト
-    // uint16_t read2B(const uint8_t addr_0, const uint8_t addr_1, const uint16_t buff) {
-
-    //     const uint16_t size = buff;
-    //     const uint8_t read_mode = 0b10000000;  //< (read:1, write:0)
-    //     const uint8_t tx_data[size] = {static_cast<uint8_t>(read_mode | addr_0), static_cast<uint8_t>(read_mode | addr_1), 0x00};
-    //     uint8_t rx_data[size];
-
-    //     HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_RESET);  // CS pin: LOW
-    //     HAL_SPI_TransmitReceive(&_hspi, (uint8_t*)tx_data, (uint8_t*)rx_data, size, 100);
-    //     HAL_GPIO_WritePin(_cs_x, _cs_pin, GPIO_PIN_SET);
-    //     uint16_t data = (rx_data[1] << 8) + rx_data[2];
-
-    //     return data;  //< データは2バイト目に格納される
-    // }
-
     void write(const uint8_t address, const uint8_t data) {
 
         constexpr uint16_t size = 2;
@@ -125,7 +109,8 @@ private:
 
     void setGyroConfig() {
         constexpr uint8_t gyro_conf_addr = 0x4F;
-        constexpr uint8_t gyro_conf_data = 0b00100110;  // range:1000[deg/s], rate: 1k[Hz]
+        constexpr uint8_t gyro_conf_data = 0b00000110;  // range:1000[deg/s], rate: 1k[Hz]
+        // constexpr uint8_t gyro_conf_data = 0b01100110;  // range:250[deg/s], rate: 1k[Hz]
         write(gyro_conf_addr, gyro_conf_data);
     }
 
@@ -140,7 +125,7 @@ private:
     // 温度・ジャイロ・加速度のON/OFFやモードの設定
     void setPowerManage() {
         constexpr uint8_t accel_conf_addr = 0x4E;
-        constexpr uint8_t accel_conf_data = 0b00011111;  // range:2[g], rate:1k[Hz]
+        constexpr uint8_t accel_conf_data = 0b00011111;  // [gyro][accel]:: Low Noise mode
         write(accel_conf_addr, accel_conf_data);
     }
 
@@ -149,8 +134,8 @@ private:
     GPIO_TypeDef *_cs_x;
     const uint16_t _cs_pin;
     float32_t _accel_range;  // default: 2.0f
-    float32_t _gyro_range;
-    float32_t _gyro_z_offset;
+    float32_t _gyro_range;  // default 2000[deg]/s
+    int16_t _raw_angular_velocity_z_offset;
 };
 
 }  // namespace mslh

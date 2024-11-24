@@ -118,7 +118,7 @@ public:
      */
     void setVelocity(float32_t accel, float32_t velocity);
 
-    [[gnu::warn_unused_result]] inline float32_t getVelocity() const { return _velocity; }
+    [[gnu::warn_unused_result]] inline float32_t getVelocity() const { return _linear_velocity; }
 
     // [[gnu::warn_unused_result]] inline float32_t getTargetAccel() const { return _target_accel; }
 
@@ -145,7 +145,7 @@ private:
      */
     inline void interruptMeasureVelocity() {
         _encoder.update();
-        _velocity = _velocity_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
+        _linear_velocity = _velocity_per_pulse * static_cast<float32_t>(_encoder.getDeltaPulse());
     }
 
 
@@ -160,7 +160,7 @@ private:
 
 
     float32_t _target_accel;      //< 目標加速度(指令値)
-    float32_t _velocity;          //< 現在の計測した実速度 [mm/s] (mm per second).
+    float32_t _linear_velocity;          //< 現在の計測した実速度 [mm/s] (mm per second).
     float32_t _ideal_velocity;    //< 理想速度(逐次、現在の測定速度に指令加速度を加算している)
     float32_t _target_velocity;   //< 目標速度(指令値)
     float32_t _integral_diff_velocity; //< I制御のための速度偏差積分

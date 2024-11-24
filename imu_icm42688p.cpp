@@ -7,7 +7,7 @@
  * see https://opensource.org/licenses/MIT
  */
 
-#include "gyro_sensor.h"
+#include "imu_icm42688p.h"
 
 
 // for DMA

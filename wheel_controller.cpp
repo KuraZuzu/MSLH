@@ -14,7 +14,7 @@ mslh::WheelController::WheelController(Motor &motor, Encoder &encoder, AnalogInD
     , _encoder(encoder)
     , _battery(battery)
     , _target_accel(0.0f)
-    , _velocity(0.0f)
+    , _linear_velocity(0.0f)
     , _init_velocity(0.0f)
     , _ideal_velocity(0.0f)
     , _target_velocity(0.0f)
@@ -44,7 +44,7 @@ void mslh::WheelController::stop()
 void mslh::WheelController::reset()
 {
     _motor.update(0.0f);
-    _velocity = 0.0f;
+    _linear_velocity = 0.0f;
     _target_accel = 0.0f;
     _ideal_velocity = 0.0f;
     _target_velocity = 0.0f;
@@ -63,7 +63,7 @@ void mslh::WheelController::orderVelocityMomentarily()
 void mslh::WheelController::setVelocity(float32_t accel, float32_t velocity)
 {
     _target_accel = accel;
-    _init_velocity = _velocity;
+    _init_velocity = _linear_velocity;
     _target_velocity = velocity;
 }
 
@@ -75,14 +75,14 @@ void mslh::WheelController::interrupt2DoFControll()
      *   FF制御より先に呼び出すが、初回は理想加速度が考慮されていないのでFBは２回目以降から実行される。
      *   PID制御を実行
      */
-    const float32_t diff_velocity = _ideal_velocity - _velocity;
+    const float32_t diff_velocity = _ideal_velocity - _linear_velocity;
     _integral_diff_velocity += diff_velocity;                                                // (目標速度) - (現在速度)　逆進の際は負の値となる
     const float32_t p_error = diff_velocity * machine_parameter::KP_MOTOR_VOLTAGE;           // ゲインをかける (逆進の際は負の値となる)
     const float32_t i_error = _integral_diff_velocity * machine_parameter::KI_MOTOR_VOLTAGE; // ゲインをかける (逆進の際は負の値となる)
 
     // 現在速度が目標を超えていた場合に指令加速度を"0"にして当フレーム以降での理想速度に加算されないようにしてPIDのみの補正を適用
     // （差分を積とすることで正負の両方に対応）
-    if(((_target_velocity-_init_velocity)*(_target_velocity-_velocity)) <= 0) {
+    if(((_target_velocity-_init_velocity)*(_target_velocity-_linear_velocity)) <= 0) {
         _target_accel = 0;
         _ideal_velocity  = _target_velocity;
     }

@@ -17,7 +17,7 @@
 namespace mslh::machine_parameter {
 
     /** Battery Voltage Divider */
-    constexpr float32_t BATTERY_VOLTAGE_RATIO = (1000.0f + 2000.0f) / 1000.0f;
+    // constexpr float32_t BATTERY_VOLTAGE_RATIO = (1000.0f + 2000.0f) / 1000.0f;  //逆にしたい
 
     /** Weight */
     // constexpr float32_t WEIGHT = 0.5f * 2; //タイヤ空転実験用

@@ -14,6 +14,7 @@
 
 #include "analog_in_dma_stream.h"
 #include "arm_math.h"
+#include "battery.h"
 #include "defines.h"
 #include "encoder.h"
 #include "motor.h"
@@ -84,7 +85,7 @@ class WheelParams {
 
 class WheelController {
    public:
-    WheelController(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery,
+    WheelController(Motor &motor, Encoder &encoder, Battery &battery,
                     WheelParams wheel_params, float32_t sampling_time)
         : _motor(motor),
           _encoder(encoder),
@@ -180,16 +181,10 @@ class WheelController {
 
     void controlMotorISR(float32_t voltage) {
         // バッテリ電圧を考慮したduty比算出
-        const float32_t battery_voltage =
-            3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF *
-            battery_voltage_ratio;
         float32_t duty_ratio;
-        if (battery_voltage > 0.0f)
-            duty_ratio =
-                voltage /
-                battery_voltage;  // バッテリ読み取り不可時の0除算を回避
-        else
-            duty_ratio = 0.0f;
+        float32_t battery_voltage = _battery.readVoltage();
+        if (battery_voltage > 0.0f) duty_ratio = voltage / battery_voltage;
+        else duty_ratio = 0.0f;
         _motor.update(duty_ratio);
     }
 
@@ -210,7 +205,7 @@ class WheelController {
         battery_voltage_ratio;  // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
     Encoder &_encoder;
     Motor &_motor;
-    AnalogInDMAStream &_battery;
+    Battery &_battery;
     const float32_t _sampling_time;       //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse]
     const float32_t _velocity_per_pulse;  //< [mm/s]

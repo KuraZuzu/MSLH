@@ -27,7 +27,6 @@ class WheelController {
         : _motor(motor),
           _encoder(encoder),
           _battery(battery),
-          _target_accel(0.0f),
           _duty_ratio(0.0f),
           _sampling_time(sampling_time),
           _distance_per_pulse(
@@ -59,28 +58,48 @@ class WheelController {
 
     void controlWheelISR(float32_t velocity) {
         // ここで速度更新したい
+        const float32_t accel = velocity - _velocity;
         controlFeedBackISR();
-        controlFeedForwardISR();
+        controlFeedForwardISR(accel);
         _motor.update(_duty_ratio);
         controlMeasureVelocityISR();
     }
 
    private:
-       void controlMeasureVelocityISR() {
+    void controlMeasureVelocityISR() {
         _encoder.update();
         _velocity == _velocity_per_pulse *static_cast<float32_t>(
                          _encoder.getDeltaPulse());
-        _target_accel = _velocity - _velocity;
     }
 
-    void controlFeedForwardISR();
+    void controlFeedForwardISR(float32_t accel) {
+        // 加速
+        const float32_t wheel_torque = _mass * (accel / 1000) * ((_diameter / 2) / 1000);
+        const float32_t motor_toruqe = wheel_torque / _gear_ratio;
+        const float32_t current = motor_toruqe / _K_T;
+        // 定速
+        const float32_t reverse_voltage = (_K_E * (60.0f * _corrected_velocity) * _gear_ratio) / (M_PI * _diameter);
+        const float32_t voltage = (_resistance * current) + reverse_voltage;
+        // バッテリ電圧を考慮したduty比算出
+        const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * battery_voltage_ratio;
+        if(battery_voltage > 0.0f) _duty_ratio = voltage / battery_voltage;
+        else _duty_ratio = 0.0f;
+    }
 
     void controlFeedBackISR();
 
-    float32_t _target_accel;
+    // float32_t _target_accel;
     float32_t _target_velocity;
     float32_t _velocity;
+    float32_t _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
     float32_t _duty_ratio;
+    float32_t _mass;  // ホイール単体の質量
+    float32_t _diameter;  // ホイール直径
+    float32_t _gear_ratio;  // タイヤとモーターのギア比
+    float32_t _K_T;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
+    float32_t _K_E;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
+    float32_t _resistance;  // モータの抵抗
+    float32_t battery_voltage_ratio;  // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
     Encoder &_encoder;
     Motor &_motor;
     AnalogInDMAStream &_battery;

@@ -27,7 +27,6 @@ class WheelController {
         : _motor(motor),
           _encoder(encoder),
           _battery(battery),
-          _duty_ratio(0.0f),
           _sampling_time(sampling_time),
           _distance_per_pulse(
               wheel_diameter * PI /
@@ -58,25 +57,25 @@ class WheelController {
     float32_t getVelocity() { return _velocity; }
 
     void controlWheelISR(float32_t velocity) {
-        controlMeasureVelocityISR();  // ここで"_velocity"に反映されるのは、1フレーム前に指定した速度に対応する実速度
-        _velocity_error = _velocity - _preview_target_velocity;  // 停止時からの初回運転フレームは0になる
-        const float32_t accel = velocity - _velocity;  // 今回のフレームの速度にするために必要な加速度を算出
+        controlMeasureVelocityISR();  // ここで"_velocity"に反映されるのは、前フレームに指定した速度に対応する実速度（つまり1次遅れ）
+        _velocity_error = _velocity - _preview_target_velocity;  // 前フレームの指令速度と実速度の差分を取得
+        const float32_t accel = velocity - _velocity;  // 現フレームの速度にするために必要な加速度を算出
 
         float32_t motor_voltage = 0.0f;
-        motor_voltage += controlFeedBackISR(velocity);  // フィードバックを考慮した一定速度モータ回転逆起電力電圧値
-        motor_voltage += controlFeedForwardISR(accel);  // 加速に必要なトルクベースの電圧値
-        controlMotorISR(motor_voltage);
+        motor_voltage += controlFeedBackISR(velocity);  // 前フレームの実績をもとにしたPID制御
+        motor_voltage += controlFeedForwardAccelISR(accel);  // 加速に必要なトルクベースの電圧値
+        motor_voltage += controlFeedForwardVelocityISR(velocity);  // 逆起電力を打ち消す電圧値
+        controlMotorISR(motor_voltage);  // duty比を計算してモータに印加
         _preview_target_velocity = velocity;
     }
 
    private:
     void controlMeasureVelocityISR() {
         _encoder.update();
-        _velocity == _velocity_per_pulse *static_cast<float32_t>(
-                         _encoder.getDeltaPulse());
+        _velocity == _velocity_per_pulse *static_cast<float32_t>(_encoder.getDeltaPulse());
     }
 
-    float32_t controlFeedForwardISR(float32_t accel) {
+    float32_t controlFeedForwardAccelISR(float32_t accel) {
         const float32_t wheel_torque = _mass * (accel / 1000) * ((_diameter / 2) / 1000);
         const float32_t motor_toruqe = wheel_torque / _gear_ratio;
         const float32_t current = motor_toruqe / _K_T;
@@ -84,21 +83,28 @@ class WheelController {
         return torque_voltage;
     }
 
+    float32_t controlFeedForwardVelocityISR(float32_t velocity) {
+        const float32_t reverse_voltage = (_K_E * (60.0f * velocity) * _gear_ratio) / (M_PI * _diameter);
+        return reverse_voltage;
+    }
+
     float32_t controlFeedBackISR(float32_t velocity) {
-        _integral_velocity_error += _velocity_error;
+        _integral_velocity_error += _velocity_error;  // メンバ変数に頼りたくないが、積分なので仕方なく
         const float32_t p_error = _velocity_error * KP;
         const float32_t i_error = _integral_velocity_error * KI;
-        _corrected_velocity = velocity + p_error + i_error;  // 停止時からの初回速度司令時は問題ない（速度errorは0だし、仮に値が入っても1フレーム分で極小）
-        const float32_t reverse_voltage = (_K_E * (60.0f * _corrected_velocity) * _gear_ratio) / (M_PI * _diameter);
-        return reverse_voltage;
+        const float32_t pid_error = p_error + i_error;  
+        // どのモータでも一定のスケールにするために逆起電力の式をもとにPID電圧を決定（計算は重くなるので不要なら削除）
+        const float32_t pid_voltage = (_K_E * (60.0f * pid_error) * _gear_ratio) / (M_PI * _diameter);
+        return pid_voltage;
     }
 
     void controlMotorISR(float32_t voltage) {
         // バッテリ電圧を考慮したduty比算出
         const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * battery_voltage_ratio;
-        if(battery_voltage > 0.0f) _duty_ratio = voltage / battery_voltage;
-        else _duty_ratio = 0.0f;
-        _motor.update(_duty_ratio);
+        float32_t duty_ratio;
+        if(battery_voltage > 0.0f) duty_ratio = voltage / battery_voltage;  // バッテリ読み取り不可時の0除算を回避
+        else duty_ratio = 0.0f;
+        _motor.update(duty_ratio);
     }
 
     // float32_t _target_accel;
@@ -108,7 +114,6 @@ class WheelController {
     float32_t _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
     float32_t _integral_velocity_error;
     float32_t _preview_target_velocity;
-    float32_t _duty_ratio;
     float32_t _mass;  // ホイール単体の質量
     float32_t _diameter;  // ホイール直径
     float32_t _gear_ratio;  // タイヤとモーターのギア比

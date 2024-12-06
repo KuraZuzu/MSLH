@@ -62,9 +62,10 @@ class WheelController {
         _velocity_error = _velocity - _preview_target_velocity;  // 停止時からの初回運転フレームは0になる
         const float32_t accel = velocity - _velocity;  // 今回のフレームの速度にするために必要な加速度を算出
 
-        controlFeedBackISR(velocity);  //返り値でvoltageの加算分を返したほうがいいかも
-        controlFeedForwardISR(accel);  //返り値でvoltageの加算分を返したほうがいいかも
-        _motor.update(_duty_ratio);
+        float32_t motor_voltage = 0.0f;
+        motor_voltage += controlFeedBackISR(velocity);  // フィードバックを考慮した一定速度モータ回転逆起電力電圧値
+        motor_voltage += controlFeedForwardISR(accel);  // 加速に必要なトルクベースの電圧値
+        controlMotorISR(motor_voltage);
         _preview_target_velocity = velocity;
     }
 
@@ -75,26 +76,29 @@ class WheelController {
                          _encoder.getDeltaPulse());
     }
 
-    void controlFeedForwardISR(float32_t accel) {
-        // 加速
+    float32_t controlFeedForwardISR(float32_t accel) {
         const float32_t wheel_torque = _mass * (accel / 1000) * ((_diameter / 2) / 1000);
         const float32_t motor_toruqe = wheel_torque / _gear_ratio;
         const float32_t current = motor_toruqe / _K_T;
-        // 定速
-        const float32_t reverse_voltage = (_K_E * (60.0f * _corrected_velocity) * _gear_ratio) / (M_PI * _diameter);
-        // 電圧
-        const float32_t voltage = (_resistance * current) + reverse_voltage;
-        // バッテリ電圧を考慮したduty比算出
-        const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * battery_voltage_ratio;
-        if(battery_voltage > 0.0f) _duty_ratio = voltage / battery_voltage;
-        else _duty_ratio = 0.0f;
+        const float32_t torque_voltage = _resistance * current;
+        return torque_voltage;
     }
 
-    void controlFeedBackISR(float32_t velocity) {
+    float32_t controlFeedBackISR(float32_t velocity) {
         _integral_velocity_error += _velocity_error;
         const float32_t p_error = _velocity_error * KP;
         const float32_t i_error = _integral_velocity_error * KI;
         _corrected_velocity = velocity + p_error + i_error;  // 停止時からの初回速度司令時は問題ない（速度errorは0だし、仮に値が入っても1フレーム分で極小）
+        const float32_t reverse_voltage = (_K_E * (60.0f * _corrected_velocity) * _gear_ratio) / (M_PI * _diameter);
+        return reverse_voltage;
+    }
+
+    void controlMotorISR(float32_t voltage) {
+        // バッテリ電圧を考慮したduty比算出
+        const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * battery_voltage_ratio;
+        if(battery_voltage > 0.0f) _duty_ratio = voltage / battery_voltage;
+        else _duty_ratio = 0.0f;
+        _motor.update(_duty_ratio);
     }
 
     // float32_t _target_accel;

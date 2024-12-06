@@ -50,19 +50,22 @@ class WheelController {
         _encoder.stop();
     }
 
-    void reset() { _encoder.reset(); }
-
-    void setVelocity(float32_t velocity) { _target_velocity = velocity; }
+    void reset() { 
+        _encoder.reset();
+        _integral_velocity_error = 0.0f;
+    }
 
     float32_t getVelocity() { return _velocity; }
 
     void controlWheelISR(float32_t velocity) {
-        // ここで速度更新したい
-        const float32_t accel = velocity - _velocity;
-        controlFeedBackISR();
-        controlFeedForwardISR(accel);
+        controlMeasureVelocityISR();  // ここで"_velocity"に反映されるのは、1フレーム前に指定した速度に対応する実速度
+        _velocity_error = _velocity - _preview_target_velocity;  // 停止時からの初回運転フレームは0になる
+        const float32_t accel = velocity - _velocity;  // 今回のフレームの速度にするために必要な加速度を算出
+
+        controlFeedBackISR(velocity);  //返り値でvoltageの加算分を返したほうがいいかも
+        controlFeedForwardISR(accel);  //返り値でvoltageの加算分を返したほうがいいかも
         _motor.update(_duty_ratio);
-        controlMeasureVelocityISR();
+        _preview_target_velocity = velocity;
     }
 
    private:
@@ -79,6 +82,7 @@ class WheelController {
         const float32_t current = motor_toruqe / _K_T;
         // 定速
         const float32_t reverse_voltage = (_K_E * (60.0f * _corrected_velocity) * _gear_ratio) / (M_PI * _diameter);
+        // 電圧
         const float32_t voltage = (_resistance * current) + reverse_voltage;
         // バッテリ電圧を考慮したduty比算出
         const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * battery_voltage_ratio;
@@ -86,12 +90,20 @@ class WheelController {
         else _duty_ratio = 0.0f;
     }
 
-    void controlFeedBackISR();
+    void controlFeedBackISR(float32_t velocity) {
+        _integral_velocity_error += _velocity_error;
+        const float32_t p_error = _velocity_error * KP;
+        const float32_t i_error = _integral_velocity_error * KI;
+        _corrected_velocity = velocity + p_error + i_error;  // 停止時からの初回速度司令時は問題ない（速度errorは0だし、仮に値が入っても1フレーム分で極小）
+    }
 
     // float32_t _target_accel;
     float32_t _target_velocity;
     float32_t _velocity;
-    float32_t _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
+    float32_t _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度 accelはvelocityで出しているのでおかしくならないか？
+    float32_t _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
+    float32_t _integral_velocity_error;
+    float32_t _preview_target_velocity;
     float32_t _duty_ratio;
     float32_t _mass;  // ホイール単体の質量
     float32_t _diameter;  // ホイール直径
@@ -100,6 +112,8 @@ class WheelController {
     float32_t _K_E;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
     float32_t _resistance;  // モータの抵抗
     float32_t battery_voltage_ratio;  // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
+    float32_t KP;  // Pゲイン
+    float32_t KI;  // Iゲイン
     Encoder &_encoder;
     Motor &_motor;
     AnalogInDMAStream &_battery;

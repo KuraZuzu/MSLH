@@ -20,16 +20,79 @@
 #include "parameter.h"
 
 namespace mslh {
+
+class WheelParams {
+   public:
+    WheelParams()
+        : _mass(0.0f), _diameter(0.0f), _kp(0.0f), _ki(0.0f), _kd(0.0f) {};
+
+    float32_t getMass() { return _mass; }
+
+    float32_t getDiameter() { return _diameter; }
+
+    float32_t getGearRatio() { return _gear_ratio; }
+
+    float32_t getKp() { return _kp; }
+
+    float32_t getKi() { return _ki; }
+
+    float32_t getKd() { return _kd; }
+
+    WheelParams &setMass(float32_t mass) {
+        this->_mass = mass;
+        return *this;
+    }
+
+    WheelParams &setDiameter(float32_t diameter) {
+        this->_diameter = diameter;
+        return *this;
+    }
+
+    WheelParams &setGearRatio(float32_t gear_ratio) {
+        this->_gear_ratio = gear_ratio;
+        return *this;
+    }
+
+    WheelParams &setKp(float32_t kp) {
+        this->_kp = kp;
+        return *this;
+    }
+
+    WheelParams &setKi(float32_t ki) {
+        this->_ki = ki;
+        return *this;
+    }
+
+    WheelParams &setKd(float32_t kd) {
+        this->_kd = kd;
+        return *this;
+    }
+
+   private:
+    float32_t _mass;
+    float32_t _diameter;
+    float32_t _gear_ratio;
+    float32_t _kp;  // Pゲイン
+    float32_t _ki;  // Iゲイン
+    float32_t _kd;  // Dゲイン
+    // float32_t _K_T;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
+    // float32_t _K_E;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
+    // float32_t _resistance;  // モータの抵抗
+    // float32_t battery_voltage_ratio;  //
+    // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
+};
+
 class WheelController {
    public:
     WheelController(Motor &motor, Encoder &encoder, AnalogInDMAStream &battery,
-                    float32_t wheel_diameter, float32_t sampling_time)
+                    WheelParams wheel_params, float32_t sampling_time)
         : _motor(motor),
           _encoder(encoder),
           _battery(battery),
           _sampling_time(sampling_time),
+          _wheel_params(wheel_params),
           _distance_per_pulse(
-              wheel_diameter * PI /
+              _wheel_params.getDiameter() * PI /
               static_cast<float32_t>(_encoder.getOneRotationPulse())),
           _velocity_per_pulse(_distance_per_pulse / _sampling_time) {}
 
@@ -49,7 +112,7 @@ class WheelController {
         _encoder.stop();
     }
 
-    void reset() { 
+    void reset() {
         _encoder.reset();
         _integral_velocity_error = 0.0f;
     }
@@ -57,72 +120,94 @@ class WheelController {
     float32_t getVelocity() { return _velocity; }
 
     void controlWheelISR(float32_t velocity) {
-        controlMeasureVelocityISR();  // ここで"_velocity"に反映されるのは、前フレームに指定した速度に対応する実速度（つまり1次遅れ）
-        _velocity_error = _velocity - _preview_target_velocity;  // 前フレームの指令速度と実速度の差分を取得
-        const float32_t accel = velocity - _velocity;  // 現フレームの速度にするために必要な加速度を算出
-
+        // ここで"_velocity"に反映されるのは、前フレームに指定した速度に対応する実速度（つまり1次遅れ）
+        controlMeasureVelocityISR();
+        // 前フレームの指令速度と実速度の差分を取得
+        _velocity_error = _velocity - _preview_target_velocity;
+        // 現フレームの速度にするために必要な加速度を算出
+        const float32_t accel = velocity - _velocity;
         float32_t motor_voltage = 0.0f;
-        motor_voltage += controlFeedBackISR(velocity);  // 前フレームの実績をもとにしたPID制御
-        motor_voltage += controlFeedForwardAccelISR(accel);  // 加速に必要なトルクベースの電圧値
-        motor_voltage += controlFeedForwardVelocityISR(velocity);  // 逆起電力を打ち消す電圧値
-        controlMotorISR(motor_voltage);  // duty比を計算してモータに印加
+        // 前フレームの実績をもとにしたPID制御
+        motor_voltage += controlFeedBackISR(velocity);
+        // 加速に必要なトルクベースの電圧値
+        motor_voltage += controlFeedForwardAccelISR(accel);
+        // 逆起電力を打ち消す電圧値
+        motor_voltage += controlFeedForwardVelocityISR(velocity);
+        // duty比を計算してモータに印加
+        controlMotorISR(motor_voltage);
+        // 次フレーム更新直前のPID制御のための速度保存
         _preview_target_velocity = velocity;
     }
 
    private:
     void controlMeasureVelocityISR() {
         _encoder.update();
-        _velocity == _velocity_per_pulse *static_cast<float32_t>(_encoder.getDeltaPulse());
+        _velocity == _velocity_per_pulse *static_cast<float32_t>(
+                         _encoder.getDeltaPulse());
     }
 
     float32_t controlFeedForwardAccelISR(float32_t accel) {
-        const float32_t wheel_torque = _mass * (accel / 1000) * ((_diameter / 2) / 1000);
-        const float32_t motor_toruqe = wheel_torque / _gear_ratio;
+        const float32_t wheel_torque =
+            _wheel_params.getMass() * (accel / 1000) *
+            ((_wheel_params.getDiameter() / 2) / 1000);
+        const float32_t motor_toruqe =
+            wheel_torque / _wheel_params.getGearRatio();
         const float32_t current = motor_toruqe / _K_T;
         const float32_t torque_voltage = _resistance * current;
         return torque_voltage;
     }
 
     float32_t controlFeedForwardVelocityISR(float32_t velocity) {
-        const float32_t reverse_voltage = (_K_E * (60.0f * velocity) * _gear_ratio) / (M_PI * _diameter);
+        const float32_t reverse_voltage =
+            (_K_E * (60.0f * velocity) * _wheel_params.getGearRatio()) /
+            (M_PI * _wheel_params.getDiameter());
         return reverse_voltage;
     }
 
     float32_t controlFeedBackISR(float32_t velocity) {
-        _integral_velocity_error += _velocity_error;  // メンバ変数に頼りたくないが、積分なので仕方なく
-        const float32_t p_error = _velocity_error * KP;
-        const float32_t i_error = _integral_velocity_error * KI;
-        const float32_t pid_error = p_error + i_error;  
+        // メンバ変数に頼りたくないが、積分なので仕方なく
+        _integral_velocity_error += _velocity_error;
+        const float32_t p_error = _velocity_error * _wheel_params.getKp();
+        const float32_t i_error =
+            _integral_velocity_error * _wheel_params.getKi();
+        const float32_t pid_error = p_error + i_error;
         // どのモータでも一定のスケールにするために逆起電力の式をもとにPID電圧を決定（計算は重くなるので不要なら削除）
-        const float32_t pid_voltage = (_K_E * (60.0f * pid_error) * _gear_ratio) / (M_PI * _diameter);
+        const float32_t pid_voltage =
+            (_K_E * (60.0f * pid_error) * _wheel_params.getGearRatio()) /
+            (M_PI * _wheel_params.getDiameter());
         return pid_voltage;
     }
 
     void controlMotorISR(float32_t voltage) {
         // バッテリ電圧を考慮したduty比算出
-        const float32_t battery_voltage = 3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF * battery_voltage_ratio;
+        const float32_t battery_voltage =
+            3.3f * static_cast<float32_t>(_battery.read()) / 0x0FFF *
+            battery_voltage_ratio;
         float32_t duty_ratio;
-        if(battery_voltage > 0.0f) duty_ratio = voltage / battery_voltage;  // バッテリ読み取り不可時の0除算を回避
-        else duty_ratio = 0.0f;
+        if (battery_voltage > 0.0f)
+            duty_ratio =
+                voltage /
+                battery_voltage;  // バッテリ読み取り不可時の0除算を回避
+        else
+            duty_ratio = 0.0f;
         _motor.update(duty_ratio);
     }
 
-    // float32_t _target_accel;
+    WheelParams _wheel_params;
     float32_t _target_velocity;
     float32_t _velocity;
-    float32_t _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度 accelはvelocityで出しているのでおかしくならないか？
-    float32_t _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
+    float32_t
+        _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
+                              // accelはvelocityで出しているのでおかしくならないか？
+    float32_t
+        _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
     float32_t _integral_velocity_error;
     float32_t _preview_target_velocity;
-    float32_t _mass;  // ホイール単体の質量
-    float32_t _diameter;  // ホイール直径
-    float32_t _gear_ratio;  // タイヤとモーターのギア比
     float32_t _K_T;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
     float32_t _K_E;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
     float32_t _resistance;  // モータの抵抗
-    float32_t battery_voltage_ratio;  // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
-    float32_t KP;  // Pゲイン
-    float32_t KI;  // Iゲイン
+    float32_t
+        battery_voltage_ratio;  // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
     Encoder &_encoder;
     Motor &_motor;
     AnalogInDMAStream &_battery;

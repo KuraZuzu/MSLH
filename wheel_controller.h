@@ -76,11 +76,6 @@ class WheelParams {
     float32_t _kp;  // Pゲイン
     float32_t _ki;  // Iゲイン
     float32_t _kd;  // Dゲイン
-    // float32_t _K_T;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
-    // float32_t _K_E;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
-    // float32_t _resistance;  // モータの抵抗
-    // float32_t battery_voltage_ratio;  //
-    // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
 };
 
 class WheelController {
@@ -153,14 +148,14 @@ class WheelController {
             ((_wheel_params.getDiameter() / 2) / 1000);
         const float32_t motor_toruqe =
             wheel_torque / _wheel_params.getGearRatio();
-        const float32_t current = motor_toruqe / _K_T;
-        const float32_t torque_voltage = _resistance * current;
+        const float32_t current = motor_toruqe / _motor.getKt();
+        const float32_t torque_voltage = _motor.getResistance() * current;
         return torque_voltage;
     }
 
     float32_t controlFeedForwardVelocityISR(float32_t velocity) {
         const float32_t reverse_voltage =
-            (_K_E * (60.0f * velocity) * _wheel_params.getGearRatio()) /
+            (_motor.getKe() * (60.0f * velocity) * _wheel_params.getGearRatio()) /
             (M_PI * _wheel_params.getDiameter());
         return reverse_voltage;
     }
@@ -174,7 +169,7 @@ class WheelController {
         const float32_t pid_error = p_error + i_error;
         // どのモータでも一定のスケールにするために逆起電力の式をもとにPID電圧を決定（計算は重くなるので不要なら削除）
         const float32_t pid_voltage =
-            (_K_E * (60.0f * pid_error) * _wheel_params.getGearRatio()) /
+            (_motor.getKe() * (60.0f * pid_error) * _wheel_params.getGearRatio()) /
             (M_PI * _wheel_params.getDiameter());
         return pid_voltage;
     }
@@ -188,16 +183,13 @@ class WheelController {
         _motor.update(duty_ratio);
     }
 
-    WheelParams _wheel_params;
     float32_t _target_velocity;
     float32_t _velocity;
     float32_t _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
     float32_t _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
     float32_t _integral_velocity_error;
     float32_t _preview_target_velocity;
-    float32_t _K_T;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
-    float32_t _K_E;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
-    float32_t _resistance;  // モータの抵抗
+    WheelParams _wheel_params;
     Encoder &_encoder;
     Motor &_motor;
     Battery &_battery;

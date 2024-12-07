@@ -10,54 +10,58 @@
 #ifndef MSLH_MOTOR_H
 #define MSLH_MOTOR_H
 
+#include "defines.h"
+#include "digital_out.h"
 #include "pwm_out.h"
 #include "tim.h"
-#include "digital_out.h"
-#include "defines.h"
 
 namespace mslh {
 
+class MotorParams {
+   public:
+    MotorParams();
+
+    float32_t getResistance() {
+        return _resistance;
+    }
+
+    float32_t getKt() {
+        return _kt;
+    }
+
+    float32_t getKe() {
+        return _ke;
+    }
+
+    MotorParams& setResistance(float32_t resistance) {
+        this->_resistance = resistance;
+        return *this;
+    }
+
+    MotorParams& setKt(float32_t kt) {
+        this->_kt = kt;
+        return *this;
+    }
+
+    MotorParams& setKe(float32_t ke) {
+        this->_ke = ke;
+        return *this;
+    }
+
+   private:
+    float32_t _resistance;  // 内部抵抗
+    float32_t _kt;
+    float32_t _ke;
+};
+
 /**
  * @brief
- *   This Class, the target of the control is Motor-Driver "DRV8836".  <br>
- *   Turns the motor at the specified PWM ratio.
- *
- * Example:
- * @code
- *   // The motor is rotated forward and backward at a PWM value of 0.5 (50% output) for
- *   // 3 seconds each, and then stopped.
- *
- *   #include "motor.h"
- *
- *   using namepsace mslh;
- *
- *   Motor motor(htim1, TIM_CHANNEL_1, GPIOA, GPIO_PIN_6, true);
- *
- *   int main() {
- *      // Abbreviation Microcomputer startup settings.
- *
- *       MX_TIM1_Init();  //< Need setup HAL motor timer parameters.
- *       MX_GPIO_Init();  //< Need setup HAL_GPIO for motor _direction.
- *
- *       motor.start();   //< Start drive motor
- *
- *       motor.update(0.5);  //< Roted forward with PWM of 50% output.
- *       HAL_Delay(3000);
- *
- *       motor.update(0.0);  //< "0.0" can be entered. In that case, the motor will stop.
- *       HAL_Delay(3000);
- *
- *       motor.update(-0.5); //< Roted backward with PWM of 50% output.
- *       HAL_Delay(3000);
- *
- *       motor.stop()  //< Stop drive motor.
- *   }
- * @endcode
+ *   This Class, the target of the control is Motor-Driver with PHASE-ENABLE
+ * mode.  <br> Turns the motor at the specified PWM ratio.
  */
+
 class Motor {
-
-public:
-
+   public:
     /**
      * @note
      *   Motor(___ , ___ , ___, ___,  bool cw);  <br>
@@ -66,8 +70,8 @@ public:
      *   bool cw: The _direction corresponds
      *   to the forward rotation of your machine.
      */
-    Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw);
-
+    Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x,
+          uint16_t phase_pin, bool cw, MotorParams params);
 
     /**
      * @fn Start motor.
@@ -90,14 +94,21 @@ public:
      */
     void update(float32_t duty_ratio);
 
-private:
+    float32_t getResistance();
+
+    float32_t getKt();
+
+    float32_t getKe();
+
+   private:
     GPIO_TypeDef *_phase_x;
     const uint16_t _phase_pin;
     TIM_HandleTypeDef &_htim_x;
     const uint64_t _channel;
     const GPIO_PinState _forward_wise;
+    MotorParams _params;
 };
 
 }  // namespace mslh
 
-#endif //MSLH_MOTOR_H
+#endif  // MSLH_MOTOR_H

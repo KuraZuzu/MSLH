@@ -86,16 +86,16 @@ class WheelParams {
 class WheelController {
    public:
     WheelController(Motor &motor, Encoder &encoder, Battery &battery,
-                    WheelParams wheel_params, float32_t sampling_time)
+                    WheelParams wheel_params, float32_t dt)
         : _motor(motor),
           _encoder(encoder),
           _battery(battery),
-          _sampling_time(sampling_time),
+          _dt(dt),
           _wheel_params(wheel_params),
           _distance_per_pulse(
               _wheel_params.getDiameter() * PI /
               static_cast<float32_t>(_encoder.getOneRotationPulse())),
-          _velocity_per_pulse(_distance_per_pulse / _sampling_time) {}
+          _velocity_per_pulse(_distance_per_pulse / _dt) {}
 
     void init() {
         _battery.init();
@@ -191,22 +191,17 @@ class WheelController {
     WheelParams _wheel_params;
     float32_t _target_velocity;
     float32_t _velocity;
-    float32_t
-        _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
-                              // accelはvelocityで出しているのでおかしくならないか？
-    float32_t
-        _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
+    float32_t _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
+    float32_t _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
     float32_t _integral_velocity_error;
     float32_t _preview_target_velocity;
     float32_t _K_T;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
     float32_t _K_E;  // モータのK_T これはmotorクラス側で持ったほうが良いかも
     float32_t _resistance;  // モータの抵抗
-    float32_t
-        battery_voltage_ratio;  // これはバッテリのパラメータだが、そもそもバッテリクラスを作ったほうがいいのでは？
     Encoder &_encoder;
     Motor &_motor;
     Battery &_battery;
-    const float32_t _sampling_time;       //< second [s]
+    const float32_t _dt;       //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse]
     const float32_t _velocity_per_pulse;  //< [mm/s]
 

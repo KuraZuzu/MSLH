@@ -90,7 +90,14 @@ class WheelController {
           _distance_per_pulse(
               _wheel_params.getDiameter() * PI /
               static_cast<float32_t>(_encoder.getOneRotationPulse())),
-          _velocity_per_pulse(_distance_per_pulse / _dt) {}
+          _velocity_per_pulse(_distance_per_pulse / _dt),
+          _target_velocity(0.0f),
+          _velocity(0.0f),
+          _corrected_velocity(0.0f),
+          _velocity_error(0.0f),
+          _integral_velocity_error(0.0f),
+          _preview_target_velocity(0.0f)
+           {}
 
     void init() {
         _battery.init();
@@ -110,7 +117,12 @@ class WheelController {
 
     void reset() {
         _encoder.reset();
+        _target_velocity = 0.0f;
+        _velocity = 0.0f;
+        _corrected_velocity = 0.0f;
+        _velocity_error = 0.0f;
         _integral_velocity_error = 0.0f;
+        _preview_target_velocity = 0.0f;
     }
 
     float32_t getVelocity() { return _velocity; }
@@ -126,9 +138,9 @@ class WheelController {
         // 前フレームの実績をもとにしたPID制御
         motor_voltage += controlFeedBackISR(velocity);
         // 加速に必要なトルクベースの電圧値
-        motor_voltage += controlFeedForwardAccelISR(accel);
+        // motor_voltage += controlFeedForwardAccelISR(accel);
         // 逆起電力を打ち消す電圧値
-        motor_voltage += controlFeedForwardVelocityISR(velocity);
+        // motor_voltage += controlFeedForwardVelocityISR(velocity);
         // duty比を計算してモータに印加
         controlMotorISR(motor_voltage);
         // 次フレーム更新直前のPID制御のための速度保存
@@ -138,7 +150,7 @@ class WheelController {
    private:
     void controlMeasureVelocityISR() {
         _encoder.update();
-        _velocity == _velocity_per_pulse *static_cast<float32_t>(
+        _velocity = _velocity_per_pulse *static_cast<float32_t>(
                          _encoder.getDeltaPulse());
     }
 
@@ -180,6 +192,7 @@ class WheelController {
         float32_t battery_voltage = _battery.readVoltage();
         if (battery_voltage > 0.0f) duty_ratio = voltage / battery_voltage;
         else duty_ratio = 0.0f;
+        // printf("%f\r\n", duty_ratio);
         _motor.update(duty_ratio);
     }
 

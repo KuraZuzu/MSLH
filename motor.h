@@ -19,7 +19,7 @@ namespace mslh {
 
 class MotorParams {
    public:
-    MotorParams();
+    MotorParams(): _resistance(1.0f), _kt(1.0f), _ke(1.0f) {}
 
     float32_t getResistance() {
         return _resistance;

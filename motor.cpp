@@ -9,12 +9,13 @@
 
 #include "motor.h"
 
-mslh::Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw)
+mslh::Motor::Motor(TIM_HandleTypeDef &htim_x, uint32_t channel, GPIO_TypeDef *phase_x, uint16_t phase_pin, bool cw, MotorParams params)
         : _htim_x(htim_x)
         , _channel(channel)
         , _phase_x(phase_x)
         , _phase_pin(phase_pin)
         , _forward_wise(static_cast<GPIO_PinState>(cw))
+        , _params(params)
 {
 }
 
@@ -41,3 +42,4 @@ void mslh::Motor::update(float32_t duty_ratio) {
 
     __HAL_TIM_SET_COMPARE(&_htim_x, _channel, (duty_ratio * _htim_x.Init.Period));
 }
+

@@ -138,9 +138,9 @@ class WheelController {
         // 前フレームの実績をもとにしたPID制御
         motor_voltage += controlFeedBackISR(velocity);
         // 加速に必要なトルクベースの電圧値
-        // motor_voltage += controlFeedForwardAccelISR(accel);
+        motor_voltage += controlFeedForwardAccelISR(accel);
         // 逆起電力を打ち消す電圧値
-        // motor_voltage += controlFeedForwardVelocityISR(velocity);
+        motor_voltage += controlFeedForwardVelocityISR(velocity);
         // duty比を計算してモータに印加
         controlMotorISR(motor_voltage);
         // 次フレーム更新直前のPID制御のための速度保存

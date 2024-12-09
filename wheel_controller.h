@@ -155,9 +155,9 @@ class WheelController {
     }
 
     float32_t controlFeedForwardAccelISR(float32_t accel) {
+        // モータトルク定数Ktが[Nm/A]なので、各種変数の単位を変換（SIにより[g]は[kg]で計算）
         const float32_t wheel_torque =
-            _wheel_params.getMass() * (accel / 1000) *
-            ((_wheel_params.getDiameter() / 2) / 1000);
+            (_wheel_params.getMass() / 1000.0f) * (accel / 1000.0f) * ((_wheel_params.getDiameter() / 2.0f) / 1000.0f);
         const float32_t motor_toruqe =
             wheel_torque / _wheel_params.getGearRatio();
         const float32_t current = motor_toruqe / _motor.getKt();
@@ -166,9 +166,9 @@ class WheelController {
     }
 
     float32_t controlFeedForwardVelocityISR(float32_t velocity) {
+        // 約分可能なので単位は[mm]のまま計算
         const float32_t reverse_voltage =
-            (_motor.getKe() * (60.0f * velocity) * _wheel_params.getGearRatio()) /
-            (M_PI * _wheel_params.getDiameter());
+            _motor.getKe() * ((velocity * (2 / _wheel_params.getDiameter())) * _wheel_params.getGearRatio());
         return reverse_voltage;
     }
 
@@ -180,9 +180,9 @@ class WheelController {
             _integral_velocity_error * _wheel_params.getKi();
         const float32_t pid_error = p_error + i_error;
         // どのモータでも一定のスケールにするために逆起電力の式をもとにPID電圧を決定（計算は重くなるので不要なら削除）
+        // 約分可能なので単位は[mm]のまま
         const float32_t pid_voltage =
-            (_motor.getKe() * (60.0f * pid_error) * _wheel_params.getGearRatio()) /
-            (M_PI * _wheel_params.getDiameter());
+            _motor.getKe() * ((pid_error * (2 / _wheel_params.getDiameter())) * _wheel_params.getGearRatio());
         return pid_voltage;
     }
 

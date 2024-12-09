@@ -50,8 +50,8 @@ class MotorParams {
 
    private:
     float32_t _resistance;  // 内部抵抗
-    float32_t _kt;
-    float32_t _ke;
+    float32_t _kt;  // [Nm/A]
+    float32_t _ke;  // [V/ω)
 };
 
 /**

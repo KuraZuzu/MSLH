@@ -189,10 +189,9 @@ class WheelController {
     void controlMotorISR(float32_t voltage) {
         // バッテリ電圧を考慮したduty比算出
         float32_t duty_ratio;
-        float32_t battery_voltage = _battery.readVoltage();
+        const float32_t battery_voltage = _battery.readVoltage();
         if (battery_voltage > 0.0f) duty_ratio = voltage / battery_voltage;
         else duty_ratio = 0.0f;
-        // printf("%f\r\n", duty_ratio);
         _motor.update(duty_ratio);
     }
 

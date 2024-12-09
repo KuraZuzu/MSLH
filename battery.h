@@ -7,7 +7,7 @@
 namespace mslh {
 class Battery {
    public:
-    Battery(AnalogInDMAStream& analogin_dma_stream, float32_t adc_ratio)
+    Battery(AnalogInDMAStream analogin_dma_stream, const float32_t adc_ratio)
         : _analogin_dma_stream(analogin_dma_stream), _adc_ratio(adc_ratio) {}
 
     void init() { 
@@ -20,7 +20,7 @@ class Battery {
 
    private:
     AnalogInDMAStream _analogin_dma_stream;
-    float32_t _adc_ratio;  // 0 ~ 1.0（バッテリ電圧を監視するADC分圧比率）
+    const float32_t _adc_ratio;  // 0 ~ 1.0（バッテリ電圧を監視するADC分圧比率）
 };
 
 }  // namespace mslh

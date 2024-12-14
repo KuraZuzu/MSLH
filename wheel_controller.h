@@ -80,7 +80,7 @@ class WheelParams {
 
 class WheelController {
    public:
-    WheelController(Motor &motor, Encoder &encoder, Battery &battery,
+    WheelController(Motor motor, Encoder encoder, Battery &battery,
                     WheelParams wheel_params, float32_t dt)
         : _motor(motor),
           _encoder(encoder),
@@ -202,8 +202,8 @@ class WheelController {
     float32_t _integral_velocity_error;
     float32_t _preview_target_velocity;
     WheelParams _wheel_params;
-    Encoder &_encoder;
-    Motor &_motor;
+    Encoder _encoder;
+    Motor _motor;
     Battery &_battery;
     const float32_t _dt;       //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse]

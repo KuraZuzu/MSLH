@@ -25,7 +25,7 @@ namespace mslh {
 class WheelParams {
    public:
     WheelParams()
-        : _mass(0.0f), _diameter(0.0f), _kp(0.0f), _ki(0.0f), _kd(0.0f) {};
+        : _mass(0.01f), _diameter(0.01f), _kp(0.0f), _ki(0.0f), _kd(0.0f) {};
 
     float32_t getMass() { return _mass; }
 
@@ -96,8 +96,7 @@ class WheelController {
           _corrected_velocity(0.0f),
           _velocity_error(0.0f),
           _integral_velocity_error(0.0f),
-          _preview_target_velocity(0.0f)
-           {}
+          _preview_target_velocity(0.0f) {}
 
     void init() {
         _battery.init();
@@ -130,7 +129,7 @@ class WheelController {
     void controlWheelISR(float32_t velocity) {
         // ここで"_velocity"に反映されるのは、前フレームに指定した速度に対応する実速度（つまり1次遅れ）
         controlMeasureVelocityISR();
-        // 前フレームの指令速度と実速度の差分を取得
+        // 前フレームの指令速度と現在の実速度の差分を取得
         _velocity_error = _velocity - _preview_target_velocity;
         // 現フレームの速度にするために必要な加速度を算出
         const float32_t accel = velocity - _velocity;
@@ -147,17 +146,26 @@ class WheelController {
         _preview_target_velocity = velocity;
     }
 
+    // 割り込みで速度制御をしないで呼び出す必要がある
+    void checkForwardDirection(float32_t duty) {
+        // 前進の指令をしてモータとエンコーダの回転方向を確認
+        _motor.update(duty);
+        _encoder.update();
+        printf("%d", _encoder.getTotalPulse());
+    }
+
    private:
     void controlMeasureVelocityISR() {
         _encoder.update();
-        _velocity = _velocity_per_pulse *static_cast<float32_t>(
-                         _encoder.getDeltaPulse());
+        _velocity = _velocity_per_pulse *
+                    static_cast<float32_t>(_encoder.getDeltaPulse());
     }
 
     float32_t controlFeedForwardAccelISR(float32_t accel) {
         // モータトルク定数Ktが[Nm/A]なので、各種変数の単位を変換（SIにより[g]は[kg]で計算）
         const float32_t wheel_torque =
-            (_wheel_params.getMass() / 1000.0f) * (accel / 1000.0f) * ((_wheel_params.getDiameter() / 2.0f) / 1000.0f);
+            (_wheel_params.getMass() / 1000.0f) * (accel / 1000.0f) *
+            ((_wheel_params.getDiameter() / 2.0f) / 1000.0f);
         const float32_t motor_toruqe =
             wheel_torque / _wheel_params.getGearRatio();
         const float32_t current = motor_toruqe / _motor.getKt();
@@ -168,7 +176,8 @@ class WheelController {
     float32_t controlFeedForwardVelocityISR(float32_t velocity) {
         // 約分可能なので単位は[mm]のまま計算
         const float32_t reverse_voltage =
-            _motor.getKe() * ((velocity * (2 / _wheel_params.getDiameter())) * _wheel_params.getGearRatio());
+            _motor.getKe() * ((velocity * (2 / _wheel_params.getDiameter())) *
+                              _wheel_params.getGearRatio());
         return reverse_voltage;
     }
 
@@ -182,7 +191,8 @@ class WheelController {
         // どのモータでも一定のスケールにするために逆起電力の式をもとにPID電圧を決定（計算は重くなるので不要なら削除）
         // 約分可能なので単位は[mm]のまま
         const float32_t pid_voltage =
-            _motor.getKe() * ((pid_error * (2 / _wheel_params.getDiameter())) * _wheel_params.getGearRatio());
+            _motor.getKe() * ((pid_error * (2 / _wheel_params.getDiameter())) *
+                              _wheel_params.getGearRatio());
         return pid_voltage;
     }
 
@@ -190,22 +200,26 @@ class WheelController {
         // バッテリ電圧を考慮したduty比算出
         float32_t duty_ratio;
         const float32_t battery_voltage = _battery.readVoltage();
-        if (battery_voltage > 0.0f) duty_ratio = voltage / battery_voltage;
-        else duty_ratio = 0.0f;
+        if (battery_voltage > 0.0f)
+            duty_ratio = voltage / battery_voltage;
+        else
+            duty_ratio = 0.0f;
         _motor.update(duty_ratio);
     }
 
     float32_t _target_velocity;
     float32_t _velocity;
-    float32_t _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
-    float32_t _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
+    float32_t
+        _corrected_velocity;  // PID制御を考慮したフィードバック補正後の速度
+    float32_t
+        _velocity_error;  // フィードフォワード実行後の速度と指定速度との差分
     float32_t _integral_velocity_error;
     float32_t _preview_target_velocity;
     WheelParams _wheel_params;
     Encoder _encoder;
     Motor _motor;
     Battery &_battery;
-    const float32_t _dt;       //< second [s]
+    const float32_t _dt;                  //< second [s]
     const float32_t _distance_per_pulse;  //< [mm/pulse]
     const float32_t _velocity_per_pulse;  //< [mm/s]
 
